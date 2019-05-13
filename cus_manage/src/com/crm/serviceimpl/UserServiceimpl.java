@@ -17,5 +17,20 @@ public class UserServiceimpl implements UserService {
 		// TODO Auto-generated method stub
 		return usermapper.selectUser();
 	}
+	@Override
+	public User selectUserByAccount(User user) {
+		// TODO Auto-generated method stub
+		return usermapper.selectUserByAccount(user);
+	}
+	@Override
+	public User selectUserByUuid(String uuid) {
+		// TODO Auto-generated method stub
+		return usermapper.selectUserByUuid(uuid);
+	}
+	@Override
+	public Integer updateUser(User user) {
+		// TODO Auto-generated method stub
+		return usermapper.updateUser(user);
+	}
 
 }
