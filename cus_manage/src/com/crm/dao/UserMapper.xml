@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.dao.UserMapper">
+	<!-- 用户 -->
+	<resultMap type="user" id="userMap">
+		<id property="user_id" column="user_id" />
+		<result property="user_name" column="user_name"/>
+		<result property="user_password" column="user_password"/>
+		<result property="user_email" column="user_email"/>
+		<result property="user_phone" column="user_phone"/>
+		<result property="user_createtime" column="user_createtime"/>
+		<result property="user_logintime" column="user_logintime"/>
+	</resultMap>
+	
+	<!-- 模块——自定义映射 -->
+	<resultMap type="module" id="moduleMap">
+		<id column="module_id" property="module_id"/>
+		<result column="module_name" property="module_name"/>
+		<result column="module_path" property="module_path"/>
+		<result column="module_weight" property="module_weight"/>
+		<result column="module_parent_id" property="module_parent_id"/>
+		<association property="role" resultMap="roleMap"/>
+		
+	</resultMap>
+	<!-- 角色——自定义映射 -->
+	<resultMap type="role" id="roleMap">
+		<id column="role_id" property="role_id"/>
+		<result column="role_name" property="role_name"/>
+		<result column="role_desc" property="role_desc"/>
+		<result column="role_flag" property="role_flag"/>
+	</resultMap>
+	<!-- 用户——自定义映射 -->
+	<!-- <resultMap type="user" id="userMap">
+		<id column="user_id" property="user_id"/>
+		<result column="user_account" property="user_account"/>
+		<result column="user_password" property="user_password"/>
+		<result column="user_name" property="user_name"/>
+		<result column="user_sex" property="user_sex"/>
+		<result column="user_creat_time" property="user_creat_time"/>
+		<result column="user_login_time" property="user_login_time"/>
+		<result column="user_isLock" property="user_isLock"/>
+		<result column="user_wrong_number" property="user_wrong_number"/>
+		<result column="user_email" property="user_email"/>
+		<result column="user_phone" property="user_phone"/>
+		<association property="roles" resultMap="roleMap"/>
+	</resultMap> -->
+	
+	<select id="selectUserPermById" parameterType="int" resultMap="moduleMap">
+		SELECT r.role_id,r.role_name,
+			 m.module_id,m.module_name,m.module_path,m.module_weight,m.module_parent_id
+		FROM user_role ur INNER JOIN role r ON ur.role_id=r.role_id 
+			 INNER JOIN role_module rm ON r.role_id=rm.role_id 
+			 INNER JOIN module m ON rm.module_id=m.module_id 
+			 WHERE ur.user_id=#{user_id};
+	</select>
+	
+	
+	<select id="selectUser"  resultType="user">
+		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
+		FROM user;
+	</select>
+	
+	
+	<select id="selectUserByAccount" parameterType="user" resultType="user">
+		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
+		FROM `user` WHERE user_account=#{user_account} 
+	</select>
+	
+	
+	<select id="selectUserByUuid" parameterType="string" resultType="user">
+		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
+		FROM `user` WHERE user_uuid=#{user_uuid} 
+	</select>
+	
+	<update id="updateUser" parameterType="user">
+		UPDATE user 
+		<set>
+			<if test="user_account !=null and user_account !='' ">
+				user_account=#{user_account},
+			</if>
+			<if test="user_password !=null and user_password !='' ">
+				user_password=#{user_password},
+			</if>
+			<if test="user_name !=null and user_name !='' ">
+				user_name=#{user_name},
+			</if>
+			<if test="user_sex !=null and user_sex !='' ">
+				user_sex=#{user_sex},
+			</if>
+			<if test="user_login_time !=null and user_login_time !='' ">
+				user_login_time=#{user_login_time},
+			</if>
+			
+			<if test="user_uuid !=null and user_uuid !='' ">
+				user_uuid=#{user_uuid},
+			</if>
+		</set>
+		WHERE user_id=#{user_id}
+	</update>
+</mapper>
