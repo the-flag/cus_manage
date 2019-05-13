@@ -112,7 +112,8 @@ public class LoginController {
 			}
 			request.getSession().setAttribute("m", login);//存储到会话中
 			request.getSession().setAttribute("loginType", "standard");//登录方式是标准登录
-			return "chenggong"; 		
+			System.out.println("登陆成功！！！！！！！！");
+			return "WEB-INF/jsp/main"; 		
 			
 		}else {
 			System.out.println("失败！！！！！！！！！！！！！");

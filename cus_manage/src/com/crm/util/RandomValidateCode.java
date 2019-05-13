@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 public class RandomValidateCode {
 	 
-	    public static final String RANDOMCODEKEY = "randomcode_key";//放到session中的key
+	public static final String RANDOMCODEKEY = "randomcode_key";//放到session中的key
 	    private Random random = new Random();
 	    private String randString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生的字符串
 	    
