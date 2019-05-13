@@ -1,6 +1,15 @@
 /**
  * Created by Administrator on 2017/11/8.
+
  */
+
+
+/*
+ * 自定2019-05-13
+ * 
+ * */
+
+
 $("#mainBox").layout({
         fit:true,
         border:false
@@ -59,8 +68,6 @@ $("#left01  a").click(function () {
                 selected: true,
                 closable:true,
                content:con
-
-
         });
 
 })
@@ -72,3 +79,6 @@ $("#con").tabs({
 
         }
 })
+
+
+

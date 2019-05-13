@@ -30,25 +30,10 @@ public class TreeUtil {
 		
 		json.setId(module.getModule_id());
 		json.setText(module.getModule_name());
-		/*json.setUrl(module.getModule_path());*/
+		json.setUrl(module.getModule_path());
 		/*json.setState("closed");
 		json.setChecked(false);*/
-		
-		
-		/**
-		 * 取消下面一行的注释
-		 * 取消下面一行的注释
-		 * 取消下面一行的注释
-		 * 取消下面一行的注释
-		 * 取消下面一行的注释
-		 * 取消下面一行的注释
-		 * 取消下面一行的注释
-		 * 取消下面一行的注释
-		 * 取消下面一行的注释
-		 * 取消下面一行的注释
-		 */
-		
-		/*json.setParentId(module.getModule_parent_id());*/
+		json.setParentId(module.getModule_parent_id());
 		return json;
 	}
 	

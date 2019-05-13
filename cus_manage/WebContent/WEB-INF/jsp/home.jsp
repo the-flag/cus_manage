@@ -1,19 +1,22 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>WDPHP素材源码</title>
-
-    <link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/default/easyui.css"/>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ 	<link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/default/easyui.css"/>
     <link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/icon.css"/>
-    <link type="text/css" rel="stylesheet" href="css/main.css">
-	
+    <link type="text/css" rel="stylesheet" href="js/css/main.css">
+	<script src="js/jquery-easyui-1.5.3/jquery.min.js"></script>
+	<script src="js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
+	<script src="js/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
 </head>
 <body>
 <div class="allBox">
 <div class="homeLeft01">
     <a href="#" class="homeUpaBox">
-        <div class="aLeft"><img src="img/computer.png"/> </div>
+        <div class="aLeft"><img src="js/img/computer.png"/> </div>
         <div class="aRight">
             <p class="fontSizeBig" style="margin-top: 10px">14<span class="fontSizeMin">个</span></p>
             <p class="fontSizeMin">待办未处理</p>
@@ -123,14 +126,10 @@
     <div class="clear"></div>
 
 </div>
-
-
-<script src="js/jquery-easyui-1.5.3/jquery.min.js"></script>
-<script src="js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
-<script src="js/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
 <script src="js/echarts/echarts-all.js"></script>
 <script src="js/home.js"></script>
 
 
+</body>
 </body>
 </html>

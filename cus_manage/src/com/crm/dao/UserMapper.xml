@@ -46,6 +46,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="user_phone" property="user_phone"/>
 		<association property="roles" resultMap="roleMap"/>
 	</resultMap> -->
+	
+	<select id="selectUserPermById" parameterType="int" resultMap="moduleMap">
+		SELECT r.role_id,r.role_name,
+			 m.module_id,m.module_name,m.module_path,m.module_weight,m.module_parent_id
+		FROM user_role ur INNER JOIN role r ON ur.role_id=r.role_id 
+			 INNER JOIN role_module rm ON r.role_id=rm.role_id 
+			 INNER JOIN module m ON rm.module_id=m.module_id 
+			 WHERE ur.user_id=#{user_id};
+	</select>
+	
+	
 	<select id="selectUser"  resultType="user">
 		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
 		FROM user;
