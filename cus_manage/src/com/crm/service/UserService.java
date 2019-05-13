@@ -2,13 +2,16 @@ package com.crm.service;
 
 import java.util.List;
 
+import com.crm.pojo.FenYe;
 import com.crm.pojo.Module;
 import com.crm.pojo.User;
+import com.crm.pojo.UserQueryParameters;
 
 public interface UserService {
+	
 	List<User> selectUser();
 	
-
+	FenYe selectUsersByFenYe(FenYe fenYe);
 	
 	/**
 	  * 根据用户账号查询用户信息

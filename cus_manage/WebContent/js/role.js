@@ -3,7 +3,7 @@
  */
 // 加载树
 $("#tree").tree({
-        url:'json/userTree.json',
+        url:'js/json/userTree.json',
         checkbox:true,
         lines:true
 })
@@ -140,7 +140,7 @@ obj={
 $("#table").datagrid({
         title:"数据列表",
         iconCls:"icon-left02",
-        url:'json/role.json',
+        url:'js/json/role.json',
         fitColumns:true,
         striped:true,
         pagination:true,

@@ -18,7 +18,7 @@ public class User {
 
     private Date user_login_time;
 
-    private String user_isLock;
+    private Integer user_isLock;
 
     private Integer user_wrong_number;
 
@@ -98,11 +98,11 @@ public class User {
 		this.user_login_time = user_login_time;
 	}
 
-	public String getUser_isLock() {
+	public Integer getUser_isLock() {
 		return user_isLock;
 	}
 
-	public void setUser_isLock(String user_isLock) {
+	public void setUser_isLock(Integer user_isLock) {
 		this.user_isLock = user_isLock;
 	}
 

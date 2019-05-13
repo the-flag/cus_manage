@@ -2,12 +2,33 @@ package com.crm.dao;
 
 import java.util.List;
 
+import com.crm.pojo.FenYe;
 import com.crm.pojo.Module;
 import com.crm.pojo.User;
 
 public interface UserMapper {
 	
+	/**
+	 * 测试
+	 * @return
+	 */
 	List<User> selectUser();
+	
+	/**
+	 * 多条件分页查询用户数据
+	 * @param fenYe
+	 * @return
+	 */
+	List<User> selectUsersByFenYe(FenYe fenYe);
+	
+	/**
+	 * 多条件查询数据总条数
+	 * @param fenYe
+	 * @return
+	 */
+	Integer selectUserCountByFenYe(FenYe fenYe);
+	
+	
 	
 	/**
 	 * 根据用户id查询，所具有的权限

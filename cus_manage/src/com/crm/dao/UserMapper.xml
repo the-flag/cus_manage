@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.crm.dao.UserMapper">
 	<!-- 用户 -->
-	<resultMap type="user" id="userMap">
+	<!-- <resultMap type="user" id="userMap">
 		<id property="user_id" column="user_id" />
 		<result property="user_name" column="user_name"/>
 		<result property="user_password" column="user_password"/>
@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="user_phone" column="user_phone"/>
 		<result property="user_createtime" column="user_createtime"/>
 		<result property="user_logintime" column="user_logintime"/>
-	</resultMap>
+	</resultMap> -->
 	
 	<!-- 模块——自定义映射 -->
 	<resultMap type="module" id="moduleMap">
@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="role_flag" property="role_flag"/>
 	</resultMap>
 	<!-- 用户——自定义映射 -->
-	<!-- <resultMap type="user" id="userMap">
+	<resultMap type="user" id="userMap">
 		<id column="user_id" property="user_id"/>
 		<result column="user_account" property="user_account"/>
 		<result column="user_password" property="user_password"/>
@@ -45,7 +45,60 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="user_email" property="user_email"/>
 		<result column="user_phone" property="user_phone"/>
 		<association property="roles" resultMap="roleMap"/>
-	</resultMap> -->
+	</resultMap>
+	
+	
+	
+	
+	<select id="selectUser"  resultType="user">
+		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
+		FROM user;
+	</select>
+	
+	<select id="selectUsersByFenYe" parameterType="fenYe" resultType="user">
+		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
+		FROM user
+		<where>
+			<if test="object !=null">
+				<if test="object.user_name !=null and object.user_name !='' ">
+					and user_name like "%"#{object.user_name}"%"
+				</if>
+				<if test="object.min_creat_time !=null and object.min_creat_time !='' ">
+					and user_creat_time &gt;=#{object.min_creat_time};
+				</if>
+				<if test="object.max_creat_time !=null and object.max_creat_time !='' ">
+					and user_creat_time &lt;=#{object.max_creat_time};
+				</if>
+				<if test="object.user_isLock !=null and object.user_isLock >0 ">
+					and user_is_lock=#{object.user_is_lock};
+				</if>
+			</if>
+		</where>
+		limit #{page},#{row}
+		;
+	</select>
+	
+	<select id="selectUserCountByFenYe" parameterType="fenYe" resultType="int">
+		SELECT count(user_id)
+		FROM user
+		<where>
+			<if test="object !=null">
+				<if test="object.user_name !=null and object.user_name !='' ">
+					and user_name like "%"#{object.user_name}"%"
+				</if>
+				<if test="object.min_creat_time !=null and object.min_creat_time !='' ">
+					and user_creat_time &gt;=#{object.min_creat_time};
+				</if>
+				<if test="object.max_creat_time !=null and object.max_creat_time !='' ">
+					and user_creat_time &lt;=#{object.max_creat_time};
+				</if>
+				<if test="object.user_isLock !=null and object.user_isLock >0 ">
+					and user_is_lock=#{object.user_is_lock};
+				</if>
+			</if>
+		</where>
+	</select>
+	
 	
 	<select id="selectUserPermById" parameterType="int" resultMap="moduleMap">
 		SELECT r.role_id,r.role_name,
@@ -55,13 +108,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 INNER JOIN module m ON rm.module_id=m.module_id 
 			 WHERE ur.user_id=#{user_id};
 	</select>
-	
-	
-	<select id="selectUser"  resultType="user">
-		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
-		FROM user;
-	</select>
-	
 	
 	<select id="selectUserByAccount" parameterType="user" resultType="user">
 		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 

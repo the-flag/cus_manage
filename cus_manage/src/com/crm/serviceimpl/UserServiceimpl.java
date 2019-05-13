@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crm.dao.UserMapper;
+import com.crm.pojo.FenYe;
 import com.crm.pojo.Module;
 import com.crm.pojo.User;
 import com.crm.service.UserService;
@@ -37,6 +38,15 @@ public class UserServiceimpl implements UserService {
 	public List<Module> selectUserPermById(Integer user_id) {
 		// TODO Auto-generated method stub
 		return usermapper.selectUserPermById(user_id);
+	}
+	@Override
+	public FenYe selectUsersByFenYe(FenYe fenYe) {
+		// TODO Auto-generated method stub
+		Integer selectUserCountByFenYe = usermapper.selectUserCountByFenYe(fenYe);
+		List<User> selectUsersByFenYe = usermapper.selectUsersByFenYe(fenYe);
+		fenYe.setRows(selectUsersByFenYe);
+		fenYe.setTotal(selectUserCountByFenYe);
+		return fenYe;
 	}
 
 }

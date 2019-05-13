@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crm.pojo.FenYe;
@@ -19,13 +20,16 @@ public class UserController {
 	
 	@RequestMapping("/showuser")
 	@ResponseBody
-	public String showuser() {
-		List<User> selectUser = userService.selectUser();
-		FenYe fenYe =new FenYe();
-		fenYe.setTotal(10);
-		fenYe.setRows(selectUser);
-		Gson gson=new Gson();
-		System.out.println("sdfsd");
-		return gson.toJson(fenYe);
+	public FenYe showuser(FenYe fenYe,Integer rows) {
+		fenYe.setRow(rows);
+		fenYe.setPage((fenYe.getPage()-1)*rows);
+		FenYe selectUsersByFenYe = userService.selectUsersByFenYe(fenYe);
+		return selectUsersByFenYe;
+	}
+	
+	
+	@RequestMapping(value="/getuser",method=RequestMethod.GET)
+	public String getuser() {
+		return "WEB-INF/jsp/user";
 	}
 }
