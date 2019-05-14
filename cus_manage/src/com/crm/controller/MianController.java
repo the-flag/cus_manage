@@ -22,6 +22,14 @@ public class MianController {
 	@Autowired 
 	private TreeUtil treeUtil;
 	
+	@RequestMapping(value="/getMain",method=RequestMethod.GET)
+	public String getMain() {
+		return "main";
+		
+	}
+	
+	
+	
 	@RequestMapping(value="/showHomeTree",method=RequestMethod.POST)
 	@ResponseBody
 	public List<EasyUITreeJson> showHomeTree(Integer user_id) {
@@ -31,4 +39,7 @@ public class MianController {
 		return listToTree;
 		
 	}
+	
+	
+	
 }

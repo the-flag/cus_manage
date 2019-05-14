@@ -56,7 +56,7 @@
 
 <div class="easyui-layout" id="mainBox">
     <div data-options="region:'north',split:true" style="height: 80px" class="mainTop">
-        <div class="topLogin"><img src="js/img/logoImg.png"/> <div class="topLongRight">xxxxxx安全管理平台</div></div>
+        <div class="topLogin"><img src="img/logoImg.png"/> <div class="topLongRight">xxxxxx安全管理平台</div></div>
        <!--  <div class="topText">
             <a href="home.html" class="textActive" target="frameName">
                 <p style="margin-top: 10px"><img src="img/home.png"/> </p>
@@ -94,7 +94,7 @@
     <div data-options="region:'center'" style="padding:5px;background:#eee;">
         <div id="con">
             <div title="系统首页" >
-               <iframe frameborder="0" width="100%" height="100%" name="frameName" src="gethome" scrolling="auto" id="ifDiv" ></iframe>
+               <iframe frameborder="0" width="100%" height="100%" name="frameName" src="getHome" scrolling="auto" id="ifDiv" ></iframe>
             </div>
         </div>
 

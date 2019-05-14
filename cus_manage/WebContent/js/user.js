@@ -5,7 +5,8 @@
 $(function () {
 
         $("#tree").tree({
-                url:'json/userTree.json',
+                url:'js/json/userTree.json',
+                method:"get",
                 onClick:function (node) {
                         var nodes=$(this).tree('isLeaf',node.target);
                         var partId;
@@ -16,7 +17,7 @@ $(function () {
                                 partId=node.domId;
                                $.ajax({
                                        type:'get',
-                                       url:"json/user.json"+partId,
+                                       url:"js/json/user.json"+partId,
                                        dataType:'json',
                                        success:function (data) {
                                                var tableTata=data.data;
@@ -34,7 +35,8 @@ $(function () {
         $("#table").datagrid({
                 title:"数据列表",
                 iconCls:"icon-left02",
-                url:'json/user.json',
+                url:'showUserTab',
+                method:"post",
                 fitColumns:true,
                 striped:true,
                 pagination:true,
@@ -57,67 +59,75 @@ $(function () {
                                 align:'center'
                         },
                         {
-                                field:'id',
+                                field:'user_id',
                                 title:'编号',
                                 width:100,
                                 align:'center'
 
-
-
                         },
                         {
-                                field:'name',
+                                field:'user_name',
                                 title:'用户名',
                                 width:100,
                                 align:'center'
-
-
-
                         },
                         {
                                 field:'title',
                                 title:'角色',
                                 width:100,
                                 align:'center'
-
-
-
                         },
                         {
-                                field:'sex',
+                                field:'user_sex',
                                 title:'姓别',
                                 width:100,
                                 align:'center',
-
                                 formatter:function (val,row) {
-                                        if(val=='男'){
-                                                return '<div style="color: green">'+val+'</div>';
+                                        if(val==0){
+                                                return '<div style="color: green">男</div>';
                                         }
                                         else{
-                                                return '<div style="color: red">'+val+'</div>';
+                                                return '<div style="color: red">女</div>';
                                         }
-
                                 }
-
-
                         },
                         {
-                                field:'part',
-                                title:'所属部门',
+                            field:'user_email',
+                            title:'邮箱',
+                            width:100,
+                            align:'center'
+                        },
+                        {
+                            field:'user_phone',
+                            title:'联系电话',
+                            width:100,
+                            align:'center'
+                        },
+                        {
+                                field:'user_creat_time',
+                                title:'创建时间',
                                 width:100,
                                 align:'center'
-
-
-
                         },
                         {
                                 field:'time',
                                 title:'入职时间',
                                 width:100,
                                 align:'center'
-
-
-
+                        },
+                        {
+                            field:'user_is_lock',
+                            title:'是否锁定',
+                            width:100,
+                            align:'center',
+                            formatter:function (val,row) {
+                                    if(val==0){
+                                            return '<div style="color: green">锁定</div>';
+                                    }
+                                    else{
+                                            return '<div style="color: red">正常</div>';
+                                    }
+                            }
                         },
                         {
                                 field:"opr",
@@ -128,18 +138,25 @@ $(function () {
                                         e = '<a  id="add" data-id="98" class=" operA"  onclick="obj.edit(\'' + row.id + '\')">编辑</a> ';
                                         d = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + row.id + '\')">删除</a> ';
                                         return e+d;
-
                                 }
-
                         }
                 ]]
         })
 
 })
 
+
+function searchs(){
+			$("#table").datagrid("load",{
+					
+			})
+			
+}
+
 // 加载部门下拉框
 $("#part").combotree({
-        url:'json/userTree.json',
+        url:'js/json/userTree.json',
+        method:"get",
         height:26,
         width:166,
         checkbox:true,
@@ -157,7 +174,8 @@ $("#part").combotree({
 
 //加载角色
 $('#role').combobox({
-        url:'json/userTree.json',
+        url:'js/json/userTree.json',
+        method:"get",
     height:26,
     width:'70%',
         valueField:'id',
@@ -165,7 +183,8 @@ $('#role').combobox({
 });
 // 加载详情页面部门下拉框
 $("#part01").combotree({
-    url:'json/userTree.json',
+    url:'js/json/userTree.json',
+    method:"get",
     height:26,
     width:'70%',
     checkbox:true,
@@ -186,8 +205,10 @@ obj={
 
 
                 $("#table").datagrid('load',{
-                        user:$.trim($("#user").val()),
-                        part:$.trim($("#part").val())
+                        user_name:$("#user_name").val(),
+                        min_creat_time:$('#min_creat_time').datebox('getValue'),
+                        max_creat_time:$('#max_creat_time').datebox('getValue'),
+                        user_is_lock:$("#user_is_lock").val()
                 })
                 
         },
@@ -213,7 +234,7 @@ obj={
                 })
             // $("#addForm").form('load','json/user.json');
                 $.ajax({
-                        url:'json/user.json',
+                        url:'js/json/user.json',
                         type:'get',
                         dataType:'json',
                         success:function (rows) {

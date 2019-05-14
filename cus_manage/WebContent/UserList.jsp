@@ -28,7 +28,7 @@
 		}
 		function init(){
 			$("#userTab").datagrid({
-				url:"showuser",
+				url:"showUserTab",
 				method:"post",
 				pagination:true,
 				toolbar:'#usertb'

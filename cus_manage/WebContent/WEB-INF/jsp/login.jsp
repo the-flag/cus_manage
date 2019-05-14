@@ -50,7 +50,7 @@ canvas {
 			<br/>
 			<span style="font-size: 14px;color: red;">${key}</span>
 		</dt>
-		<form action="login" method="POST">
+		<form action="loginValidation" method="POST">
 		<dd class="user_icon">
 			<input type="text" placeholder="账号" class="login_txtbx" name="user_account"/>
 		</dd>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crm.pojo.FenYe;
 import com.crm.pojo.User;
+import com.crm.pojo.UserQueryParameters;
 import com.crm.service.UserService;
 import com.google.gson.Gson;
 
@@ -18,9 +19,10 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping("/showuser")
+	@RequestMapping("/showUserTab")
 	@ResponseBody
-	public FenYe showuser(FenYe fenYe,Integer rows) {
+	public FenYe showUserTab(FenYe fenYe,Integer rows,UserQueryParameters queryParameters) {
+		fenYe.setObject(queryParameters);
 		fenYe.setRow(rows);
 		fenYe.setPage((fenYe.getPage()-1)*rows);
 		FenYe selectUsersByFenYe = userService.selectUsersByFenYe(fenYe);
@@ -28,8 +30,8 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(value="/getuser",method=RequestMethod.GET)
-	public String getuser() {
-		return "WEB-INF/jsp/user";
+	@RequestMapping(value="/getUser",method=RequestMethod.GET)
+	public String getUser() {
+		return "user";
 	}
 }

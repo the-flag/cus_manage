@@ -22,9 +22,9 @@ public class HomeController {
 	@Autowired 
 	private TreeUtil treeUtil;
 	
-	@RequestMapping(value="/gethome",method=RequestMethod.GET)
-	public String gethome() {
-		return "WEB-INF/jsp/home";
+	@RequestMapping(value="/getHome",method=RequestMethod.GET)
+	public String getHome() {
+		return "home";
 		
 	}
 }

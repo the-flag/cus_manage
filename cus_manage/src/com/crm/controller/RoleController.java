@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class RoleController {
-	@RequestMapping(value="/getrole",method=RequestMethod.GET)
-	public String getrole() {
-		return "WEB-INF/jsp/role";
+	@RequestMapping(value="/getRole",method=RequestMethod.GET)
+	public String getRole() {
+		return "role";
 		
 	}
 }

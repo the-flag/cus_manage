@@ -35,13 +35,14 @@ public class LoginInterceptor implements HandlerInterceptor {
          	// 如果是 ajax 请求，则设置 session 状态 、CONTEXTPATH 的路径值
          	// 如果是ajax请求响应头会有，x-requested-with
             if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")){
+            	System.out.println("sdfdsfdsfjdsoifjosdaijfoisdjfoijsdoifjosdifiosdahfiu");
             	response.setHeader("SESSIONSTATUS", "TIMEOUT");
-            	response.setHeader("CONTEXTPATH", homeUrl+"/login.jsp");
+            	response.setHeader("CONTEXTPATH", homeUrl+"/WEB-INF/jsp/login.jsp");
                 // FORBIDDEN，forbidden。也就是禁止、403
             	response.setStatus(HttpServletResponse.SC_FORBIDDEN); 
             }else{
                 // 如果不是 ajax 请求，则直接跳转即可
-            	response.sendRedirect(homeUrl+"/login.jsp");
+            	response.sendRedirect("login");
             }
             return false;
 	}

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class ModuleController {
-	@RequestMapping(value="/getmodule",method=RequestMethod.GET)
+	@RequestMapping(value="/getModule",method=RequestMethod.GET)
 	public String getmodule() {
-		return "WEB-INF/jsp/module";
+		return "module";
 		
 	}
 }

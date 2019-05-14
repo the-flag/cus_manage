@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="user_sex" property="user_sex"/>
 		<result column="user_creat_time" property="user_creat_time"/>
 		<result column="user_login_time" property="user_login_time"/>
-		<result column="user_isLock" property="user_isLock"/>
+		<result column="user_is_lock" property="user_is_lock"/>
 		<result column="user_wrong_number" property="user_wrong_number"/>
 		<result column="user_email" property="user_email"/>
 		<result column="user_phone" property="user_phone"/>
@@ -64,18 +64,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					and user_name like "%"#{object.user_name}"%"
 				</if>
 				<if test="object.min_creat_time !=null and object.min_creat_time !='' ">
-					and user_creat_time &gt;=#{object.min_creat_time};
+					and user_creat_time &gt;=#{object.min_creat_time}
 				</if>
 				<if test="object.max_creat_time !=null and object.max_creat_time !='' ">
-					and user_creat_time &lt;=#{object.max_creat_time};
+					and user_creat_time &lt;=#{object.max_creat_time}
 				</if>
-				<if test="object.user_isLock !=null and object.user_isLock >0 ">
-					and user_is_lock=#{object.user_is_lock};
+				<if test="object.user_is_lock !=null and object.user_is_lock >0 ">
+					and user_is_lock=#{object.user_is_lock}
 				</if>
 			</if>
 		</where>
 		limit #{page},#{row}
-		;
 	</select>
 	
 	<select id="selectUserCountByFenYe" parameterType="fenYe" resultType="int">
@@ -92,8 +91,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<if test="object.max_creat_time !=null and object.max_creat_time !='' ">
 					and user_creat_time &lt;=#{object.max_creat_time};
 				</if>
-				<if test="object.user_isLock !=null and object.user_isLock >0 ">
-					and user_is_lock=#{object.user_is_lock};
+				<if test="object.user_is_lock !=null and object.user_is_lock >0 ">
+					and user_is_lock=#{object.user_is_lock}
 				</if>
 			</if>
 		</where>

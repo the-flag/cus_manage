@@ -1,6 +1,8 @@
 package com.crm.controller;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +39,23 @@ public class LoginController {
 	private MD5Utils md5Utils;
 	@Autowired 
 	private TreeUtil treeUtil;
+	
+	private DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH/mm/ss");  
+	
+	
+	
+	
+	/**
+	  * 跳转登陆页面
+	 * @return
+	 */
+	@RequestMapping(value="/login")
+	public String login(){
+		return "login";
+	}
+	
+	
+	
 	/**
 	 * 获取生成验证码显示到 UI 界面
 	 * @param request
@@ -68,8 +87,8 @@ public class LoginController {
 	 * @param remember
 	 * @return
 	 */
-	@RequestMapping(value="/login",method=RequestMethod.POST)
-	public String login(HttpServletRequest request,HttpServletResponse response,User user,Integer remember,String yanzhengma) {
+	@RequestMapping(value="/loginValidation",method=RequestMethod.POST)
+	public String loginValidation(HttpServletRequest request,HttpServletResponse response,User user,Integer remember,String yanzhengma) {
 		System.out.println("进入controoler 的login方法了");
 		if("".equals(user.getUser_account()) || "".equals(user.getUser_password())) {
 			request.setAttribute("key", "账号或密码不能为空");
@@ -107,13 +126,14 @@ public class LoginController {
 				response.addCookie(cookie);
 				
 				login.setUser_uuid(uuid);
-				login.setUser_login_time(new Date());
+				System.out.println(sdf2.format(new Date())+":时间格式");
+				login.setUser_login_time(sdf2.format(new Date()));
 				userService.updateUser(login);
 			}
 			request.getSession().setAttribute("m", login);//存储到会话中
 			request.getSession().setAttribute("loginType", "standard");//登录方式是标准登录
 			System.out.println("登陆成功！！！！！！！！");
-			return "WEB-INF/jsp/main"; 		
+			return "main"; 		
 			
 		}else {
 			System.out.println("失败！！！！！！！！！！！！！");
@@ -122,15 +142,4 @@ public class LoginController {
 		return "login";
 	}
 	
-	
-	/*@RequestMapping(value="/getTreeJson",method=RequestMethod.POST)
-	@ResponseBody
-	public List<EasyUITreeJson> getTreeJson() {
-		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
-		UserMapper bean = (UserMapper) context.getBean("userMapper");
-		List<Module> selectPerm = bean.selectPerm(1);
-		List<EasyUITreeJson> listGetStree = treeUtil.listGetStree(selectPerm);
-		List<EasyUITreeJson> listToTree = treeUtil.listToTree(listGetStree);
-		return listToTree;
-	}*/
 }

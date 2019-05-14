@@ -18,23 +18,23 @@
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/" />
+		<property name="prefix" value="WEB-INF/jsp/" />
 		<property name="suffix" value=".jsp" />
 	</bean>	
 	
 	<mvc:interceptors>
         <!-- 自动登录拦截 -->
         <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/login*"/>
-            <mvc:exclude-mapping path="/js/**"/>
+            <mvc:mapping path="/**"/>				<!-- 拦截所有的controller请求 -->
+            <mvc:exclude-mapping path="/login*"/>	<!-- 方行与登陆有关的 -->
+            <mvc:exclude-mapping path="/js/**"/>	
             <mvc:exclude-mapping path="/img/**"/>
             <bean class="com.crm.interceptor.RememberInterceptor"/>
         </mvc:interceptor>
         <!-- 登陆拦截 -->
          <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/login*"/>
+            <mvc:mapping path="/**"/>				<!-- 拦截所有的controller请求 -->
+            <mvc:exclude-mapping path="/login*"/>	<!-- 方行与登陆有关的 -->
             <mvc:exclude-mapping path="/js/**"/>
             <mvc:exclude-mapping path="/img/**"/>
             <bean class="com.crm.interceptor.LoginInterceptor"/>

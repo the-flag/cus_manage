@@ -12,7 +12,7 @@ public class UserQueryParameters {
     
     private String max_creat_time;
 
-    private Integer user_isLock;
+    private Integer user_is_lock;
 
 	public String getUser_name() {
 		return user_name;
@@ -38,18 +38,20 @@ public class UserQueryParameters {
 		this.max_creat_time = max_creat_time;
 	}
 
-	public Integer getUser_isLock() {
-		return user_isLock;
+	public Integer getUser_is_lock() {
+		return user_is_lock;
 	}
 
-	public void setUser_isLock(Integer user_isLock) {
-		this.user_isLock = user_isLock;
+	public void setUser_is_lock(Integer user_is_lock) {
+		this.user_is_lock = user_is_lock;
 	}
 
 	@Override
 	public String toString() {
 		return "UserQueryParameters [user_name=" + user_name + ", min_creat_time=" + min_creat_time
-				+ ", max_creat_time=" + max_creat_time + ", user_isLock=" + user_isLock + "]";
+				+ ", max_creat_time=" + max_creat_time + ", user_is_lock=" + user_is_lock + "]";
 	}
+
+	
 
 }
