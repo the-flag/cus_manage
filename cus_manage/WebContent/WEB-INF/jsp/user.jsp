@@ -47,8 +47,9 @@
 				<div id="tabelBut">
 					<div>
 						<a href="#" class="easyui-linkbutton" plain="true"
-							iconCls="icon-add" onclick="obj.addBox()">新增</a> <a href="#"
-							class="easyui-linkbutton" plain="true" iconCls="icon-edit">修改</a>
+							iconCls="icon-add" onclick="obj.addBox()">新增</a>
+						<a href="#"
+							class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="obj.edit()">修改</a>
 						<a href="#" class="easyui-linkbutton" plain="true"
 							iconCls="icon-remove" onclick="obj.del()">删除</a>
 					</div>
@@ -67,21 +68,21 @@
 			<div class="formDiv">
 				<label>账号:</label>
 					<input type="text" name="user_account" id="adduser_account"
-					class="easyui-validatebox" name="adduser_account" data-options="required:true"><span id="adduser_accountspan"
+					class="easyui-validatebox"  data-options="required:true"><span id="adduser_accountspan"
 					class="formSpan">*</span>
 			</div>
 			<div class="formDiv">
-				<label>密码:</label><input type="password" name="adduser_password" id="adduser_password"
+				<label>密码:</label><input type="password" name="user_password" id="adduser_password"
 					class="easyui-validatebox"  data-options="required:true"><span id="adduser_passwordspan"
 					class="formSpan">*</span>
 			</div>
 			<div class="formDiv">
-				<label>邮箱:</label><input type="password" id="adduser_email"
-					class="easyui-validatebox" name="adduser_email" data-options="required:true"><span id="adduser_emailspan"
-					class="formSpan">*</span>
+				<label>邮箱:</label>
+				<input type="text" id="adduser_email" class="easyui-validatebox" name="user_email" data-options="required:true">
+				<span id="adduser_emailspan" class="formSpan">*</span>
 			</div>
 			<div class="formDiv">
-				<label>手机号:</label><input type="password" name="adduser_phone" id="adduser_phone" id="adduser_phonespan"
+				<label>手机号:</label><input type="text" name="user_phone" id="adduser_phone" id="adduser_phonespan"
 					class="easyui-validatebox" data-options="required:true"><span
 					class="formSpan">*</span>
 			</div>
@@ -96,8 +97,38 @@
 			</div>
 	
 			<div class="forSubmint">
-				<a href="#" class="easyui-linkbutton" iconCls="icon-ok"
+				<a href="#sum" class="easyui-linkbutton" iconCls="icon-ok"
 					onclick="obj.sum()">提交</a> <a href="#" class="easyui-linkbutton"
+					id="res" iconCls="icon-redo" onclick="obj.res()">重置</a> <a
+					href="#" class="easyui-linkbutton" id="can" iconCls="icon-cancel"
+					onclick="obj.can()">取消</a>
+			</div>
+
+		</form>
+	</div>
+	
+	<!--//新增弹出框-->
+	<div id="updateBox">
+		<form id="updateForm" method="post">
+			<div class="formDiv">
+				<label>账号:</label>
+					<input type="text" name="user_account" id="updateuser_account"
+					class="easyui-validatebox"  data-options="required:true,readonly:true"><span id="updateuser_accountspan"
+					class="formSpan">*</span>
+			</div>
+			<div class="formDiv">
+				<label>邮箱:</label>
+				<input type="text" id="updateuser_email" class="easyui-validatebox" name="user_email" data-options="required:true">
+				<span id="updateuser_emailspan" class="formSpan">*</span>
+			</div>
+			<div class="formDiv">
+				<label>手机号:</label><input type="text" name="user_phone" id="updateuser_phone" 
+					class="easyui-validatebox" data-options="required:true"><span
+					class="formSpan">*</span>
+			</div>
+			<div class="forSubmint">
+				<a href="#update" class="easyui-linkbutton" iconCls="icon-ok"
+					onclick="obj.updatesum()">提交</a> <a href="#" class="easyui-linkbutton"
 					id="res" iconCls="icon-redo" onclick="obj.res()">重置</a> <a
 					href="#" class="easyui-linkbutton" id="can" iconCls="icon-cancel"
 					onclick="obj.can()">取消</a>

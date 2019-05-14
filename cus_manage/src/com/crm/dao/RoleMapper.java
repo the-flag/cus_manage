@@ -22,4 +22,6 @@ public interface RoleMapper {
 	 */
 	List<Role> selectRole();
 	
+	Integer insertRole();
+	
 }

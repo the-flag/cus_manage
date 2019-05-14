@@ -122,9 +122,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateUser" parameterType="user">
 		UPDATE user 
 		<set>
-			<if test="user_account !=null and user_account !='' ">
+			<!-- <if test="user_account !=null and user_account !='' ">
 				user_account=#{user_account},
-			</if>
+			</if> -->
 			<if test="user_password !=null and user_password !='' ">
 				user_password=#{user_password},
 			</if>
@@ -133,6 +133,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="user_sex !=null and user_sex !='' ">
 				user_sex=#{user_sex},
+			</if>
+			<if test="user_phone !=null and user_phone !='' ">
+				user_phone=#{user_phone},
+			</if>
+			<if test="user_email !=null and user_email !='' ">
+				user_email=#{user_email},
 			</if>
 			<if test="user_login_time !=null and user_login_time !='' ">
 				user_login_time=#{user_login_time},
@@ -145,8 +151,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE user_id=#{user_id}
 	</update>
 	
+	<update id="updateUserByAccount" parameterType="user">
+		UPDATE user 
+		<set>
+			
+			<if test="user_password !=null and user_password !='' ">
+				user_password=#{user_password},
+			</if>
+			<if test="user_name !=null and user_name !='' ">
+				user_name=#{user_name},
+			</if>
+			<if test="user_sex !=null and user_sex !='' ">
+				user_sex=#{user_sex},
+			</if>
+			<if test="user_phone !=null and user_phone !='' ">
+				user_phone=#{user_phone},
+			</if>
+			<if test="user_email !=null and user_email !='' ">
+				user_email=#{user_email},
+			</if>
+			<if test="user_login_time !=null and user_login_time !='' ">
+				user_login_time=#{user_login_time},
+			</if>
+			
+			<if test="user_uuid !=null and user_uuid !='' ">
+				user_uuid=#{user_uuid},
+			</if>
+		</set>
+		WHERE user_account=#{user_account}
+	</update>
 	<insert id="insertUser" parameterType="user">
 		INSERT INTO `user`(user_account,user_password,user_email,user_phone) VALUE(#{user_account},#{user_password},#{user_email},#{user_phone});
-		SELECT LAST_INSERT_ID();
+		
+		<selectKey resultType="int" keyProperty="user_id" order="AFTER">  
+		    select @@IDENTITY as user_id;  
+		</selectKey>
 	</insert>
+	
+	<delete id="deleteUsers" parameterType="string">
+		DELETE FROM `user` WHERE user_id IN(#{user_ids})
+	</delete>
 </mapper>

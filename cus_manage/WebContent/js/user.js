@@ -62,15 +62,16 @@ $(function () {
                                 field:'user_id',
                                 title:'编号',
                                 width:100,
-                                align:'center'
+                                align:'center',
+                                hidden:true
 
                         },
-                        {
+                       /* {
                                 field:'user_name',
                                 title:'用户名',
-                                width:100,
+                                width:80,
                                 align:'center'
-                        },
+                        },*/
                         {
                                 field:'title',
                                 title:'角色',
@@ -80,7 +81,7 @@ $(function () {
                         {
                                 field:'user_sex',
                                 title:'姓别',
-                                width:100,
+                                width:60,
                                 align:'center',
                                 formatter:function (val,row) {
                                         if(val==0){
@@ -132,12 +133,14 @@ $(function () {
                         {
                                 field:"opr",
                                 title:'操作',
-                                width:100,
+                                width:150,
                                 align:'center',
                                 formatter:function (val,row) {
                                         e = '<a  id="add" data-id="98" class=" operA"  onclick="obj.edit(\'' + row.id + '\')">编辑</a> ';
                                         d = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + row.id + '\')">删除</a> ';
-                                        return e+d;
+                                        czmm = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + row.id + '\')">重置密码</a> ';
+                                        jssz = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + row.id + '\')">角色设置</a> ';
+                                        return e+d+czmm+jssz;
                                 }
                         }
                 ]]
@@ -237,11 +240,12 @@ obj={
                 var ID;
                 $("#res").hide();
                 $("#can").show();
-                $("#addBox").dialog({
+                $("#updateBox").dialog({
                         closed: false,
                 })
-            // $("#addForm").form('load','json/user.json');
-                $.ajax({
+                var row=$("#table").datagrid("getSelected");
+                $("#updateForm").form('load',row);
+               /* $.ajax({
                         url:'js/json/user.json',
                         type:'get',
                         dataType:'json',
@@ -272,39 +276,67 @@ obj={
 
                         }
 
-                })
+                })*/
 
 
 
         },
         // 提交表单
         sum:function () {
-        		var validationAccount;
         		var user_account=$("#adduser_account").val();
         		$.post("validationAccount",{
         			user_account:user_account
         		},function(validation){
-        			validationAccount=validation;
+        			if(validation){
+    	                $('#addForm').form('submit', {
+    	                            url:'insertUserAndRole',
+    	                            method:"post",
+    	                    onSubmit: function(){
+    	                        var lag= $(this).form('validate');
+    	                           if(lag==true){
+    	                        	   
+    	                           }
+    	                },
+    	                success: function(data){
+    	                	alert();
+    	                	if(data>0){
+    	                		$("#addBox").dialog("close");
+    	                		obj.find();
+    	                        $.messager.progress('close');
+    	                	}
+    	                }
+    	                
+    	                });
+            		}else{
+            			$("#adduser_accountspan").text("账号已存在!");
+            		}     
         			
         		},"json")
-        		if(validationAccount){
-	                $('#addForm').form('submit', {
-	                            url:'',
-	                            method:"post",
-	                    onSubmit: function(){
-	                        var lag= $(this).form('validate');
-	                           if(lag==true){
-	                        	   
-	                           }
-	                },
-	                success: function(){
-	                        $.messager.progress('close');
-	                }
-	                
-	                });
-        		}else{
-        			$("#adduser_accountspan").text("账号已存在!");
-        		}     
+        		
+        },
+        // 提交表单
+        updatesum:function () {
+        		
+    	                $('#updateForm').form('submit', {
+    	                            url:'updateUserByAccount',
+    	                            method:"post",
+    	                    onSubmit: function(){
+    	                        var lag= $(this).form('validate');
+    	                           if(lag==true){
+    	                        	   
+    	                           }
+    	                },
+    	                success: function(data){
+    	                	alert();
+    	                	if(data>0){
+    	                		$("#updateBox").dialog("close");
+    	                		obj.find();
+    	                        $.messager.progress('close');
+    	                	}
+    	                }
+    	                
+    	                });
+        		
         },
         // 重置表单
         res:function () {
@@ -327,23 +359,19 @@ obj={
                                if(flg){
                                        var ids=[];
                                        for(i=0;i<rows.length;i++){
-                                               ids.push(rows[i].id);
+                                               ids.push(rows[i].user_id);
 
                                        }
                                        var num=ids.length;
+                                       alert(ids.join(','));
                                       $.ajax({
                                               type:'post',
-                                              url:"",
+                                              url:"deleteUsers",
                                               data:{
-                                                      ids:ids.join(',')
-                                              },
-                                              beforesend:function () {
-                                                      $("#table").datagrid('loading');
-                                                      
+                                            	  user_ids:ids.join(',')
                                               },
                                               success:function (data) {
                                                       if(data){
-
                                                               $("#table").datagrid('loaded');
                                                               $("#table").datagrid('load');
                                                               $("#table").datagrid('unselectAll');
@@ -423,6 +451,17 @@ $("#addBox").dialog({
         title:"信息内容",
         width:600,
         height:450,
+        closed: true,
+        modal:true,
+        shadow:true
+})
+
+
+// 弹出框加载
+$("#updateBox").dialog({
+        title:"信息内容",
+        width:550,
+        height:300,
         closed: true,
         modal:true,
         shadow:true

@@ -6,14 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crm.dao.UserMapper;
+import com.crm.dao.UserRoleMapper;
 import com.crm.pojo.FenYe;
 import com.crm.pojo.Module;
 import com.crm.pojo.User;
+import com.crm.pojo.UserRole;
+import com.crm.service.UserRoleService;
 import com.crm.service.UserService;
+import com.crm.util.MD5Utils;
 @Service
 public class UserServiceimpl implements UserService {
 	@Autowired
 	private UserMapper usermapper;
+	@Autowired
+	private UserRoleService userRoleService;
+	@Autowired
+	private UserRole userRole;
 	@Override
 	public List<User> selectUser() {
 		// TODO Auto-generated method stub
@@ -47,6 +55,42 @@ public class UserServiceimpl implements UserService {
 		fenYe.setRows(selectUsersByFenYe);
 		fenYe.setTotal(selectUserCountByFenYe);
 		return fenYe;
+	}
+	@Override
+	public Integer insertUserAndRole(User user, String roleids) {
+		// TODO Auto-generated method stub 
+		Integer insertUser = usermapper.insertUser(user);
+		userRole.setUser_id(user.getUser_id());
+		String[] split = roleids.split(",");
+		for(String s:split) {
+			if(s!=null && !"".equals(s)) {
+				userRole.setRole_id(Integer.parseInt(s));
+				System.out.println("添加！！！！！！！！！！！！！！！！！");
+				try {
+					if(userRoleService.insertUserRole(userRole)>1) {
+						return 0;
+					}
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}
+		return 1;
+	}
+	@Override
+	public Integer deleteUsers(String user_ids) throws Exception {
+		// TODO Auto-generated method stub
+		Integer deleteUserRoles = userRoleService.deleteUserRoles(user_ids);
+		Integer deleteUsers = usermapper.deleteUsers(user_ids);
+		return deleteUsers;
+	}
+	@Override
+	public Integer updateUserByAccount(User user) {
+		// TODO Auto-generated method stub
+		return usermapper.updateUserByAccount(user);
 	}
 
 }

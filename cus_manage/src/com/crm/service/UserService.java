@@ -28,12 +28,18 @@ public interface UserService {
 	User selectUserByUuid(String uuid);
 	
 	/**
-	 * 修改用户信息
+	 * 根据用户id修改用户信息
 	 * @param user
 	 * @return
 	 */
 	Integer updateUser(User user);
 	
+	/**
+	 * 	根据账号修改用户
+	 * @param user
+	 * @return
+	 */
+	Integer updateUserByAccount(User user);
 	
 	/**
 	 * 根据用户的id查询出其所有的权限
@@ -42,5 +48,21 @@ public interface UserService {
 	 */
 	List<Module> selectUserPermById(Integer user_id);
 	
+	/**
+	  *  关联增加 --增加用户时增加角色
+	  * 在用户和角色的中间表 关联用户id和角色id
+	 * @param user
+	 * @param roleids
+	 * @return
+	 */
+	Integer insertUserAndRole(User user,String roleids);
+	
+	
+	/**
+	 * 批量删除
+	 * @param user_ids
+	 * @return
+	 */
+	Integer deleteUsers(String user_ids)throws Exception;
 	
 }

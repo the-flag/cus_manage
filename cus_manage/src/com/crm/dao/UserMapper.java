@@ -58,11 +58,25 @@ public interface UserMapper {
 	Integer updateUser(User user);
 	
 	/**
+	 * 	根据账号修改用户
+	 * @param user
+	 * @return
+	 */
+	Integer updateUserByAccount(User user);
+	
+	/**
 	 * 添加用户
 	 * @param user
 	 * @return
 	 */
 	Integer insertUser(User user);
 		
+	/**
+	 * 批量删除
+	 * @param user_ids
+	 * @return
+	 */
+	Integer deleteUsers(String user_ids);
+	
 	
 }
