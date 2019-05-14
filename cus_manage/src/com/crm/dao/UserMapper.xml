@@ -144,4 +144,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		WHERE user_id=#{user_id}
 	</update>
+	
+	<insert id="insertUser" parameterType="user">
+		INSERT INTO `user`(user_account,user_password,user_email,user_phone) VALUE(#{user_account},#{user_password},#{user_email},#{user_phone});
+		SELECT LAST_INSERT_ID();
+	</insert>
 </mapper>

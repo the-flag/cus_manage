@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class ModuleController {
-	@RequestMapping(value="/getModule",method=RequestMethod.GET)
-	public String getmodule() {
+	@RequestMapping(value="/getModulePage",method=RequestMethod.GET)
+	public String getModulePage() {
 		return "module";
 		
 	}

@@ -6,29 +6,28 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.crm.pojo.Module;
+import com.crm.pojo.Role;
 import com.mysql.jdbc.StringUtils;
 
 @Component
-public class TreeUtil {
-	public static List<EasyUITreeJson> listGetStree(List<Module> list){
+public class RoleTreeUtil {
+	public static List<EasyUITreeJson> listGetStree(List<Role> list){
 		List<EasyUITreeJson> treeList = new ArrayList<EasyUITreeJson>();
-		for(Module m:list) {
-				treeList.add(getModule(m));
+		for(Role m:list) {
+				treeList.add(getRole(m));
 		}
 		return treeList;
 	}
 	/*
 	 * 封装数据 --- 把从数据库里查询的数据封装成EasyUITreeJson集合
 	 * */
-	public static EasyUITreeJson getModule(Module module) {
+	public static EasyUITreeJson getRole(Role role) {
 		EasyUITreeJson json=new EasyUITreeJson();
 		
-		json.setId(module.getModule_id());
-		json.setText(module.getModule_name());
-		json.setUrl(module.getModule_path());
+		json.setId(role.getRole_id());
+		json.setText(role.getRole_name());
 		/*json.setState("closed");
 		json.setChecked(false);*/
-		json.setParentId(module.getModule_parent_id());
 		return json;
 	}
 	

@@ -26,10 +26,19 @@
 			<!--表格查询-->
 			<div class="tableFind">
 				<p>
-					<label>用户名;</label><input type="text" id="user" /><label>部门;</label><input
-						type="text" id="part" /><a id="btn" href="javascript:"
-						class="easyui-linkbutton tableFindBut"
-						data-options="iconCls:'icon-search'" onclick="obj.find()">查询</a>
+						<form>
+							<label for="name">用户名:</label> 
+							<input class="easyui-validatebox" type="text" name="user_name" id="user_name" />
+							<label for="name">创建时间:</label> 
+							<input type= "text" class="easyui-datebox" name="min_creat_time" id="min_creat_time"></input>~ 
+							<input type= "text" class="easyui-datebox" name="max_creat_time" id="max_creat_time"></input>
+							<label for="name">是否锁定:</label> 
+							<select id="user_is_lock" class="easyui-combobox" name="user_is_lock" style="width:200px;">   
+							    <option value="1">否</option>   
+							    <option value="2">是</option>   
+							</select> 
+							<a id="btn" href="javascript:void(0)" class="easyui-linkbutton tableFindBut" data-options="iconCls:'icon-search'" onclick="obj.find()">搜索</a>  
+						</form>
 				</p>
 			</div>
 			<!--表格列表-->
@@ -44,19 +53,7 @@
 							iconCls="icon-remove" onclick="obj.del()">删除</a>
 					</div>
 					<div>
-						<form>
-							<label for="name">用户名:</label> 
-							<input class="easyui-validatebox" type="text" name="user_name" id="user_name" />
-							<label for="name">创建时间:</label> 
-							<input type= "text" class="easyui-datebox" name="min_creat_time" id="min_creat_time"></input>~ 
-							<input type= "text" class="easyui-datebox" name="max_creat_time" id="max_creat_time"></input>
-							<label for="name">是否锁定:</label> 
-							<select id="user_is_lock" class="easyui-combobox" name="user_is_lock" style="width:200px;">   
-							    <option value="1">否</option>   
-							    <option value="2">是</option>   
-							</select> 
-							<a id="btn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="obj.find()">搜索</a>  
-						</form>
+						
 
 					</div>
 				</div>
@@ -68,37 +65,36 @@
 	<div id="addBox">
 		<form id="addForm" method="post">
 			<div class="formDiv">
-				<label>编号:</label><input type="text" name="id" id="no"
-					class="easyui-validatebox" name="name" readonly="readonly"><span
+				<label>账号:</label>
+					<input type="text" name="user_account" id="adduser_account"
+					class="easyui-validatebox" name="adduser_account" data-options="required:true"><span id="adduser_accountspan"
 					class="formSpan">*</span>
 			</div>
 			<div class="formDiv">
-				<label>用户名称:</label><input type="text" name="user_name" id="user_name"
-					class="easyui-validatebox" name="name" data-options="required:true"><span
+				<label>密码:</label><input type="password" name="adduser_password" id="adduser_password"
+					class="easyui-validatebox"  data-options="required:true"><span id="adduser_passwordspan"
 					class="formSpan">*</span>
 			</div>
 			<div class="formDiv">
-				<label>用户名称:</label><input type="text" name="user_name" id="user_name"
-					class="easyui-validatebox" name="name" data-options="required:true"><span
+				<label>邮箱:</label><input type="password" id="adduser_email"
+					class="easyui-validatebox" name="adduser_email" data-options="required:true"><span id="adduser_emailspan"
 					class="formSpan">*</span>
 			</div>
 			<div class="formDiv">
-				<label>密码:</label><input type="password" name="pass" id="pass"
-					class="easyui-validatebox" name="pass" data-options="required:true"><span
+				<label>手机号:</label><input type="password" name="adduser_phone" id="adduser_phone" id="adduser_phonespan"
+					class="easyui-validatebox" data-options="required:true"><span
 					class="formSpan">*</span>
 			</div>
 			<div class="formDiv">
-				<label>入职时间:</label><input type="text" name="time" id="time"
-					class="easyui-datebox" name="time" style="width: 70%; height: 26px">
+				<label align="right" style="width: 70px;">分配角色：</label>
+				<input id="xsry" name="xsry"  style="width: 150px;"  class="easyui-combobox" >
 			</div>
-			<div class="formDiv">
-				<label>所属部门:</label><input type="text" name="part" id="part01" />
+				  
+			<div class="forSubmint">
+				<a href="#" class="easyui-linkbutton" iconCls="icon-ok"
+					onclick="ceshi()">测试</a> 
 			</div>
-			<div class="formDiv">
-				<label>所属角色:</label><input id="role" name="title">
-			</div>
-
-
+	
 			<div class="forSubmint">
 				<a href="#" class="easyui-linkbutton" iconCls="icon-ok"
 					onclick="obj.sum()">提交</a> <a href="#" class="easyui-linkbutton"
@@ -127,8 +123,63 @@
 		    	}
 		    }
 		}); */
-	
+		function ceshi(){
+			
+			var s=$("#adduser_account").val();
+			alert(s);
+		}
+		$(function(){
+			 
+			 //初始化多选复选框
+			 initCombobox('xsry');//学术荣誉的字典编码是XSRY_CD
+		})
+		
+		//参数：id  控件id   code 字典编码
+		function initCombobox(id) {
+		    var value = "";
+		    //加载下拉框复选框
+		    $('#' + id).combobox({
+		        url:"getRole",
+		        //后台获取下拉框数据的url
+		        method: 'post',
+		        panelHeight: 200,
+		        //设置为固定高度，combobox出现竖直滚动条
+		        valueField: 'role_id',
+		        textField: 'role_name',
+		        multiple: true,
+		        formatter: function(row) { //formatter方法就是实现了在每个下拉选项前面增加checkbox框的方法
+		            var opts = $(this).combobox('options');
+		            return '<input type="checkbox" vlaue="'+row[opts.valueField]+'" class="combobox-checkbox">' + row[opts.textField]
+		        },
+		        onLoadSuccess: function() { //下拉框数据加载成功调用
+		            var opts = $(this).combobox('options');
+		            var target = this;
+		            var values = $(target).combobox('getValues'); //获取选中的值的values
+		            $.map(values,
+		            function(value) {
+		                var el = opts.finder.getEl(target, value);
+		                el.find('input.combobox-checkbox')._propAttr('checked', true);
+		            })
+		        },
+		        onSelect: function(row) { //选中一个选项时调用
+		            var opts = $(this).combobox('options');
+		            //获取选中的值的values
+		            $("#" + id).val($(this).combobox('getValues'));
+					
+		            //设置选中值所对应的复选框为选中状态
+		            var el = opts.finder.getEl(this, row[opts.valueField]);
+		            el.find('input.combobox-checkbox')._propAttr('checked', true);
+		        },
+		        onUnselect: function(row) { //不选中一个选项时调用
+		            var opts = $(this).combobox('options');
+		            //获取选中的值的values
+		            $("#" + id).val($(this).combobox('getValues'));
 
+		            var el = opts.finder.getEl(this, row[opts.valueField]);
+		            el.find('input.combobox-checkbox')._propAttr('checked', false);
+		        }
+		    });
+		}
 	</script>
 </body>
 </html>

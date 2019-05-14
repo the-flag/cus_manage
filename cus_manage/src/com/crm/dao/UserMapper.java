@@ -56,6 +56,13 @@ public interface UserMapper {
 	 * @return
 	 */
 	Integer updateUser(User user);
+	
+	/**
+	 * 添加用户
+	 * @param user
+	 * @return
+	 */
+	Integer insertUser(User user);
 		
 	
 }

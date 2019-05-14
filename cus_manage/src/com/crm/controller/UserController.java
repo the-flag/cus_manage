@@ -30,8 +30,21 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(value="/getUser",method=RequestMethod.GET)
-	public String getUser() {
+	@RequestMapping(value="/getUserPage",method=RequestMethod.GET)
+	public String getUserPage() {
 		return "user";
 	}
+	
+	
+	
+	@RequestMapping("/validationAccount")
+	@ResponseBody
+	public Boolean validationAccount(User user) {
+		User selectUserByAccount = userService.selectUserByAccount(user);
+		if(selectUserByAccount!=null) {
+			return false;
+		}
+		return true;
+	}
+	
 }

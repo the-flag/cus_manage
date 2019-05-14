@@ -145,14 +145,6 @@ $(function () {
 
 })
 
-
-function searchs(){
-			$("#table").datagrid("load",{
-					
-			})
-			
-}
-
 // 加载部门下拉框
 $("#part").combotree({
         url:'js/json/userTree.json',
@@ -171,13 +163,32 @@ $("#part").combotree({
 
 })
 
+//添加用户--提交表单
+
+function addUserForm(){
+	
+	$('#ff').form('submit', {
+		url:"",
+		onSubmit: function(){
+			var isValid = $(this).form('validate');
+			if (!isValid){
+				$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
+			}
+			return isValid;	// 返回false终止表单提交
+		},
+		success: function(){
+			$.messager.progress('close');	// 如果提交成功则隐藏进度条
+		}
+	});
+
+}
 
 //加载角色
 $('#role').combobox({
         url:'js/json/userTree.json',
         method:"get",
-    height:26,
-    width:'70%',
+        height:26,
+        width:'70%',
         valueField:'id',
         textField:'text'
 });
@@ -202,15 +213,12 @@ $("#part01").combotree({
 obj={
         // 查询
         find:function () {
-
-
                 $("#table").datagrid('load',{
                         user_name:$("#user_name").val(),
                         min_creat_time:$('#min_creat_time').datebox('getValue'),
                         max_creat_time:$('#max_creat_time').datebox('getValue'),
                         user_is_lock:$("#user_is_lock").val()
                 })
-                
         },
         // 添加
         addBox:function () {
@@ -271,19 +279,32 @@ obj={
         },
         // 提交表单
         sum:function () {
-                $('#addForm').form('submit', {
-                            // url:'',
-                    onSubmit: function(){
-                        var lag= $(this).form('validate');
-                           if(lag==true){
-
-                           }
-                },
-                success: function(){
-                        $.messager.progress('close');
-                }
-        });
-
+        		var validationAccount;
+        		var user_account=$("#adduser_account").val();
+        		$.post("validationAccount",{
+        			user_account:user_account
+        		},function(validation){
+        			validationAccount=validation;
+        			
+        		},"json")
+        		if(validationAccount){
+	                $('#addForm').form('submit', {
+	                            url:'',
+	                            method:"post",
+	                    onSubmit: function(){
+	                        var lag= $(this).form('validate');
+	                           if(lag==true){
+	                        	   
+	                           }
+	                },
+	                success: function(){
+	                        $.messager.progress('close');
+	                }
+	                
+	                });
+        		}else{
+        			$("#adduser_accountspan").text("账号已存在!");
+        		}     
         },
         // 重置表单
         res:function () {
@@ -400,8 +421,8 @@ obj={
 // 弹出框加载
 $("#addBox").dialog({
         title:"信息内容",
-        width:500,
-        height:350,
+        width:600,
+        height:450,
         closed: true,
         modal:true,
         shadow:true

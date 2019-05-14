@@ -10,12 +10,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.crm.pojo.Role;
+import com.crm.service.RoleService;
+
 
 @Controller
 public class RoleController {
-	@RequestMapping(value="/getRole",method=RequestMethod.GET)
-	public String getRole() {
+	@Autowired
+	private RoleService roleService;
+	@RequestMapping(value="/getRolePage",method=RequestMethod.GET)
+	public String getRolePage() {
 		return "role";
+		
+	}
+	
+	@RequestMapping(value="/getRole",method=RequestMethod.POST)
+	@ResponseBody
+	public List<Role> getRole() {
+		return roleService.selectRole();
 		
 	}
 }
