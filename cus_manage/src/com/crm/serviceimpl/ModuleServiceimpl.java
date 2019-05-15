@@ -27,5 +27,21 @@ public class ModuleServiceimpl implements ModuleService {
 		// TODO Auto-generated method stub
 		return moduleMapper.selectModuleByRoleId(role_id);
 	}
+	@Override
+	public Integer insertModule(Module module) {
+		// TODO Auto-generated method stub
+		return moduleMapper.insertModule(module);
+	}
+	@Override
+	public Integer updateModule(Module module) {
+		// TODO Auto-generated method stub
+		return moduleMapper.updateModule(module);
+	}
+	@Override
+	public Integer deleteModule(Integer module_id) {
+		// TODO Auto-generated method stub
+		return moduleMapper.deleteModule(module_id);
+	}
+
 
 }

@@ -92,5 +92,11 @@ public class RoleServiceimpl implements RoleService {
 		}
 		return 0;
 	}
+	@Override
+	public Integer deteleRole(Integer role_id) {
+		// TODO Auto-generated method stub
+		Integer deleteRoleModuleByRoleId = roleModuleService.deleteRoleModuleByRoleId(role_id);
+		return roleMapper.deteleRole(role_id);
+	}
 
 }

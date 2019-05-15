@@ -86,6 +86,14 @@ public class RoleController {
 	}
 	
 	
+	@RequestMapping(value="/deleteRole",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer deleteRole(Integer role_id) {
+		return roleService.deteleRole(role_id);
+	}
+	
+	
+	
 	
 	
 }

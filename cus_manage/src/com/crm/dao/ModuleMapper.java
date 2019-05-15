@@ -26,5 +26,27 @@ public interface ModuleMapper {
 	 */
 	List<Integer> selectModuleByRoleId(Integer role_id);
 	
+	
+	/**
+	 * 添加模块信息
+	 * @param module
+	 * @return
+	 */
+	Integer insertModule(Module module);
+	
+	/**
+	 * 修改模块信息
+	 * @param module
+	 * @return
+	 */
+	Integer updateModule(Module module);
+	
+	/**
+	 * 删除模块信息
+	 * @param module
+	 * @return
+	 */
+	Integer deleteModule(Integer module_id);
+	
 
 }

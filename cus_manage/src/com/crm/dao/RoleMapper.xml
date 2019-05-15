@@ -60,6 +60,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		WHERE role_id=#{role_id}
 	</update>
-	
+	<delete id="deteleRole" parameterType="int">
+		DELETE FROM role WHERE role_id=#{role_id}
+	</delete>
 	
 </mapper>

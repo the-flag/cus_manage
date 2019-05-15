@@ -279,16 +279,17 @@ obj={
 
         //删除一个
         delOne:function (id) {
-                id=$("#table").datagrid('getSelected').id;
+        	role_id=$("#table").datagrid('getSelected').role_id;
                 $.messager.confirm('提示信息','是否删除所选择记录',function (flg) {
                         if(flg){
                                 $.ajax({
                                         type:'post',
-                                        url:'',
+                                        url:'deleteRole',
                                         data:{
-                                                ID:id
+                                        	role_id:role_id
                                         },
-                                        beforesend:function () {
+                                        beforesend:function (data) {
+                                        	
                                                 $("#table").datagrid('loading');
 
                                         },

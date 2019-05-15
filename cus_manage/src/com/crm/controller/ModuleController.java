@@ -57,5 +57,27 @@ public class ModuleController {
 		
 	}
 	
+	@RequestMapping(value="/deleteModule",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer deleteModule(Integer module_id) {
+		
+		return moduleService.deleteModule(module_id);
+		
+	}
+	@RequestMapping(value="/updateModule",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer updateModule(Module module) {
+		
+		return moduleService.updateModule(module);
+		
+	}
+	@RequestMapping(value="/insertModule",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer insertModule(Module module) {
+		
+		return moduleService.insertModule(module);
+		
+	}
+	
 	
 }

@@ -43,4 +43,12 @@ public interface RoleService {
 	 * @return
 	 */
 	Integer updateRole(Role role,String module_ids);
+	
+	
+	/**
+	 * 删除角色信息
+	 * @param role
+	 * @return
+	 */
+	Integer deteleRole(Integer role_id);
 }

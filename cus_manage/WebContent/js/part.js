@@ -3,9 +3,10 @@
  */
 // 加载树
 $("#tree").tree({
-        url:'json/userTree.json',
+        url:'getModuleTree',
+        method:"post",
         animate:true,
-        checkbox:true,
+        /*checkbox:true,*/
         lines:true,
         dnd:true,
         onContextMenu:function (e,node) {
@@ -17,7 +18,7 @@ $("#tree").tree({
                 })
         },
         onClick:function (node) {
-              var partId=node.domId;
+              var partId=node.id;
                 var partName=node.text;
                 var parentName=$("#tree").tree('getParent',node.target).text;
                 $("#partId").val(partId);
@@ -29,7 +30,8 @@ $("#tree").tree({
 })
 // 加载部门下拉框
 $("#parentPart").combotree({
-        url:'json/userTree.json',
+        url:'js/json/userTree.json',
+        method:"post",
         width:'70%',
         height:28,
         checkbox:true,
@@ -122,7 +124,7 @@ function delPart() {
 // 初始化部门信息
 function init() {
         var partRoot=$("#tree").tree('getRoot');
-        var partId=partRoot.domId;
+        var partId=partRoot.id;
         var partName=partRoot.text;
         $("#partId").val(partId);
         $("#partName").val(partName);

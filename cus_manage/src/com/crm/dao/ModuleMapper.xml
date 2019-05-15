@@ -20,4 +20,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	
+	<insert id="insertModule" parameterType="module">
+		INSERT INTO module(module_name,module_path,module_weight,module_parent_id) 
+		VALUE(#{module_name},#{module_path},#{module_weight},#{module_parent_id})
+	
+	</insert>
+	
+	<delete id="deleteModule" parameterType="int">
+		DELETE FROM module WHERE module_id=#{module_id}
+	</delete>
+	<update id="updateModule" parameterType="module">
+		UPDATE module 
+		<set>
+			<if test="module_name !=null and module_name !='' ">
+				module_name=#{module_name},
+			</if>
+			<if test="module_path !=null and module_path !='' ">
+				module_path=#{module_path},
+			</if>
+			<if test="module_weight !=null ">
+				module_weight=#{module_weight},
+			</if>
+		</set>
+		 WHERE module_id=#{module_id}
+	</update>
+	
 </mapper>
