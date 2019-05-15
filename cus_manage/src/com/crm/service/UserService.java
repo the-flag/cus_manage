@@ -35,6 +35,20 @@ public interface UserService {
 	Integer updateUser(User user);
 	
 	/**
+	  * 重置密码 --- 根据用户id 修改密码
+	 * @param user_id
+	 * @return
+	 */
+	Integer updatePasswordByUserId(Integer user_id);
+	
+	/**
+	  * 修改用户是否锁定 --- 根据用户id 修改
+	 * @param user_id
+	 * @return
+	 */
+	Integer updateUserIsLockByUserId(User user);
+	
+	/**
 	 * 	根据账号修改用户
 	 * @param user
 	 * @return

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.crm.pojo.FenYe;
 import com.crm.pojo.Role;
 import com.crm.service.RoleService;
 
@@ -30,4 +31,47 @@ public class RoleController {
 		return roleService.selectRole();
 		
 	}
+	
+	
+	
+	@RequestMapping(value="/selectRolesAndTotal",method=RequestMethod.POST)
+	@ResponseBody
+	public FenYe selectRolesAndTotal(FenYe fenYe,Integer rows,Role role) {
+		fenYe.setObject(role);
+		fenYe.setRow(rows);
+		fenYe.setPage((fenYe.getPage()-1)*rows);
+		return roleService.selectRolesAndTotal(fenYe);
+	}
+	
+	/**
+	 * 验证角色名称是否重复
+	 * @param role
+	 * @param module_ids
+	 * @return
+	 */
+	@RequestMapping(value="/validationRoleName",method=RequestMethod.POST)
+	@ResponseBody
+	public Boolean validationRoleName(String role_name) {
+		
+		if(roleService.selectRoleByRoleName(role_name)>0) {
+			return false;
+		}
+		return true;
+	}
+	
+	@RequestMapping(value="/insertRole",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer insertRole(Role role,String module_ids) {
+		String substring = module_ids.substring(1, module_ids.length());
+		try {
+			return roleService.insertRole(role, substring);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	
+	
 }

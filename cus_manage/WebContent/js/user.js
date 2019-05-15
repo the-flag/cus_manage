@@ -66,18 +66,18 @@ $(function () {
                                 hidden:true
 
                         },
-                       /* {
+                        {
                                 field:'user_name',
                                 title:'用户名',
                                 width:80,
                                 align:'center'
-                        },*/
-                        {
+                        },
+                        /*{
                                 field:'title',
                                 title:'角色',
                                 width:100,
                                 align:'center'
-                        },
+                        },*/
                         {
                                 field:'user_sex',
                                 title:'姓别',
@@ -123,10 +123,12 @@ $(function () {
                             align:'center',
                             formatter:function (val,row) {
                                     if(val==0){
-                                            return '<div style="color: green">锁定</div>';
+                                    	 e = '<a  id="add" style="color: green" data-id="98"  onclick="obj.unlock(\'' + row.id + '\')">解锁</a> ';
+                                            return e;
                                     }
                                     else{
-                                            return '<div style="color: red">正常</div>';
+                                    	e = '<a  id="add" style="color: red" data-id="98"  onclick="obj.lock(\'' + row.id + '\')">锁定</a> ';
+                                        return e;
                                     }
                             }
                         },
@@ -138,7 +140,7 @@ $(function () {
                                 formatter:function (val,row) {
                                         e = '<a  id="add" data-id="98" class=" operA"  onclick="obj.edit(\'' + row.id + '\')">编辑</a> ';
                                         d = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + row.id + '\')">删除</a> ';
-                                        czmm = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + row.id + '\')">重置密码</a> ';
+                                        czmm = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.resetPass(\'' + row.id + '\')">重置密码</a> ';
                                         jssz = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + row.id + '\')">角色设置</a> ';
                                         return e+d+czmm+jssz;
                                 }
@@ -281,6 +283,51 @@ obj={
 
 
         },
+        //解锁
+        unlock:function(index){
+        	$.messager.confirm('确认','您确认想要解锁该用户吗？',function(r){    
+        	    if (r){    
+        	    	var data=$("#table").datagrid("getData");
+                	var row=data.rows[index];
+                	if(row!=null){
+		            	$.post("updateUserIsLockByUserId",{
+		            		user_id:row.user_id,
+		            		user_is_lock:0
+		            	},function(data){
+		            		if(data>0){
+		            			$.messager.alert('提示','解锁成功!'); 
+		            			obj.find();
+		            		}else{
+		            			$.messager.alert('提示','解锁失败!');    
+		            		}
+		            	},"json")   
+                	}
+        	    }    
+        	});  
+        },
+        //锁定
+        lock:function(index){
+        	$.messager.confirm('确认','您确认想要锁定该用户吗？',function(r){    
+        	    if (r){    
+        	    	var data=$("#table").datagrid("getData");
+                	var row=data.rows[index];
+                	if(row!=null){
+		            	$.post("updateUserIsLockByUserId",{
+		            		user_id:row.user_id,
+		            		user_is_lock:0
+		            		
+		            	},function(data){
+		            		if(data>0){
+		            			$.messager.alert('提示','锁定成功!'); 
+		            			obj.find();
+		            		}else{
+		            			$.messager.alert('提示','锁定失败!');    
+		            		}
+		            	},"json")   
+                	}
+        	    }    
+        	});  
+        },
         // 提交表单
         sum:function () {
         		var user_account=$("#adduser_account").val();
@@ -401,7 +448,28 @@ obj={
                }
 
         },
+        //重置密码
+        resetPass:function(index){
+        	$.messager.confirm('确认','您确认想要重置密码吗？',function(r){    
+        	    if (r){    
+        	    	var data=$("#table").datagrid("getData");
+                	var row=data.rows[index];
+                	if(row!=null){
+		            	$.post("updatePasswordByUserId",{
+		            		user_id:row.user_id
+		            	},function(data){
+		            		if(data>0){
+		            			$.messager.alert('提示','重置成功!');    
+		            		}else{
+		            			$.messager.alert('提示','重置失败!');    
+		            		}
+		            	},"json")   
+                	}
+        	    }    
+        	});  
 
+        	
+        },
         //删除一个
         delOne:function (id) {
                 id=$("#table").datagrid('getSelected').id;

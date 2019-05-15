@@ -65,6 +65,22 @@ public interface UserMapper {
 	Integer updateUserByAccount(User user);
 	
 	/**
+	  * 重置密码 --- 根据用户id 修改密码
+	 * @param user_id
+	 * @return
+	 */
+	Integer updatePasswordByUserId(Integer user_id);
+	
+	
+
+	/**
+	  * 修改用户是否锁定 --- 根据用户id 修改
+	 * @param user_id
+	 * @return
+	 */
+	Integer updateUserIsLockByUserId(User user);
+	
+	/**
 	 * 添加用户
 	 * @param user
 	 * @return

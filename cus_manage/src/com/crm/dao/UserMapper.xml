@@ -180,6 +180,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		WHERE user_account=#{user_account}
 	</update>
+	
+	<update id="updateUserIsLockByUserId" parameterType="user">
+		UPDATE user 
+		<set>
+			<if test="user_is_lock !=null ">
+				user_is_lock=#{user_is_lock},
+			</if>
+		</set>
+		WHERE user_id=#{user_id}
+	</update>
+	
+	<update id="updatePasswordByUserId" parameterType="int">
+		UPDATE user 
+			set	user_password="76db3b18728470644ce0e469346c47454429850e87774510",
+		WHERE user_id=#{user_id}
+	</update>
 	<insert id="insertUser" parameterType="user">
 		INSERT INTO `user`(user_account,user_password,user_email,user_phone) VALUE(#{user_account},#{user_password},#{user_email},#{user_phone});
 		

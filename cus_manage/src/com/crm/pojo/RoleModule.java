@@ -1,5 +1,8 @@
 package com.crm.pojo;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class RoleModule {
     private Integer role_module_id;
 

@@ -67,7 +67,7 @@ public class UserServiceimpl implements UserService {
 				userRole.setRole_id(Integer.parseInt(s));
 				System.out.println("添加！！！！！！！！！！！！！！！！！");
 				try {
-					if(userRoleService.insertUserRole(userRole)>1) {
+					if(!(userRoleService.insertUserRole(userRole)>0)) {
 						return 0;
 					}
 					
@@ -91,6 +91,16 @@ public class UserServiceimpl implements UserService {
 	public Integer updateUserByAccount(User user) {
 		// TODO Auto-generated method stub
 		return usermapper.updateUserByAccount(user);
+	}
+	@Override
+	public Integer updatePasswordByUserId(Integer user_id) {
+		// TODO Auto-generated method stub
+		return usermapper.updatePasswordByUserId(user_id);
+	}
+	@Override
+	public Integer updateUserIsLockByUserId(User user) {
+		// TODO Auto-generated method stub
+		return usermapper.updateUserIsLockByUserId(user);
 	}
 
 }

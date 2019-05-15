@@ -80,10 +80,22 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping("/updateUserByAccount")
+	@RequestMapping(value="/updateUserByAccount",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer updateUserByAccount(User user) {
 		return userService.updateUserByAccount(user);
 	}
 	
+	@RequestMapping(value="/updatePasswordByUserId",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer updatePasswordByUserId(Integer user_id) {
+		return userService.updatePasswordByUserId(user_id);
+	}
+	
+	
+	@RequestMapping(value="/updateUserIsLockByUserId",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer updateUserIsLockByUserId(User user) {
+		return userService.updateUserIsLockByUserId(user);
+	}
 }

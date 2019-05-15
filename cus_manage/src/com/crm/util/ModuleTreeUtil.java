@@ -9,26 +9,34 @@ import com.crm.pojo.Module;
 import com.mysql.jdbc.StringUtils;
 
 @Component
-public class TreeUtil {
-	public static List<EasyUITreeJson> listGetStree(List<Module> list){
+public class ModuleTreeUtil {
+	public static List<EasyUITreeJson> listGetStree(List<Module> list,List<Integer> module_ids){
 		List<EasyUITreeJson> treeList = new ArrayList<EasyUITreeJson>();
 		for(Module m:list) {
-				treeList.add(getModule(m));
+				treeList.add(getModule(m,module_ids));
 		}
 		return treeList;
 	}
 	/*
 	 * 封装数据 --- 把从数据库里查询的数据封装成EasyUITreeJson集合
 	 * */
-	public static EasyUITreeJson getModule(Module module) {
+	public static EasyUITreeJson getModule(Module module,List<Integer> module_ids) {
 		EasyUITreeJson json=new EasyUITreeJson();
 		
 		json.setId(module.getModule_id());
 		json.setText(module.getModule_name());
-		json.setUrl(module.getModule_path());
 		/*json.setState("closed");
 		json.setChecked(false);*/
 		json.setParentId(module.getModule_parent_id());
+		if(module_ids!=null){
+			if(module.getModule_parent_id()!=0) {
+				for(Integer i:module_ids) {
+					if(module.getModule_id()==i) {
+						json.setChecked(true);
+					}
+				}
+			}
+		}
 		return json;
 	}
 	

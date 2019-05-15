@@ -21,7 +21,31 @@ public interface RoleMapper {
 	 * @return
 	 */
 	List<Role> selectRole();
+	/**
+	 * 多条件分页查询
+	 * @param fenYe
+	 * @return
+	 */
+	List<Role> selectRolesByFenYe(FenYe fenYe);
 	
-	Integer insertRole();
+	/**
+	 * 多条件查询数据总条数
+	 */
+	Integer selectRoleCountByFenYe(FenYe fenYe);
+	
+	/**
+	 * 关联添加 添加角色获取自增id 
+	 * 在模块角色中间表里 为新角色关联模块信息
+	 * @param role
+	 * @return
+	 */
+	Integer insertRole(Role role);
+	
+	/**
+	 * 根据角色名称查询数据
+	 * @param role_name
+	 * @return
+	 */
+	Integer selectRoleByRoleName(String role_name);
 	
 }

@@ -22,16 +22,19 @@
             <legend>基本信息</legend>
             <form id="roleForm">
 
-            <p><label>角色编号：</label><input type="text" class="inputDisable" disabled="disabled"></p>
-            <p><label>角色名称：</label><input id="roleName" type="text" class="easyui-validatebox " data-options="required:true" ><span class="formSpan">*</span></p>
-            <p><label class="textarea" id="roleNote">角色描述：</label><textarea></textarea></p>
+            <!-- <p><label>角色编号：</label><input type="text" class="inputDisable" disabled="disabled"></p> -->
+            <p><label>角色名称：</label>
+            	<input id="roleName" name="role_name" type="text" class="easyui-validatebox " data-options="required:true" >
+            	<span id="roleNamespan" class="formSpan">*</span>
+            </p>
+            <p><label class="textarea" id="roleNote" name="role_desc">角色描述：</label><textarea></textarea></p>
             </form>
         </fieldset>
         <fieldset>
             <legend>功能模块</legend>
             <ul id="tree" class="roleTree"></ul>
         </fieldset>
-        <div class="forSubmint"> <a href="#" class="easyui-linkbutton"  iconCls="icon-save" >保存</a><a href="#" class="easyui-linkbutton"  iconCls="icon-redo" >重置</a> </div>
+        <div class="forSubmint"> <a href="#" class="easyui-linkbutton"  iconCls="icon-save" onclick="obj.sum()">保存</a><a href="#" class="easyui-linkbutton"  iconCls="icon-redo" >重置</a> </div>
 
     </div>
     <div data-options="region:'center',split:true">
@@ -45,7 +48,7 @@
             <div id="tabelBut">
                 <div>
                     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="obj.addBox()">新增</a>
-                    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-edit">修改</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="obj.xiugai()">修改</a>
                     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-remove" onclick="obj.del()">删除</a>
                 </div>
             </div>
