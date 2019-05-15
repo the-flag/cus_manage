@@ -94,7 +94,8 @@ $("#tree").tree({
         checkbox:true,
         lines:true
 })
-
+$("#editsave").hide();
+$("#addsave").show();
 obj={
         // 查询
         find:function () {
@@ -106,7 +107,14 @@ obj={
         // 添加
         addBox:function () {
                 $("#roleForm").form('clear');
-                $("#tree").tree("reload");
+                $("#tree").tree({
+                    url:'getModuleTree',
+                    method:"post",
+                    checkbox:true,
+                    lines:true
+                })
+            $("#editsave").hide();
+            $("#addsave").show();
 
         },
         xiugai:function(){
@@ -116,8 +124,13 @@ obj={
         	}
         	var row=data[0];
         	alert(row.role_id);
-        	
+        	alert(row.role_name);
         	$("#roleForm").form('clear');
+        	$("#roleForm").form("load",row);
+        	//隐藏保存按钮
+        	 $("#addsave").hide();
+        	 $("#editsave").show();
+        	 
             $("#tree").tree({
                 url:'getModuleTreeByRoleId',
                 method:"post",
@@ -125,8 +138,44 @@ obj={
                 lines:true,
                 queryParams:{
                 	role_id:row.role_id
-                }
+            }
         })
+        },
+        //修改提交
+        editsum:function(){
+        	var nodes = $('#tree').tree('getChecked', ['checked','indeterminate']);
+        	var data="";
+        	for(var i=0;i<nodes.length;i++){
+        		data+=","+nodes[i].id
+        	}
+        	var datas=$("#table").datagrid("getSelections");
+        	if(datas.length>1){
+        		$.messager.alert('提示','请选择一行');  
+        	}
+        	var row=datas[0];
+    		var role_name=$("#roleName").val();
+    		/*$.post("validationRoleName",{
+    			role_name:role_name
+    		},function(validation){
+    			if(validation){*/
+    				$.post("updateRoleAndRoleModule",{
+    					module_ids:data,
+    					role_id:row.role_id,
+    					role_name:$("#roleName").val(),
+    					role_desc:$("#roleNote").text()
+    				},function(data){
+    					if(data>0){
+    						$("#roleForm").form('clear');
+    						$("#tree").tree("reload");
+	                		obj.find();
+	                        $.messager.progress('close');
+	                	}
+    				},"json")
+        		/*}else{
+        			$("#roleNamespan").text("角色已存在!");
+        		}     
+    			
+    		},"json")*/
         },
         // 编辑
         edit:function (id) {

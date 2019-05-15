@@ -25,4 +25,6 @@ public interface ModuleMapper {
 	 * @return
 	 */
 	List<Integer> selectModuleByRoleId(Integer role_id);
+	
+
 }

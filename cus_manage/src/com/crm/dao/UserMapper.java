@@ -89,10 +89,10 @@ public interface UserMapper {
 		
 	/**
 	 * 批量删除
-	 * @param user_ids
+	 * @param list Integer集合 用户id
 	 * @return
 	 */
-	Integer deleteUsers(String user_ids);
+	Integer deleteUsers(List<Integer> list);
 	
 	
 }

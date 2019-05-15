@@ -72,6 +72,20 @@ public class RoleController {
 		return 0;
 	}
 	
+	@RequestMapping(value="/updateRoleAndRoleModule",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer updateRoleAndRoleModule(Role role,String module_ids) {
+		String substring = module_ids.substring(1, module_ids.length());
+		try {
+			return roleService.updateRole(role,module_ids);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	
 	
 	
 }

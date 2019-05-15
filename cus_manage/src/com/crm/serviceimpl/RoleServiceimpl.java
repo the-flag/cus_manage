@@ -1,5 +1,6 @@
 package com.crm.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,29 +43,54 @@ public class RoleServiceimpl implements RoleService {
 		// TODO Auto-generated method stub
 		roleMapper.insertRole(role);
 		if(role.getRole_id()>0) {
-			roleModule.setRole_id(role.getRole_id());
-			System.out.println(module_ids+":ssssssssssssssssssssssssss");
 			String[] split = module_ids.split(",");
+			List<RoleModule> list=new ArrayList<>();
 			for(String s:split) {
 				if(s!=null && !"".equals(s)) {
-					System.out.println(Integer.parseInt(s));
-					roleModule.setModule_id(Integer.parseInt(s));
-					System.out.println("添加！！！！！！！！！！！！！！！！！");
-					try {
-						roleModuleService.insertRoleModule(roleModule);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					RoleModule module=new RoleModule();
+					module.setRole_id(role.getRole_id());
+					module.setModule_id(Integer.parseInt(s));
+					list.add(module);
+					System.out.println("添加！"+module);
 				}
 			}
+			try {
+				return roleModuleService.insertRoleModule(list);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		return 1;
+		return 0;
 	}
 	@Override
 	public Integer selectRoleByRoleName(String role_name) {
 		// TODO Auto-generated method stub
 		return roleMapper.selectRoleByRoleName(role_name);
+	}
+	@Override
+	public Integer updateRole(Role role,String module_ids) {
+		// TODO Auto-generated method stub
+		roleMapper.updateRole(role);
+		roleModuleService.deleteRoleModuleByRoleId(role.getRole_id());
+		roleModule.setRole_id(role.getRole_id());
+		String[] split = module_ids.split(",");
+		List<RoleModule> list=new ArrayList<>();
+		for(String s:split) {
+			if(s!=null && !"".equals(s)) {
+				RoleModule module=new RoleModule();
+				module.setRole_id(role.getRole_id());
+				module.setModule_id(Integer.parseInt(s));
+				list.add(module);
+			}
+		}
+		try {
+			return roleModuleService.insertRoleModule(list);
+		} catch (Exception e) {
+				// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 }

@@ -45,5 +45,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where role_name=#{role_name}
 	</select>
 	
+	<update id="updateRole" parameterType="role">
+		UPDATE role 
+		<set>
+			<if test="role_name !=null and role_name !='' ">
+				role_name=#{role_name},
+			</if>
+			<if test="role_desc !=null and role_desc !='' ">
+				role_desc=#{role_desc},
+			</if>
+			<if test="role_flag !=null ">
+				role_flag=#{role_flag},
+			</if>
+		</set>
+		WHERE role_id=#{role_id}
+	</update>
+	
 	
 </mapper>

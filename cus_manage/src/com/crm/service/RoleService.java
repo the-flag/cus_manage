@@ -35,4 +35,12 @@ public interface RoleService {
 	 * @return
 	 */
 	Integer selectRoleByRoleName(String role_name);
+	
+	/**
+	 * 修改角色信息
+	 * 修改角色拥有的模块
+	 * @param role
+	 * @return
+	 */
+	Integer updateRole(Role role,String module_ids);
 }

@@ -5,7 +5,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.crm.dao.RoleModuleMapper">
 	
 	
-	<insert id="insertRoleModule" parameterType="roleModule">
-		INSERT INTO role_module(role_id,module_id) VALUE(#{role_id},#{module_id})
+	<insert id="insertRoleModule" parameterType="java.util.List">
+		INSERT INTO role_module(role_id,module_id) 
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+            (#{item.role_id,jdbcType=VARCHAR}, #{item.module_id,jdbcType=INTEGER})
+        </foreach>
 	</insert>
+	
+	<delete id="deleteRoleModuleByRoleId" parameterType="int">
+		DELETE FROM role_module WHERE role_id=#{role_id}
+	</delete>
 </mapper>

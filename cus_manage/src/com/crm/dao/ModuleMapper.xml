@@ -19,4 +19,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE rm.role_id=#{role_id}
 	</select>
 	
+	
 </mapper>

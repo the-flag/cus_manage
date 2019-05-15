@@ -1,5 +1,6 @@
 package com.crm.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,30 +62,41 @@ public class UserServiceimpl implements UserService {
 		// TODO Auto-generated method stub 
 		Integer insertUser = usermapper.insertUser(user);
 		userRole.setUser_id(user.getUser_id());
+		System.out.println(roleids);
 		String[] split = roleids.split(",");
+		List<UserRole> list=new ArrayList<UserRole>();
 		for(String s:split) {
 			if(s!=null && !"".equals(s)) {
-				userRole.setRole_id(Integer.parseInt(s));
-				System.out.println("添加！！！！！！！！！！！！！！！！！");
-				try {
-					if(!(userRoleService.insertUserRole(userRole)>0)) {
-						return 0;
-					}
-					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+				UserRole role=new UserRole();
+				role.setUser_id(user.getUser_id());
+				role.setRole_id(Integer.parseInt(s));
+				System.out.println("ssssssss"+role);
+				list.add(role);
 			}
 		}
+		try {
+			if(!(userRoleService.insertUserRole(list)>0)) {
+				return 0;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
 		return 1;
 	}
 	@Override
 	public Integer deleteUsers(String user_ids) throws Exception {
 		// TODO Auto-generated method stub
 		Integer deleteUserRoles = userRoleService.deleteUserRoles(user_ids);
-		Integer deleteUsers = usermapper.deleteUsers(user_ids);
+		String[] split = user_ids.split(",");
+		List<Integer> list=new ArrayList<>();
+		for(String s:split) {
+			if(s!=null && !"".equals(s)) {
+				list.add(Integer.parseInt(s));
+			}
+		}
+		Integer deleteUsers = usermapper.deleteUsers(list);
 		return deleteUsers;
 	}
 	@Override

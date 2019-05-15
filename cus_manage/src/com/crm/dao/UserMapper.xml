@@ -204,7 +204,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</selectKey>
 	</insert>
 	
-	<delete id="deleteUsers" parameterType="string">
-		DELETE FROM `user` WHERE user_id IN(#{user_ids})
+	<delete id="deleteUsers" parameterType="java.util.List">
+		DELETE FROM `user` WHERE user_id IN
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}       
+        </foreach>  
 	</delete>
+
 </mapper>

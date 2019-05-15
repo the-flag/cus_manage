@@ -1,5 +1,7 @@
 package com.crm.service;
 
+import java.util.List;
+
 import com.crm.pojo.UserRole;
 
 public interface UserRoleService {
@@ -8,7 +10,7 @@ public interface UserRoleService {
 	 * @param userRole
 	 * @return
 	 */
-	Integer insertUserRole(UserRole userRole) throws Exception;
+	Integer insertUserRole(List<UserRole> list) throws Exception;
 	
 	/**
 	 * 根据用户id 删除用户和角色的关联信息

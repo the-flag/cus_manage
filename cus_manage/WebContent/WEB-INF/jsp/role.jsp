@@ -20,12 +20,12 @@
     <div data-options="region:'east',split:true,title:'角色信息'", style="width: 400px">
         <fieldset id="roleMes">
             <legend>基本信息</legend>
-            <form id="roleForm">
+            <form id="roleForm" class="easyui-form">
 
             <!-- <p><label>角色编号：</label><input type="text" class="inputDisable" disabled="disabled"></p> -->
             <p><label>角色名称：</label>
-            	<input id="roleName" name="role_name" type="text" class="easyui-validatebox " data-options="required:true" >
-            	<span id="roleNamespan" class="formSpan">*</span>
+            	<input id="roleName" name="role_name" type="text" class="easyui-validatebox" data-options="required:true" >
+            	<span id="roleNamespan" class="formSpan" name="">*</span>
             </p>
             <p><label class="textarea" id="roleNote" name="role_desc">角色描述：</label><textarea></textarea></p>
             </form>
@@ -34,7 +34,10 @@
             <legend>功能模块</legend>
             <ul id="tree" class="roleTree"></ul>
         </fieldset>
-        <div class="forSubmint"> <a href="#" class="easyui-linkbutton"  iconCls="icon-save" onclick="obj.sum()">保存</a><a href="#" class="easyui-linkbutton"  iconCls="icon-redo" >重置</a> </div>
+        <div class="forSubmint"> 
+        	<a href="#" id="addsave" class="easyui-linkbutton"  iconCls="icon-save" onclick="obj.sum()">保存</a>
+        	<a href="#" id="editsave" class="easyui-linkbutton"  iconCls="icon-save" onclick="obj.editsum()">保存</a>
+        	<a href="#" class="easyui-linkbutton"  iconCls="icon-redo" >重置</a> </div>
 
     </div>
     <div data-options="region:'center',split:true">

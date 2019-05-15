@@ -48,4 +48,11 @@ public interface RoleMapper {
 	 */
 	Integer selectRoleByRoleName(String role_name);
 	
+	/**
+	 * 修改用户信息
+	 * @param role
+	 * @return
+	 */
+	Integer updateRole(Role role);
+	
 }

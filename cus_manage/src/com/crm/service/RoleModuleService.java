@@ -1,5 +1,7 @@
 package com.crm.service;
 
+import java.util.List;
+
 import com.crm.pojo.RoleModule;
 
 public interface RoleModuleService {
@@ -8,5 +10,15 @@ public interface RoleModuleService {
 	 * @param roleModule
 	 * @return
 	 */
-	Integer insertRoleModule(RoleModule roleModule) throws Exception;
+	Integer insertRoleModule(List<RoleModule> list) throws Exception;
+	
+	
+	/**
+	 * 根据角色id 删除所有对应的角色和模块信息
+	 * @param role_id
+	 * @return
+	 */
+	Integer deleteRoleModuleByRoleId(Integer role_id);
+	
+	
 }
