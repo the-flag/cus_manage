@@ -21,6 +21,7 @@ public interface RoleService {
 	
 	
 	/**
+	 * 添加角色时判断是否存在该角色名称
 	 * 关联添加 添加角色获取自增id 
 	 * 在模块角色中间表里 为新角色关联模块信息
 	 * @param role

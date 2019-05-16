@@ -57,32 +57,37 @@ public class UserServiceimpl implements UserService {
 		fenYe.setTotal(selectUserCountByFenYe);
 		return fenYe;
 	}
+	/**
+	 * 添加用户时
+	 * 批量添加用户和角色关联的信息到中间表
+	 */
 	@Override
 	public Integer insertUserAndRole(User user, String roleids) {
 		// TODO Auto-generated method stub 
 		Integer insertUser = usermapper.insertUser(user);
-		userRole.setUser_id(user.getUser_id());
-		System.out.println(roleids);
-		String[] split = roleids.split(",");
-		List<UserRole> list=new ArrayList<UserRole>();
-		for(String s:split) {
-			if(s!=null && !"".equals(s)) {
-				UserRole role=new UserRole();
-				role.setUser_id(user.getUser_id());
-				role.setRole_id(Integer.parseInt(s));
-				System.out.println("ssssssss"+role);
-				list.add(role);
-			}
-		}
-		try {
-			if(!(userRoleService.insertUserRole(list)>0)) {
-				return 0;
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		if(insertUser>0) {
+			userRole.setUser_id(user.getUser_id());
 			
+			String[] split = roleids.split(",");
+			List<UserRole> list=new ArrayList<UserRole>();
+			for(String s:split) {
+				if(s!=null && !"".equals(s)) {
+					UserRole role=new UserRole();
+					role.setUser_id(user.getUser_id());
+					role.setRole_id(Integer.parseInt(s));
+					System.out.println("ssssssss"+role);
+					list.add(role);
+				}
+			}
+			try {
+				if(!(userRoleService.insertUserRole(list)>0)) {
+					return 0;
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return 1;
 	}
 	@Override

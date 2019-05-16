@@ -22,6 +22,13 @@ public class UserController {
 	@Autowired
 	private MD5Utils md5Utils;
 	
+	/**
+	  * 用户数据表格
+	 * @param fenYe
+	 * @param rows
+	 * @param queryParameters
+	 * @return
+	 */
 	@RequestMapping("/showUserTab")
 	@ResponseBody
 	public FenYe showUserTab(FenYe fenYe,Integer rows,UserQueryParameters queryParameters) {
@@ -32,14 +39,21 @@ public class UserController {
 		return selectUsersByFenYe;
 	}
 	
-	
+	/**
+	 * 跳转用户页面
+	 * @return
+	 */
 	@RequestMapping(value="/getUserPage",method=RequestMethod.GET)
 	public String getUserPage() {
 		return "user";
 	}
 	
 	
-	
+	/**
+	 * 验证账号是否已存在
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping("/validationAccount")
 	@ResponseBody
 	public Boolean validationAccount(User user) {
@@ -50,7 +64,12 @@ public class UserController {
 		return true;
 	}
 	
-	
+	/**
+	 * 添加用户
+	 * @param user
+	 * @param xsry
+	 * @return
+	 */
 	@RequestMapping("/insertUserAndRole")
 	@ResponseBody
 	public Integer insertUserAndRole(User user,String xsry) {

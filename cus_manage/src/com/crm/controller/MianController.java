@@ -22,6 +22,10 @@ public class MianController {
 	@Autowired 
 	private TreeUtil treeUtil;
 	
+	/**
+	 * 跳转首页
+	 * @return
+	 */
 	@RequestMapping(value="/getMain",method=RequestMethod.GET)
 	public String getMain() {
 		return "main";
@@ -29,7 +33,11 @@ public class MianController {
 	}
 	
 	
-	
+	/**
+	 * 首页tree树控件 
+	 * @param user_id
+	 * @return
+	 */
 	@RequestMapping(value="/showHomeTree",method=RequestMethod.POST)
 	@ResponseBody
 	public List<EasyUITreeJson> showHomeTree(Integer user_id) {

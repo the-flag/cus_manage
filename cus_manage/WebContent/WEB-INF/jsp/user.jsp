@@ -136,6 +136,13 @@
 
 		</form>
 	</div>
+	<!-- 角色设置 -->
+	<div id="editRoleBox">
+		
+	
+	
+	
+	</div>
 	<script src="js/user.js"></script>
 	<script type="text/javascript">
 		/* var date1;

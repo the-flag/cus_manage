@@ -141,7 +141,7 @@ $(function () {
                                         e = '<a  id="add" data-id="98" class=" operA"  onclick="obj.edit(\'' + row.id + '\')">编辑</a> ';
                                         d = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + row.id + '\')">删除</a> ';
                                         czmm = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.resetPass(\'' + row.id + '\')">重置密码</a> ';
-                                        jssz = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + row.id + '\')">角色设置</a> ';
+                                        jssz = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.juese(\'' + row.id + '\')">角色设置</a> ';
                                         return e+d+czmm+jssz;
                                 }
                         }
@@ -236,6 +236,15 @@ obj={
                 $("#res").show();
 
 
+        },
+        //角色编辑
+        juese:function(){
+        	$("#editRoleBox").dialog({
+                closed: false,
+        	})
+        	//editRoleBox
+        	
+        	
         },
         // 编辑
         edit:function (id) {
@@ -528,6 +537,16 @@ $("#addBox").dialog({
 // 弹出框加载
 $("#updateBox").dialog({
         title:"信息内容",
+        width:550,
+        height:300,
+        closed: true,
+        modal:true,
+        shadow:true
+})
+
+
+$("#editRoleBox").dialog({
+        title:"角色设置",
         width:550,
         height:300,
         closed: true,
