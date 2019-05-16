@@ -134,7 +134,7 @@ public class LoginController {
 			request.getSession().setAttribute("loginType", "standard");//登录方式是标准登录
 			System.out.println("登陆成功！！！！！！！！");
 			return "main"; 		
-			
+			 
 		}else {
 			System.out.println("失败！！！！！！！！！！！！！");
 			request.setAttribute("key", "失败");

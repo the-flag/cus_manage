@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.dao.ManagerMapper">
+   <resultMap type="Customer" id="CustomerTab">
+   <id column="customer_id" property="customer_id"/>
+   <result column="customer_no" property="customer_no" />
+   <result column="customer_name" property="customer_name" />
+   <result column="customer_academic" property="customer_academic" />
+   <result column="customer_phone" property="customer_phone" />
+   <result column="customer_onevisit_time" property="customer_onevisit_time" />
+   <result column="customer_visit" property="customer_visit" />
+   <result column="customer_status" property="customer_status" />
+   <result column="customer_visit" property="customer_visit" />
+   <result column="customer_ingate" property="customer_ingate" />
+   <result column="customer_source" property="customer_source" />
+   <result column="customer_create_time" property="customer_create_time" />
+   <result column="customer_age" property="customer_age" />
+   <result column="customer_sex" property="customer_sex" />
+   <result column="customer_level" property="customer_level" />
+   <result column="user_name" property="user.user_name" />
+   </resultMap>
+   
+   <select id="selectManagerCount" parameterType="fenye" resultType="int">
+    SELECT count(customer_id) FROM customer c INNER JOIN user u on c.user_id=u.user_id
+     <where>
+       <if test="cname!='' and cname!=null">
+       and c.customer_name like "%"#{cname}"%"
+       </if>
+       <if test="uteacher!='' and uteacher!=null">
+       and u.user_name=#{uteacher}
+       </if>
+       <if test="visit>0">
+       and c.customer_visit=#{visit}
+       </if>
+       <if test="ingate>0">
+       and c.customer_ingate=#{ingate}
+       </if>
+       <if test="minTime!='' and minTime!=null">
+       and c.customer_ingate_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and c.customer_ingate_time &lt;=#{maxTime}
+       </if>
+  </where>
+   </select>
+   
+   
+   <select id="selectManager" parameterType="fenye" resultMap="CustomerTab">
+  SELECT c.*,u.user_name FROM customer c INNER JOIN user u on c.user_id=u.user_id
+  <where>
+       <if test="cname!='' and cname!=null">
+       and c.customer_name like "%"#{cname}"%"
+       </if>
+       <if test="uteacher!='' and uteacher!=null">
+       and u.user_name=#{uteacher}
+       </if>
+       <if test="visit>0">
+       and c.customer_visit=#{visit}
+       </if>
+       <if test="ingate>0">
+       and c.customer_ingate=#{ingate}
+       </if>
+       <if test="minTime!='' and minTime!=null">
+       and c.customer_ingate_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and c.customer_ingate_time &lt;=#{maxTime}
+       </if>
+  </where>
+ LIMIT #{page},#{row}
+   </select>
+   
+   <insert id="insertCustomer" parameterType="customer">
+   insert into customer(customer_no,customer_name,customer_academic,customer_region,customer_post,customer_address,customer_phone,customer_source,customer_qq,customer_course,customer_age,customer_sex,customer_level,customer_status,user_id)
+   values(#{customer_no},#{customer_name},#{customer_academic},#{customer_region},#{customer_post},#{customer_address},#{customer_phone},#{customer_source},#{customer_qq},#{customer_course},#{customer_sex},#{customer_level},#{customer_status},#{user_id});
+   </insert>
+   
+   <select id="selectUserSigninOrback" parameterType="FenYe" resultType="User">
+    SELECT * from user
+  <where>
+         <if test="cname!='' and cname!=null">
+       and user_name like "%"#{cname}"%"
+       </if>
+   
+       <if test="visit>0">
+       and user_status=#{visit}
+       </if>
+      
+       <if test="minTime!='' and minTime!=null">
+       and user_login_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and user_login_time &lt;=#{maxTime}
+       </if>
+       
+       
+        <if test="beginTime!='' and beginTime!=null">
+       and user_end_time &gt;=#{beginTime}
+       </if>
+       <if test="endTime!='' and endTime!=null">
+       and user_end_time &lt;=#{endTime}
+       </if>
+    </where>
+    limit #{page},#{row}
+   </select>
+   
+   <select id="selectUserCount" parameterType="FenYe" resultType="int">
+    select count(user_id) from user
+    <where>
+         <if test="cname!='' and cname!=null">
+       and user_name like "%"#{cname}"%"
+       </if>
+   
+       <if test="visit>0">
+       and user_status=#{visit}
+       </if>
+      
+       <if test="minTime!='' and minTime!=null">
+       and user_login_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and user_login_time &lt;=#{maxTime}
+       </if>
+       
+       
+        <if test="beginTime!='' and beginTime!=null">
+       and user_end_time &gt;=#{beginTime}
+       </if>
+       <if test="endTime!='' and endTime!=null">
+       and user_end_time &lt;=#{endTime}
+       </if>
+    </where>
+   </select>
+   <!-- 签退 -->
+   <update id="updateUserStatus" parameterType="java.util.List">
+   update user set user_status=2,user_end_time=(select sysdate()) where user_id in
+   <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+   #{item}
+   </foreach>
+    
+   </update>
+   
+       <!--  签到 -->
+   <update id="updateUserSignin" parameterType="int">
+   update user set user_status=1,user_login_time=(select sysdate()) where user_id=#{user_id}
+   </update>
+   
+</mapper>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.dao.Access_recordMapper">
+
+   <resultMap type="Access_record" id="CustomerTab">
+   
+   <id column="record_id" property="record_id"/>
+   <result column="record_time" property="record_time" />
+   <result column="record_content" property="record_content" />
+   <result column="record_address" property="record_address" />
+    <result column="user_id" property="user_id" />
+    <result column="customer_id" property="customer_id" />
+    <result column="record_endtime" property="record_endtime" />
+    <result column="record_condition" property="record_condition" />
+    <result column="record_lasttime" property="record_lasttime" />
+    <result column="record_status" property="record_status" />  
+    <result column="record_remark" property="record_remark" />
+    
+    
+    <result column="customer_name" property="customer.customer_name" />
+    <result column="customer_visit" property="customer.customer_visit" />
+    
+    
+    <result column="user_name" property="user.user_name" />
+    </resultMap>
+   
+  <!--   <sql id="stusql">
+    
+     <where>
+       <if test="cname!='' and cname!=null">
+       and c.customer_name like "%"#{cname}"%"
+       </if>
+       <if test="uteacher!='' and uteacher!=null">
+       and u.user_name like"%"#{uteacher}"%"
+       </if>
+      <if test="record_status!='' and record_status!=null">
+       and a.record_status=#{record_status}
+       </if>
+       <if test="record_condition!='' and record_condition!=null">
+       and a.record_condition=#{record_condition}
+       </if>
+       <if test="minTime!='' and minTime!=null">
+       and a.record_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and a.record_time &lt;=#{maxTime}
+       </if>  
+      </where>
+    </sql>
+    -->
+<!--   分页查询条数 -->
+   <select id="selectRecordCount" parameterType="fenye" resultType="int">
+    SELECT count(record_id) FROM access_record a INNER JOIN user u INNER JOIN customer c on   a.user_id=u.user_id
+   and a.customer_id=c.customer_id
+<!--    <include refid="stusql"></include> -->
+    <where>
+          <if test="cname!='' and cname!=null">
+       and c.customer_name like "%"#{cname}"%"
+       </if>
+       <if test="uteacher!='' and uteacher!=null">
+       and u.user_name like"%"#{uteacher}"%"
+       </if>
+       <if test="record_status!='' and record_status!=null">
+       and a.record_status=#{record_status}
+       </if>
+       <if test="record_condition!='' and record_condition!=null">
+       and a.record_condition=#{record_condition}
+       </if>
+       <if test="minTime!='' and minTime!=null">
+       and a.record_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and a.record_time &lt;=#{maxTime}
+       </if>
+    </where> 
+   </select>
+   
+   
+   <!--     这个是分页查询日志表的数据 查询了客户表，角色表与 日志表-->
+     <select id="selectRecordselor" parameterType="fenye" resultMap="CustomerTab">
+      SELECT a.*,u.*,c.* FROM access_record a INNER JOIN user u  INNER JOIN customer c 
+             on a.user_id=u.user_id
+  			and a.customer_id=c.customer_id
+  	  <where>
+          <if test="cname!='' and cname!=null">
+       and c.customer_name like "%"#{cname}"%"
+       </if>
+       <if test="uteacher!='' and uteacher!=null">
+      and u.user_name like"%"#{uteacher}"%"
+       </if>
+       <if test="record_status!='' and record_status!=null">
+       and a.record_status=#{record_status}
+       </if>
+       <if test="record_condition!='' and record_condition!=null">
+       and a.record_condition=#{record_condition}
+       </if>
+       <if test="minTime!='' and minTime!=null">
+       and a.record_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and a.record_time &lt;=#{maxTime}
+       </if>
+  </where> 
+     <!--      <include refid="stusql"></include> -->
+  limit #{page},#{row}
+   </select>
+   
+   
+  <!--  这个是给客户添加一个访问 的日志 kong-->
+   <insert id="insertAccess_record"  parameterType="com.crm.pojo.Access_record">
+	
+	insert into access_record (record_time,record_content,record_address,user_id,customer_id,record_endtime,record_condition,record_lasttime,record_status,record_remark)
+	                 values(#{record_time},#{record_content},#{record_address},#{user_id},#{customer_id},#{record_endtime},#{record_condition},#{record_lasttime},#{record_status},#{record_remark})
+	</insert>
+	
+	
+           <!--  这个是在给客户添加日志的时候在controller中又加了一个修改的方法
+                                                      添加的时候同事修改客户表的是否访问为是，0为否，1为是。-->
+
+	<update id="updateCustomer_view" parameterType="customer">
+ 		update customer
+ 		<set>
+ 				customer_visit =1,		
+ 		</set>
+ 		<where>
+ 		   <if test="customer_id != null and customer_id !=''">
+					customer_id=#{customer_id}
+	       </if>
+ 		</where>
+ 	</update>
+</mapper>
