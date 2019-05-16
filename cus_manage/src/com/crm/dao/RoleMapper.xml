@@ -6,6 +6,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectRole"  resultType="role">
 		SELECT role_id,role_name,role_desc,role_flag FROM role;
 	</select>
+	
+	<select id="selectRoleByUserId" parameterType="int" resultType="role">
+		SELECT r.role_id,r.role_name,r.role_desc,r.role_flag 
+		FROM role r INNER JOIN user_role ur ON r.role_id=ur.role_id WHERE ur.user_id=#{user_id}
+	</select>
+	
 	<select id="selectRolesByFenYe" parameterType="fenYe" resultType="role">
 		SELECT role_id,role_name,role_desc,role_flag FROM role
 		<where>
@@ -33,7 +39,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="insertRole" parameterType="role">
-		INSERT INTO role(role_name,role_desc,role_flag) VALUE(#{role_name},#{role_desc},#{role_flag})		
+		INSERT INTO role(role_name,role_desc,role_flag) 
+		select #{role_name},#{role_desc},#{role_flag} from dual 
+		where not exists (select 1 from role a where a.role_name=#{role_name});
 		<selectKey resultType="int" keyProperty="role_id" order="AFTER">  
 		    select @@IDENTITY as role_id;  
 		</selectKey>
@@ -61,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE role_id=#{role_id}
 	</update>
 	<delete id="deteleRole" parameterType="int">
-		DELETE FROM role WHERE role_id=#{role_id}
+		DELETE FROM role WHERE role_id=#{role_id} AND not exists (select 1 from user_role a where a.role_id=#{role_id})
 	</delete>
 	
 </mapper>
