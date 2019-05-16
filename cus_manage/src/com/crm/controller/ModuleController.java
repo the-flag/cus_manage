@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.crm.pojo.Module;
 import com.crm.service.ModuleService;
 import com.crm.util.EasyUITreeJson;
+import com.crm.util.ModuleTreeExcludeUrl;
 import com.crm.util.ModuleTreeUtil;
 
 
@@ -23,6 +24,8 @@ public class ModuleController {
 	private ModuleService moduleService;
 	@Autowired 
 	private ModuleTreeUtil treeUtil;
+	@Autowired
+	private ModuleTreeExcludeUrl moduleTreeExcludeUrl;
 	
 	
 	@RequestMapping(value="/getModulePage",method=RequestMethod.GET)
@@ -37,6 +40,21 @@ public class ModuleController {
 		List<Module> selectUserPermById = moduleService.selectModules();
 		List<EasyUITreeJson> listGetStree = treeUtil.listGetStree(selectUserPermById,null);
 		List<EasyUITreeJson> listToTree = treeUtil.listToTree(listGetStree);
+		return listToTree;
+		
+	}
+	
+	
+	/**
+	 * 模块下拉框
+	 * @return
+	 */
+	@RequestMapping(value="/getModuleCombotree",method=RequestMethod.POST)
+	@ResponseBody
+	public List<EasyUITreeJson> getModuleCombotree() {
+		List<Module> selectUserPermById = moduleService.selectModules();
+		List<EasyUITreeJson> listGetStree = moduleTreeExcludeUrl.listGetStree(selectUserPermById);
+		List<EasyUITreeJson> listToTree = moduleTreeExcludeUrl.listToTree(listGetStree);
 		return listToTree;
 		
 	}
@@ -74,7 +92,7 @@ public class ModuleController {
 	@RequestMapping(value="/insertModule",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer insertModule(Module module) {
-		
+		System.out.println(module+"::::");
 		return moduleService.insertModule(module);
 		
 	}

@@ -25,8 +25,10 @@ public class ModuleTreeUtil {
 		
 		json.setId(module.getModule_id());
 		json.setText(module.getModule_name());
+		json.setUrl(module.getModule_path());
 		/*json.setState("closed");
 		json.setChecked(false);*/
+		json.setWeight(module.getModule_weight());
 		json.setParentId(module.getModule_parent_id());
 		if(module_ids!=null){
 			if(module.getModule_parent_id()!=0) {

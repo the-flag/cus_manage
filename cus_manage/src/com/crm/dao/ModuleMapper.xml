@@ -41,6 +41,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="module_weight !=null ">
 				module_weight=#{module_weight},
 			</if>
+			<if test="module_parent_id !=null and module_parent_id>0 ">
+				module_parent_id=#{module_parent_id},
+			</if>
 		</set>
 		 WHERE module_id=#{module_id}
 	</update>

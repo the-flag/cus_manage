@@ -17,32 +17,39 @@
 <body onload="init()">
 <div class="easyui-layout" data-options="fit:true" id="useBox">
     <!--左侧树-->
-    <div data-options="region:'west',split:true,title:'部门管理'", style="width: 200px">
+    <div data-options="region:'west',split:true,title:'部门管理'", style="width:50%">
         <ul id="tree"></ul>
     </div>
     <div data-options="region:'center',split:true">
        <form id="formBox">
            <div class="formDiv01">
-               <label>部门编号：</label><input type="text"  id="partId" class="easyui-validatebox" data-options="required:true"><span class="formSpan">*</span>
+               <label>模块编号：</label><input type="text" name="module_id" id="partId" class="easyui-validatebox" data-options="required:true,readonly:true"><span class="formSpan">*</span>
            </div>
            <div class="formDiv01">
-               <label>部门名称：</label><input type="text" id="partName" class="easyui-validatebox" data-options="required:true"><span class="formSpan">*</span>
+               <label>模块名称：</label><input type="text" name="module_name" id="partName" class="easyui-validatebox" data-options="required:true"><span class="formSpan">*</span>
            </div>
            <div class="formDiv01">
-               <label>上级部门：</label><input type="text"  id="parentPart"><span class="formSpan"></span>
+               <label>上级模块：</label><input type="text" name="module_parent_id" id="parentPart"><span class="formSpan"></span>
            </div>
            <div class="formDiv01">
+               <label>模块访问路径：</label><input type="text" name="module_path" id="module_path"><span class="formSpan"></span>
+           </div>
+           <div class="formDiv01">
+               <label>模块权重：</label><input type="text" name="module_weight" id="module_weight" ><span class="formSpan"></span>
+           </div>
+           
+           <!-- <div class="formDiv01">
                <label>部门负责人：</label><input type="text" id="partPer" ><span class="formSpan"></span>
            </div>
            <div class="formDiv01">
-           <label>部门邮箱地址：</label><input type="text" id="partEmail" class="easyui-validatebox" data-options="validType:'email'" ><span class="formSpan"></span>
-       </div>
+           	<label>部门邮箱地址：</label><input type="text" id="partEmail" class="easyui-validatebox" data-options="validType:'email'" ><span class="formSpan"></span>
+       		</div>
            <div class="formDiv01">
                <label>联系电话：</label><input type="text" class="easyui-validatebox" id="partTele" data-options="validType:'length[7,11]'" ><span class="formSpan"></span>
            </div>
            <div class="formDiv01">
                <label class="textarea">部门简介：</label><textarea id="note"></textarea></span>
-           </div>
+           </div> -->
            <div class="forSubmint"><a href="#" class="easyui-linkbutton" id="save" style="display: none" iconCls="icon-save" onclick="saveForm()">保存</a> <a href="#" class="easyui-linkbutton"  iconCls="icon-edit" id="edit" onclick="editForm()">修改</a><a href="#" class="easyui-linkbutton"  iconCls="icon-cancel" >取消</a> </div>
        </form>
         <div class="formFoot">
