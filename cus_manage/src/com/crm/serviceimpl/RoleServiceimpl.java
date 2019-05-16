@@ -38,11 +38,16 @@ public class RoleServiceimpl implements RoleService {
 		
 		return fenYe;
 	}
+	/**
+	 * 关联增加 
+	 * 添加角色时判断是否存在该角色名称
+	 * 同时批量添加角色和模块 
+	 */
 	@Override
 	public Integer insertRole(Role role,String module_ids)throws Exception {
 		// TODO Auto-generated method stub
-		roleMapper.insertRole(role);
-		if(role.getRole_id()>0) {
+		Integer insertRole = roleMapper.insertRole(role);
+		if(insertRole>0) {
 			String[] split = module_ids.split(",");
 			List<RoleModule> list=new ArrayList<>();
 			for(String s:split) {
@@ -97,6 +102,11 @@ public class RoleServiceimpl implements RoleService {
 		// TODO Auto-generated method stub
 		Integer deleteRoleModuleByRoleId = roleModuleService.deleteRoleModuleByRoleId(role_id);
 		return roleMapper.deteleRole(role_id);
+	}
+	@Override
+	public List<Role> selectRoleByUserId(Integer user_id) {
+		// TODO Auto-generated method stub
+		return roleMapper.selectRoleByUserId(user_id);
 	}
 
 }

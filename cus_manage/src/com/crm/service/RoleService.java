@@ -12,6 +12,14 @@ public interface RoleService {
 	 */
 	List<Role> selectRole(); 
 	
+	
+	/**
+	 * 根据用户id查询
+	 * @param user_id
+	 * @return
+	 */
+	List<Role> selectRoleByUserId(Integer user_id);
+	
 	/**
 	 * 多条件分页查询数据，和多条件查询数据总条数
 	 * @param fenYe
@@ -21,6 +29,7 @@ public interface RoleService {
 	
 	
 	/**
+	 * 添加角色时判断是否存在该角色名称
 	 * 关联添加 添加角色获取自增id 
 	 * 在模块角色中间表里 为新角色关联模块信息
 	 * @param role

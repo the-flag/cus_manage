@@ -3,6 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.crm.dao.UserMapper">
+
 	<!-- 用户 -->
 	<!-- <resultMap type="user" id="userMap">
 		<id property="user_id" column="user_id" />
@@ -193,12 +194,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="updatePasswordByUserId" parameterType="int">
 		UPDATE user 
-			set	user_password="76db3b18728470644ce0e469346c47454429850e87774510",
+			set	user_password="76db3b18728470644ce0e469346c47454429850e87774510"
 		WHERE user_id=#{user_id}
 	</update>
 	<insert id="insertUser" parameterType="user">
-		INSERT INTO `user`(user_account,user_password,user_email,user_phone) VALUE(#{user_account},#{user_password},#{user_email},#{user_phone});
-		
+		INSERT INTO `user`(user_account,user_password,user_email,user_phone)
+		select #{user_account},#{user_password},#{user_email},#{user_phone} from dual 
+		where not exists (select 1 from user a where a.user_account=#{user_account})
 		<selectKey resultType="int" keyProperty="user_id" order="AFTER">  
 		    select @@IDENTITY as user_id;  
 		</selectKey>
