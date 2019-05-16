@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.dao.NetWorkTeacherMapper">
+
+<select id="selectCustomerCount" parameterType="fenye" resultType="int">
+  select count(customer_id) from customer
+  <where>
+       <if test="cname!='' and cname!=null">
+       and customer_name like "%"#{cname}"%"
+       </if>
+       <if test="visit>0">
+       and customer_visit=#{visit}
+       </if>
+       <if test="ingate>0">
+       and customer_ingate=#{ingate}
+       </if>
+       <if test="minTime!='' and minTime!=null">
+       and customer_ingate_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and customer_ingate_time &lt;=#{maxTime}
+       </if>
+       <if test="user_id>0">
+       and user_id=#{user_id}
+       </if>
+  </where>
+</select>
+
+<select id="selectCustomer" parameterType="fenye" resultType="customer">
+select * from customer
+<where>
+       <if test="cname!='' and cname!=null">
+       and customer_name like "%"#{cname}"%"
+       </if>
+       <if test="visit>0">
+       and customer_visit=#{visit}
+       </if>
+       <if test="ingate>0">
+       and customer_ingate=#{ingate}
+       </if>
+       <if test="minTime!='' and minTime!=null">
+       and customer_ingate_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and customer_ingate_time &lt;=#{maxTime}
+       </if>
+       <if test="user_id>0">
+       and user_id=#{user_id}
+       </if>
+  </where>
+limit #{page},#{row}
+</select>
+</mapper>

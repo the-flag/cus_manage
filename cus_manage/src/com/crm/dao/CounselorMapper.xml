@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.dao.CounselorMapper">
+  <!--  这个是客户 -->
+   <resultMap type="Customer" id="CustomerTab">
+   <id column="customer_id" property="customer_id"/>
+   <result column="customer_no" property="customer_no" />
+   <result column="customer_name" property="customer_name" />
+   <result column="customer_academic" property="customer_academic" />
+   <result column="customer_phone" property="customer_phone" />
+   <result column="customer_onevisit_time" property="customer_onevisit_time" />
+   <result column="customer_visit" property="customer_visit" />
+   <result column="customer_status" property="customer_status" />
+   <result column="customer_visit" property="customer_visit" />
+   <result column="customer_ingate" property="customer_ingate" />
+   <result column="customer_source" property="customer_source" />
+   <result column="customer_create_time" property="customer_create_time" />
+   <result column="customer_age" property="customer_age" />
+   <result column="customer_sex" property="customer_sex" />
+   <result column="customer_level" property="customer_level" />
+   <!-- 第二次的数据结构 -->
+   <result column="customer_dmoney" property="customer_dmoney" />
+   <result column="customer_dtime" property="customer_dtime" />    
+   <result column="customer_jiaofei" property="customer_jiaofei" /> 
+   <result column="customer_jiaotime" property="customer_jiaotime" />
+   <result column="customer_jiaomoney" property="customer_jiaomoney" />
+   <result column="customer_istui" property="customer_istui" />
+   <result column="customer_isjinban" property="customer_isjinban" />
+   <result column="customer_jinbantime" property="customer_jinbantime" />
+      <result column="customer_jinbanremark" property="customer_jinbanremark" />
+   <result column="customer_zixunremark" property="customer_zixunremark" />
+   
+   <result column="user_name" property="user.user_name" />
+   </resultMap>
+   
+   <select id="selectCounselorCount" parameterType="fenye" resultType="int">
+    SELECT count(c.customer_id) FROM customer c INNER JOIN user u on c.user_id=u.user_id
+    <where>
+      <if test="cname!='' and cname!=null">
+       and c.customer_name like "%"#{cname}"%"
+       </if>
+       <if test="uteacher!='' and uteacher!=null">
+       and u.user_name=#{uteacher}
+       </if>
+       <if test="visit>0">
+       and c.customer_visit=#{visit}
+       </if>
+       <if test="ingate>0">
+       and c.customer_ingate=#{ingate}
+       </if>
+       <if test="minTime!='' and minTime!=null">
+       and c.customer_create_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and c.customer_create_time &lt;=#{maxTime}
+       </if>
+  </where>
+   </select>
+   
+   
+   <select id="selectCounselor" parameterType="fenye" resultMap="CustomerTab">
+  SELECT c.*,u.user_name FROM customer c INNER JOIN user u on c.user_id=u.user_id
+  <where>
+       <if test="cname!='' and cname!=null">
+       and c.customer_name like "%"#{cname}"%"
+       </if>
+       <if test="uteacher!='' and uteacher!=null">
+       and u.user_name=#{uteacher}
+       </if>
+       <if test="visit>0">
+       and c.customer_visit=#{visit}
+       </if>
+       <if test="ingate>0">
+       and c.customer_ingate=#{ingate}
+       </if>
+       <if test="minTime!='' and minTime!=null">
+       and c.customer_create_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and c.customer_create_time &lt;=#{maxTime}
+       </if>
+  </where>
+  limit #{page},#{row}
+   </select>
+   
+   <!-- 这是修改的sql语句 -->
+   <update id="updateCounselor" parameterType="customer">
+ 		update customer
+ 		<set>
+ 			<if test="customer_name !='' and customer_name">
+ 				customer_name =#{customer_name},
+ 			</if>
+ 			<if test="customer_address !='' and customer_address !=null">
+ 				customer_address=#{customer_address},
+ 			</if>
+ 			<if test="customer_phone >0 ">
+					customer_phone=#{customer_phone},
+			</if>
+			<if test="customer_qq >0 ">
+				customer_qq=#{customer_qq},
+			</if>
+ 			
+ 			<if test="customer_level >0 ">
+					customer_level=#{customer_level},
+			 </if>
+			 <if test="customer_post >0 ">
+					customer_post=#{customer_post},
+			 </if>
+			 <if test="customer_academic !='' and customer_academic !=null">
+ 				customer_academic =#{customer_academic},
+ 			 </if>
+ 			 
+ 			 <if test="customer_dmoney !=null">
+ 				customer_dmoney =#{customer_dmoney},
+ 			 </if>
+ 			 
+ 			 <if test="customer_dtime !=null">
+ 				customer_dtime =#{customer_dtime},
+ 			 </if>
+ 		      <if test="customer_onevisit_time !=null">
+ 				customer_onevisit_time =#{customer_onevisit_time},
+ 			 </if>
+ 	         <if test="customer_zixunremark !=null">
+ 				customer_zixunremark =#{customer_zixunremark},
+ 			 </if>
+ 			 
+ 			  <if test="customer_ingate !=null">
+ 				customer_ingate =#{customer_ingate},
+ 			 </if>
+ 			 
+ 				
+ 		</set>
+ 		<where>
+ 		   <if test="customer_id != null and customer_id !=''">
+					customer_id=#{customer_id}
+	       </if>
+ 		
+ 		</where>
+ 	</update>
+ 	
+   
+   
+   
+   
+</mapper>

@@ -9,16 +9,32 @@ public class User {
     private String user_account;
 
     private String user_password;
-
-    private String user_name;
+    private Integer user_age;
+    public Integer getUser_age() {
+		return user_age;
+	}
+	public void setUser_age(Integer user_age) {
+		this.user_age = user_age;
+	}
+	private String user_name;
 
     private Integer user_sex;
 
     private String user_creat_time;
 
-    private String user_login_time;
-
-    private Integer user_is_lock;
+    public String getUser_end_time() {
+		return user_end_time;
+	}
+	public void setUser_end_time(String user_end_time) {
+		this.user_end_time = user_end_time;
+	}
+	public Integer getUser_status() {
+		return user_status;
+	}
+	public void setUser_status(Integer user_status) {
+		this.user_status = user_status;
+	}
+	private Integer user_is_lock;
 
     private Integer user_wrong_number;
 
@@ -27,7 +43,9 @@ public class User {
     private String user_phone;
     
     private Integer user_weight;
-    
+    private String user_login_time;//签到时间
+	private String user_end_time;//签退时间
+	private Integer user_status;//签到状态
     private String user_uuid;
     //引用角色
     private List<Role> roles;
@@ -118,10 +136,11 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [user_id=" + user_id + ", user_account=" + user_account + ", user_password=" + user_password
-				+ ", user_name=" + user_name + ", user_sex=" + user_sex + ", user_creat_time=" + user_creat_time
-				+ ", user_login_time=" + user_login_time + ", user_is_lock=" + user_is_lock + ", user_wrong_number="
+				+ ", user_age=" + user_age + ", user_name=" + user_name + ", user_sex=" + user_sex
+				+ ", user_creat_time=" + user_creat_time + ", user_is_lock=" + user_is_lock + ", user_wrong_number="
 				+ user_wrong_number + ", user_email=" + user_email + ", user_phone=" + user_phone + ", user_weight="
-				+ user_weight + ", user_uuid=" + user_uuid + ", roles=" + roles + "]";
+				+ user_weight + ", user_login_time=" + user_login_time + ", user_end_time=" + user_end_time
+				+ ", user_status=" + user_status + ", user_uuid=" + user_uuid + ", roles=" + roles + "]";
 	}
 	
 
