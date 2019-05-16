@@ -12,6 +12,14 @@ public interface RoleService {
 	 */
 	List<Role> selectRole(); 
 	
+	
+	/**
+	 * 根据用户id查询
+	 * @param user_id
+	 * @return
+	 */
+	List<Role> selectRoleByUserId(Integer user_id);
+	
 	/**
 	 * 多条件分页查询数据，和多条件查询数据总条数
 	 * @param fenYe

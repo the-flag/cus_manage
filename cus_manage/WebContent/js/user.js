@@ -47,7 +47,7 @@ $(function () {
                 pageNumber:1,
                 nowrap:true,
                 height:'auto',
-                sortName:'id',
+                sortName:'user_id',
                 checkOnSelect:false,
                 sortOrder:'asc',
                 toolbar: '#tabelBut',
@@ -121,13 +121,13 @@ $(function () {
                             title:'是否锁定',
                             width:100,
                             align:'center',
-                            formatter:function (val,row) {
+                            formatter:function (val,row,index) {
                                     if(val==0){
-                                    	 e = '<a  id="add" style="color: green" data-id="98"  onclick="obj.unlock(\'' + row.id + '\')">解锁</a> ';
+                                    	 e = '<a  id="add" style="color: green" data-id="98"  onclick="obj.unlock(\'' + index + '\')">解锁</a> ';
                                             return e;
                                     }
                                     else{
-                                    	e = '<a  id="add" style="color: red" data-id="98"  onclick="obj.lock(\'' + row.id + '\')">锁定</a> ';
+                                    	e = '<a  id="add" style="color: red" data-id="98"  onclick="obj.lock(\'' + index + '\')">锁定</a> ';
                                         return e;
                                     }
                             }
@@ -137,11 +137,11 @@ $(function () {
                                 title:'操作',
                                 width:150,
                                 align:'center',
-                                formatter:function (val,row) {
-                                        e = '<a  id="add" data-id="98" class=" operA"  onclick="obj.edit(\'' + row.id + '\')">编辑</a> ';
-                                        d = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + row.id + '\')">删除</a> ';
-                                        czmm = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.resetPass(\'' + row.id + '\')">重置密码</a> ';
-                                        jssz = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.juese(\'' + row.id + '\')">角色设置</a> ';
+                                formatter:function (val,row,index) {
+                                        e = '<a  id="add" data-id="98" class=" operA"  onclick="obj.edit(\'' + index + '\')">编辑</a> ';
+                                        d = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + index + '\')">删除</a> ';
+                                        czmm = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.resetPass(\'' + index + '\')">重置密码</a> ';
+                                        jssz = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.juese(\'' + index + '\')">角色设置</a> ';
                                         return e+d+czmm+jssz;
                                 }
                         }
@@ -238,13 +238,126 @@ obj={
 
         },
         //角色编辑
-        juese:function(){
+        juese:function(index){
+        	var data=$("#table").datagrid("getData");
+        	var row=data.rows[index];
+        	alert(row.user_name);
+        	
         	$("#editRoleBox").dialog({
                 closed: false,
         	})
+        	
+        	
+        	  // 加载所有角色表格
+            $("#AllRole").datagrid({
+                    title:"所有角色",
+                    iconCls:"icon-left02",
+                    url:'getRole',
+                    method:"post",
+                    fitColumns:true,
+                    striped:true,
+                    width:'100%',
+                    rownumbers:true,
+                    nowrap:true,
+                    height:'auto',
+                    sortName:'role_id',
+                    singleSelect:true,
+                    checkOnSelect:false,
+                    sortOrder:'asc',
+                    toolbar: '',
+                    columns:[[
+                            {
+                                    checkbox:true,
+                                    field:'no',
+                                    width:100,
+                                    align:'center'
+                            },
+                            {
+                                    field:'role_id',
+                                    title:'编号',
+                                    width:100,
+                                    align:'center',
+                                    hidden:true
+
+                            },
+                            {
+                                    field:'role_name',
+                                    title:'用户名',
+                                    width:80,
+                                    align:'center'
+                            }
+                    ]]
+            })
+            
+              // 加载表格
+            $("#UserRole").datagrid({
+                    title:"当前用户角色",
+                    iconCls:"icon-left02",
+                    url:'getUserRole',
+                    method:"post",
+                    fitColumns:true,
+                    striped:true,
+                    width:'100%',
+                    rownumbers:true,
+                    nowrap:true,
+                    height:'auto',
+                    sortName:'role_id',
+                    checkOnSelect:false,
+                    sortOrder:'asc',
+                    toolbar: '',
+                    queryParams:{
+                    	user_id:row.user_id
+                    },
+                    columns:[[
+                            {
+                                    checkbox:true,
+                                    field:'no',
+                                    width:100,
+                                    align:'center'
+                            },
+                            {
+                                    field:'role_id',
+                                    title:'编号',
+                                    width:100,
+                                    align:'center',
+                                    hidden:true
+
+                            },
+                            {
+                                    field:'role_name',
+                                    title:'用户名',
+                                    width:80,
+                                    align:'center'
+                            }
+                    ]]
+            })
         	//editRoleBox
+            
         	
-        	
+        },
+        //为当前用户添加角色
+        addUserRole:function(){
+        	alert("添加用户");
+        	/*var data=$("#AllRole").datagrid("getSelected");
+        	alert(data);
+        	return;
+        	$.post("addUserRole",{
+        		user_id:row.user_id,
+        		user_is_lock:0
+        	},function(data){
+        		if(data>0){
+        			$.messager.alert('提示','解锁成功!'); 
+        			obj.find();
+        		}else{
+        			$.messager.alert('提示','解锁失败!');    
+        		}
+        	},"json")*/
+        },
+        //当前用户删除角色
+        delUserRole:function(){
+        	alert("删除用户");
+        	var data=$("#UserRole").datagrid("getSelected");
+        	alert(data);
         },
         // 编辑
         edit:function (id) {
@@ -332,7 +445,7 @@ obj={
 		            		}else{
 		            			$.messager.alert('提示','锁定失败!');    
 		            		}
-		            	},"json")   
+		            	},"json")  
                 	}
         	    }    
         	});  
@@ -372,7 +485,7 @@ obj={
         },
         // 提交表单
         updatesum:function () {
-        		
+        				alert("wwef");
     	                $('#updateForm').form('submit', {
     	                            url:'updateUserByAccount',
     	                            method:"post",
@@ -383,6 +496,7 @@ obj={
     	                           }
     	                },
     	                success: function(data){
+    	                	alert("wwef");
     	                	alert();
     	                	if(data>0){
     	                		$("#updateBox").dialog("close");
@@ -463,6 +577,7 @@ obj={
         	    if (r){    
         	    	var data=$("#table").datagrid("getData");
                 	var row=data.rows[index];
+                	
                 	if(row!=null){
 		            	$.post("updatePasswordByUserId",{
 		            		user_id:row.user_id
@@ -553,4 +668,9 @@ $("#editRoleBox").dialog({
         modal:true,
         shadow:true
 })
+
+function dianji(){
+	
+	alert(sdfs);
+}
 

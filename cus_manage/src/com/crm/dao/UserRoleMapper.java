@@ -18,5 +18,12 @@ public interface UserRoleMapper {
 	 * @param user_ids
 	 * @return
 	 */
-	Integer deleteUserRoles(String user_ids);
+	Integer deleteUserRoles(List<Integer> list);
+	
+	/**
+	 * 根据用id和角色id删除对应的信息
+	 * @param userRole
+	 * @return
+	 */
+	Integer deleteUserRoleByUserIdAndRoleId(UserRole userRole);
 }

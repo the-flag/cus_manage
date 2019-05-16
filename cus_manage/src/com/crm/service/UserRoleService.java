@@ -18,4 +18,12 @@ public interface UserRoleService {
 	 * @return
 	 */
 	Integer deleteUserRoles(String user_ids) throws Exception;
+	
+	
+	/**
+	 * 根据用id和角色id删除对应的信息
+	 * @param userRole
+	 * @return
+	 */
+	Integer deleteUserRoleByUserIdAndRoleId(UserRole userRole);
 }

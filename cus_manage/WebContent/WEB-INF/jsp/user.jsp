@@ -127,7 +127,7 @@
 					class="formSpan">*</span>
 			</div>
 			<div class="forSubmint">
-				<a href="#update" class="easyui-linkbutton" iconCls="icon-ok"
+				<a href="#" class="easyui-linkbutton" iconCls="icon-ok"
 					onclick="obj.updatesum()">提交</a> <a href="#" class="easyui-linkbutton"
 					id="res" iconCls="icon-redo" onclick="obj.res()">重置</a> <a
 					href="#" class="easyui-linkbutton" id="can" iconCls="icon-cancel"
@@ -138,34 +138,27 @@
 	</div>
 	<!-- 角色设置 -->
 	<div id="editRoleBox">
-		
-	
+		<div style="float: left;width:40%">
+			<table id="AllRole" class="tableStyle" >
+			
+			</table>
+		</div>
+		<div style="float: left; width:20%">
+			<center >
+				<button class="easyui-linkbutton"  onclick="dianji()">>>sdfjsdoifjois</button> 
+				<a href="#" class="easyui-linkbutton"  onclick="obj.delUserRole()"><<</a>
+			</center>
+		</div>
+		<div style="float: right;width:40%">
+			<table id="UserRole" class="tableStyle" >
+			
+			</table>
+		</div>
 	
 	
 	</div>
 	<script src="js/user.js"></script>
 	<script type="text/javascript">
-		/* var date1;
-		var date2;
-		$('#d1').datebox({
-		    onSelect: function(date){
-		       date1=date;
-		       
-		    }
-		});
-		$('#d2').datebox({
-		    onSelect: function(date){
-		    	date2=date;
-		    	if(date1!=null){
-		    		
-		    	}
-		    }
-		}); */
-		function ceshi(){
-			
-			var s=$("#adduser_account").val();
-			alert(s);
-		}
 		$(function(){
 			 
 			 //初始化多选复选框

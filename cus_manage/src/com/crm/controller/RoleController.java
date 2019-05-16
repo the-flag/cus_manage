@@ -33,6 +33,13 @@ public class RoleController {
 	}
 	
 	
+	@RequestMapping(value="/getUserRole",method=RequestMethod.POST)
+	@ResponseBody
+	public List<Role> getUserRole(Integer user_id) {
+		return roleService.selectRoleByUserId(user_id);
+		
+	}
+	
 	
 	@RequestMapping(value="/selectRolesAndTotal",method=RequestMethod.POST)
 	@ResponseBody

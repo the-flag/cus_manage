@@ -194,7 +194,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="updatePasswordByUserId" parameterType="int">
 		UPDATE user 
-			set	user_password="76db3b18728470644ce0e469346c47454429850e87774510",
+			set	user_password="76db3b18728470644ce0e469346c47454429850e87774510"
 		WHERE user_id=#{user_id}
 	</update>
 	<insert id="insertUser" parameterType="user">

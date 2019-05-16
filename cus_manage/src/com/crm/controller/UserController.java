@@ -1,5 +1,6 @@
 package com.crm.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.crm.pojo.FenYe;
 import com.crm.pojo.User;
 import com.crm.pojo.UserQueryParameters;
+import com.crm.pojo.UserRole;
+import com.crm.service.UserRoleService;
 import com.crm.service.UserService;
 import com.crm.util.MD5Utils;
 import com.google.gson.Gson;
@@ -21,6 +24,8 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private MD5Utils md5Utils;
+	@Autowired
+	private UserRoleService userRoleService;
 	
 	/**
 	  * 用户数据表格
@@ -98,23 +103,67 @@ public class UserController {
 		return 0;
 	}
 	
-	
+	/**
+	 * 根据用户账号修改用户信息
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(value="/updateUserByAccount",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer updateUserByAccount(User user) {
 		return userService.updateUserByAccount(user);
 	}
 	
+	/**
+	 * 根据用户id设置密码为默认密码
+	 * @param user_id
+	 * @return
+	 */
 	@RequestMapping(value="/updatePasswordByUserId",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer updatePasswordByUserId(Integer user_id) {
 		return userService.updatePasswordByUserId(user_id);
 	}
 	
-	
+	/**
+	 * 修改用户锁定状态
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(value="/updateUserIsLockByUserId",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer updateUserIsLockByUserId(User user) {
 		return userService.updateUserIsLockByUserId(user);
 	}
+	
+	/**
+	 *为用户添加角色
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value="/addUserRole",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer addUserRole(UserRole userRole) {
+		List<UserRole> list=new ArrayList<>();
+		list.add(userRole);
+		try {
+			return userRoleService.insertUserRole(list);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	/**
+	 *根据用户id和角色id 到中间表删除对应信息
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value="/delUserRole",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer delUserRole(UserRole userRole) {
+		return userRoleService.deleteUserRoleByUserIdAndRoleId(userRole);
+	}
+	
 }

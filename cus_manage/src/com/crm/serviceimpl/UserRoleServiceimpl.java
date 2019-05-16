@@ -1,5 +1,6 @@
 package com.crm.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,19 @@ public class UserRoleServiceimpl implements UserRoleService {
 	@Override
 	public Integer deleteUserRoles(String user_ids) throws Exception {
 		// TODO Auto-generated method stub
-		return userRoleMapper.deleteUserRoles(user_ids);
+		String[] split = user_ids.split(",");
+		List<Integer> list=new ArrayList<>();
+		for(String s:split) {
+			if(s!=null && !"".equals(s)) {
+				list.add(Integer.parseInt(s));
+			}
+		}
+		return userRoleMapper.deleteUserRoles(list);
+	}
+	@Override
+	public Integer deleteUserRoleByUserIdAndRoleId(UserRole userRole) {
+		// TODO Auto-generated method stub
+		return userRoleMapper.deleteUserRoleByUserIdAndRoleId(userRole);
 	}
 
 }
