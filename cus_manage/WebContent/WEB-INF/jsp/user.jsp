@@ -35,7 +35,7 @@
 							<label for="name">是否锁定:</label> 
 							<select id="user_is_lock" class="easyui-combobox" name="user_is_lock" style="width:200px;">   
 							    <option value="1">否</option>   
-							    <option value="2">是</option>   
+							    <option value="0">是</option>   
 							</select> 
 							<a id="btn" href="javascript:void(0)" class="easyui-linkbutton tableFindBut" data-options="iconCls:'icon-search'" onclick="obj.find()">搜索</a>  
 						</form>
@@ -91,10 +91,6 @@
 				<input id="xsry" name="xsry"  style="width: 150px;"  class="easyui-combobox" >
 			</div>
 				  
-			<div class="forSubmint">
-				<a href="#" class="easyui-linkbutton" iconCls="icon-ok"
-					onclick="ceshi()">测试</a> 
-			</div>
 	
 			<div class="forSubmint">
 				<a href="#sum" class="easyui-linkbutton" iconCls="icon-ok"
@@ -107,7 +103,7 @@
 		</form>
 	</div>
 	
-	<!--//新增弹出框-->
+	<!--//修改弹出框-->
 	<div id="updateBox">
 		<form id="updateForm" method="post">
 			<div class="formDiv">
@@ -145,7 +141,7 @@
 		</div>
 		<div style="float: left; width:20%">
 			<center >
-				<button class="easyui-linkbutton"  onclick="dianji()">>>sdfjsdoifjois</button> 
+				<button class="easyui-linkbutton"  onclick="obj.addUserRole()">>></button> 
 				<a href="#" class="easyui-linkbutton"  onclick="obj.delUserRole()"><<</a>
 			</center>
 		</div>

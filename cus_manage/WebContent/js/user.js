@@ -51,6 +51,12 @@ $(function () {
                 checkOnSelect:false,
                 sortOrder:'asc',
                 toolbar: '#tabelBut',
+                queryParams:{
+                	user_name:$("#user_name").val(),
+                    min_creat_time:$('#min_creat_time').datebox('getValue'),
+                    max_creat_time:$('#max_creat_time').datebox('getValue'),
+                    user_is_lock:$("#user_is_lock").val()
+                },
                 columns:[[
                         {
                                 checkbox:true,
@@ -335,29 +341,46 @@ obj={
             
         	
         },
+        refreshRole:function(){
+        	
+        	$("#AllRole").datagrid("load");
+        	$("#UserRole").datagrid("load");
+        	
+        },
         //为当前用户添加角色
         addUserRole:function(){
-        	alert("添加用户");
-        	/*var data=$("#AllRole").datagrid("getSelected");
-        	alert(data);
-        	return;
+        	var node=$("#table").datagrid("getSelected");
+        	alert(node.user_name);
+        	var data=$("#AllRole").datagrid("getSelected");
         	$.post("addUserRole",{
-        		user_id:row.user_id,
-        		user_is_lock:0
+        		user_id:node.user_id,
+        		role_id:data.role_id
         	},function(data){
         		if(data>0){
-        			$.messager.alert('提示','解锁成功!'); 
-        			obj.find();
+        			$.messager.alert('提示','添加成功!'); 
+        			obj.refreshRole();
         		}else{
-        			$.messager.alert('提示','解锁失败!');    
+        			$.messager.alert('提示','添加失败!');    
         		}
-        	},"json")*/
+        	},"json")
         },
         //当前用户删除角色
         delUserRole:function(){
         	alert("删除用户");
+        	var node=$("#table").datagrid("getSelected");
+        	alert(node.user_name);
         	var data=$("#UserRole").datagrid("getSelected");
-        	alert(data);
+        	$.post("addUserRole",{
+        		user_id:node.user_id,
+        		role_id:data.role_id
+        	},function(data){
+        		if(data>0){
+        			$.messager.alert('提示','删除成功!'); 
+        			obj.refreshRole();
+        		}else{
+        			$.messager.alert('提示','删除失败!');    
+        		}
+        	},"json")
         },
         // 编辑
         edit:function (id) {
@@ -414,7 +437,7 @@ obj={
                 	if(row!=null){
 		            	$.post("updateUserIsLockByUserId",{
 		            		user_id:row.user_id,
-		            		user_is_lock:0
+		            		user_is_lock:1
 		            	},function(data){
 		            		if(data>0){
 		            			$.messager.alert('提示','解锁成功!'); 
@@ -511,11 +534,12 @@ obj={
         // 重置表单
         res:function () {
                 $("#addForm").form('reset');
+                $("#updateForm").form('reset');
 
         },
         // 取消表单
         can:function () {
-                $("#addBox").dialog({
+                $("#updateBox").dialog({
                         closed: true
 
                 })
@@ -668,9 +692,4 @@ $("#editRoleBox").dialog({
         modal:true,
         shadow:true
 })
-
-function dianji(){
-	
-	alert(sdfs);
-}
 
