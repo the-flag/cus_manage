@@ -103,14 +103,16 @@ public class LoginController {
 		
 		User login = userService.selectUserByAccount(user);
 		if(login==null) {
-			request.setAttribute("key", "账号或密码错误!!");
+			request.setAttribute("key", "账号或密码错误!!!");
 			return "login";
 		}
 		Boolean filg=md5Utils.getSaltverifyMD5(user.getUser_password(),login.getUser_password());
 		if(filg) {
-			
+			if(login.getUser_is_lock()<1) {
+				request.setAttribute("key", "该账号已被锁定,请联系管理员!!!");
+				return "login";
+			}
 			request.setAttribute("key", "正确");
-			
 			if(remember == null){
 				Cookie ck = new Cookie("remember_ticket","");
 				ck.setMaxAge(0); //一周的过期时间
@@ -137,8 +139,9 @@ public class LoginController {
 			return "main"; 		
 			 
 		}else {
-			System.out.println("失败！！！！！！！！！！！！！");
-			request.setAttribute("key", "失败");
+			userService.updateUserWrongNumberByAccount(login);
+			System.out.println("账号或密码错误!!!");
+			request.setAttribute("key", "账号或密码错误");
 		}
 		return "login";
 	}

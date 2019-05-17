@@ -71,7 +71,12 @@ public interface UserMapper {
 	 */
 	Integer updatePasswordByUserId(Integer user_id);
 	
-	
+	/**
+	 * 	根据账号修改用户登陆的错误次数
+	 * @param user
+	 * @return
+	 */
+	Integer updateUserWrongNumberByAccount(User user);
 
 	/**
 	  * 修改用户是否锁定 --- 根据用户id 修改

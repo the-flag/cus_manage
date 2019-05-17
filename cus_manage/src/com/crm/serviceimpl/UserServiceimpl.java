@@ -119,5 +119,11 @@ public class UserServiceimpl implements UserService {
 		// TODO Auto-generated method stub
 		return usermapper.updateUserIsLockByUserId(user);
 	}
+	
+	@Override
+	public Integer updateUserWrongNumberByAccount(User user) {
+		// TODO Auto-generated method stub
+		return usermapper.updateUserWrongNumberByAccount(user);
+	}
 
 }

@@ -10,30 +10,14 @@ public class User {
 
     private String user_password;
     private Integer user_age;
-    public Integer getUser_age() {
-		return user_age;
-	}
-	public void setUser_age(Integer user_age) {
-		this.user_age = user_age;
-	}
+    
 	private String user_name;
 
     private Integer user_sex;
 
     private String user_creat_time;
 
-    public String getUser_end_time() {
-		return user_end_time;
-	}
-	public void setUser_end_time(String user_end_time) {
-		this.user_end_time = user_end_time;
-	}
-	public Integer getUser_status() {
-		return user_status;
-	}
-	public void setUser_status(Integer user_status) {
-		this.user_status = user_status;
-	}
+   
 	private Integer user_is_lock;
 
     private Integer user_wrong_number;
@@ -49,6 +33,8 @@ public class User {
     private String user_uuid;
     //引用角色
     private List<Role> roles;
+    
+    
 	public Integer getUser_id() {
 		return user_id;
 	}
@@ -67,6 +53,12 @@ public class User {
 	public void setUser_password(String user_password) {
 		this.user_password = user_password;
 	}
+	public Integer getUser_age() {
+		return user_age;
+	}
+	public void setUser_age(Integer user_age) {
+		this.user_age = user_age;
+	}
 	public String getUser_name() {
 		return user_name;
 	}
@@ -84,12 +76,6 @@ public class User {
 	}
 	public void setUser_creat_time(String user_creat_time) {
 		this.user_creat_time = user_creat_time;
-	}
-	public String getUser_login_time() {
-		return user_login_time;
-	}
-	public void setUser_login_time(String user_login_time) {
-		this.user_login_time = user_login_time;
 	}
 	public Integer getUser_is_lock() {
 		return user_is_lock;
@@ -121,6 +107,24 @@ public class User {
 	public void setUser_weight(Integer user_weight) {
 		this.user_weight = user_weight;
 	}
+	public String getUser_login_time() {
+		return user_login_time;
+	}
+	public void setUser_login_time(String user_login_time) {
+		this.user_login_time = user_login_time;
+	}
+	public String getUser_end_time() {
+		return user_end_time;
+	}
+	public void setUser_end_time(String user_end_time) {
+		this.user_end_time = user_end_time;
+	}
+	public Integer getUser_status() {
+		return user_status;
+	}
+	public void setUser_status(Integer user_status) {
+		this.user_status = user_status;
+	}
 	public String getUser_uuid() {
 		return user_uuid;
 	}
@@ -142,7 +146,11 @@ public class User {
 				+ user_weight + ", user_login_time=" + user_login_time + ", user_end_time=" + user_end_time
 				+ ", user_status=" + user_status + ", user_uuid=" + user_uuid + ", roles=" + roles + "]";
 	}
-	
+    
+    
+   
+    
+    
 
 
 }

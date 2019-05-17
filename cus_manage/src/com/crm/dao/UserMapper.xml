@@ -155,7 +155,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateUserByAccount" parameterType="user">
 		UPDATE user 
 		<set>
-			
 			<if test="user_password !=null and user_password !='' ">
 				user_password=#{user_password},
 			</if>
@@ -179,6 +178,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				user_uuid=#{user_uuid},
 			</if>
 		</set>
+		WHERE user_account=#{user_account}
+	</update>
+	
+	<update id="updateUserWrongNumberByAccount" parameterType="user">
+		UPDATE `user` SET user_wrong_number=user_wrong_number+1 
 		WHERE user_account=#{user_account}
 	</update>
 	

@@ -55,6 +55,15 @@ public interface UserService {
 	 */
 	Integer updateUserByAccount(User user);
 	
+	
+	/**
+	 * 	根据账号修改用户登陆的错误次数
+	 * @param user
+	 * @return
+	 */
+	Integer updateUserWrongNumberByAccount(User user);
+	
+	
 	/**
 	 * 根据用户的id查询出其所有的权限
 	 * @param user_id
