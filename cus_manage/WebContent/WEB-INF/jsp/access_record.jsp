@@ -78,8 +78,6 @@
    
    
   function suoyougen(){
-	  
-	  alert(11);
 /* 	  window.open('access_record.jsp');//不覆盖 */
 	  window.location="CounselorList";
   }
@@ -99,9 +97,10 @@
 </script>
 <body>
   <table id="managerTab" class="easyui-datagrid"    
-        data-options="fitColumns:true,singleSelect:true">   
+        data-options="fitColumns:true,singleSelect:false">   
     <thead>   
         <tr>   
+            <th data-options="field:'check',checkbox:true"></th>
             <th data-options="field:'record_id',width:100">No</th>
             <th data-options="field:'customer.customer_name',width:100,formatter:formatteruser_kehuname">客户</th>
 
@@ -223,14 +222,18 @@
 
 <script type="text/javascript">
 //这里开始excel导出
-	$("#btnExport").click(function() {
-		var data = JSON.stringify($('#managerTab').datagrid('getData').rows);
+$("#btnExport").click(function() {
+		var rows=$("#managerTab").datagrid("getSelections");
+		if(rows.length==0){
+			$.messages.alert("提示","请选择你要导出的数据");
+		}
+		var data = JSON.stringify(rows);
 		if (data == '')
 			return;
 
 		JSONToCSVConvertor(data, "数据信息", true);
 	});
-
+	
 	function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
 		//如果jsondata不是对象，那么json.parse将分析对象中的json字符串。
 		var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
