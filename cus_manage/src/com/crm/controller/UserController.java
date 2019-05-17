@@ -144,7 +144,7 @@ public class UserController {
 	@RequestMapping(value="/addUserRole",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer addUserRole(UserRole userRole) {
-		List<UserRole> list=new ArrayList<>();
+		/*List<UserRole> list=new ArrayList<>();
 		list.add(userRole);
 		try {
 			return userRoleService.insertUserRole(list);
@@ -152,7 +152,8 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return 0;
+		return 0;*/
+		return userRoleService.insertUserRole(userRole);
 	}
 	
 	/**

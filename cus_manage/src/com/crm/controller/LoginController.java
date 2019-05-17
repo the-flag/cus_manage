@@ -108,6 +108,7 @@ public class LoginController {
 		}
 		Boolean filg=md5Utils.getSaltverifyMD5(user.getUser_password(),login.getUser_password());
 		if(filg) {
+			
 			request.setAttribute("key", "正确");
 			
 			if(remember == null){

@@ -247,12 +247,48 @@ obj={
         juese:function(index){
         	var data=$("#table").datagrid("getData");
         	var row=data.rows[index];
-        	alert(row.user_name);
-        	
         	$("#editRoleBox").dialog({
                 closed: false,
         	})
-        	
+        	/**
+        	 * 添加方法
+        	 */
+        	$("#addUserRole").click(function(){
+        		alert("添加！！");
+            	var data=$("#AllRole").datagrid("getSelected");
+            	$.post("addUserRole",{
+            		user_id:row.user_id,
+            		role_id:data.role_id
+            	},function(data){
+            		if(data>0){
+            			$.messager.alert('提示','添加成功!'); 
+            			obj.refreshRole();
+            		}else{
+            			$.messager.alert('提示','添加失败!');    
+            		}
+            	},"json")
+        		
+        		
+        	})
+        	/**
+        	 * 删除方法
+        	 */
+        	$("#delUserRole").click(function(){
+            	var data=$("#UserRole").datagrid("getSelected");
+            	$.post("delUserRole",{
+            		user_id:row.user_id,
+            		role_id:data.role_id
+            	},function(data){
+            		if(data>0){
+            			$.messager.alert('提示','删除成功!'); 
+            			obj.refreshRole();
+            		}else{
+            			$.messager.alert('提示','删除失败!');    
+            		}
+            	},"json")
+        		
+        		
+        	})
         	
         	  // 加载所有角色表格
             $("#AllRole").datagrid({
@@ -342,45 +378,16 @@ obj={
         	
         },
         refreshRole:function(){
-        	
-        	$("#AllRole").datagrid("load");
         	$("#UserRole").datagrid("load");
         	
         },
         //为当前用户添加角色
         addUserRole:function(){
-        	var node=$("#table").datagrid("getSelected");
-        	alert(node.user_name);
-        	var data=$("#AllRole").datagrid("getSelected");
-        	$.post("addUserRole",{
-        		user_id:node.user_id,
-        		role_id:data.role_id
-        	},function(data){
-        		if(data>0){
-        			$.messager.alert('提示','添加成功!'); 
-        			obj.refreshRole();
-        		}else{
-        			$.messager.alert('提示','添加失败!');    
-        		}
-        	},"json")
+        	
         },
         //当前用户删除角色
         delUserRole:function(){
-        	alert("删除用户");
-        	var node=$("#table").datagrid("getSelected");
-        	alert(node.user_name);
-        	var data=$("#UserRole").datagrid("getSelected");
-        	$.post("addUserRole",{
-        		user_id:node.user_id,
-        		role_id:data.role_id
-        	},function(data){
-        		if(data>0){
-        			$.messager.alert('提示','删除成功!'); 
-        			obj.refreshRole();
-        		}else{
-        			$.messager.alert('提示','删除失败!');    
-        		}
-        	},"json")
+        	
         },
         // 编辑
         edit:function (id) {

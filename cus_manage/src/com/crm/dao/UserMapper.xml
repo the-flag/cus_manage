@@ -70,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<if test="object.max_creat_time !=null and object.max_creat_time !='' ">
 					and user_creat_time &lt;=#{object.max_creat_time}
 				</if>
-				<if test="object.user_is_lock !=null and object.user_is_lock >0 ">
+				<if test="object.user_is_lock !=null ">
 					and user_is_lock=#{object.user_is_lock}
 				</if>
 			</if>

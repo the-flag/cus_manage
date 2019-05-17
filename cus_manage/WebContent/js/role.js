@@ -23,7 +23,7 @@ $("#table").datagrid({
         nowrap:true,
         height:'auto',
         sortName:'id',
-        checkOnSelect:false,
+       /* checkOnSelect:false,*/
         sortOrder:'asc',
         toolbar: '#tabelBut',
         columns:[[
@@ -89,7 +89,7 @@ $("#table").datagrid({
 
 // 加载树
 $("#tree").tree({
-        url:'getModuleTree',
+        url:'getModuleTree', // ModuleController
         method:"post",
         checkbox:true,
         lines:true
@@ -117,12 +117,33 @@ obj={
             $("#addsave").show();
 
         },
+        /**
+         * 在用户点击一行角色信息的时候触发
+         * 在左侧显示对应的角色信息，角色拥有的模块信息
+         */
+        editForm:function(row){
+        	alert(row.role_name);
+        	$("#roleForm").form('clear');
+        	$("#roleForm").form("load",row);
+        	//隐藏保存按钮
+        	 $("#addsave").hide();
+        	 $("#editsave").show();
+            $("#tree").tree({
+                url:'getModuleTreeByRoleId',  //ModuleController
+                method:"post",
+                checkbox:true,
+                lines:true,
+                queryParams:{
+                	role_id:row.role_id
+                }
+            })
+        },
+        /**
+         * 修改--数据填充
+         */
         xiugai:function(){
-        	var data=$("#table").datagrid("getSelections");
-        	if(data.length>1){
-        		$.messager.alert('提示','请选择一行');  
-        	}
-        	var row=data[0];
+        	var data=$("#table").datagrid("getSelected");
+        	var row=data;
         	alert(row.role_id);
         	alert(row.role_name);
         	$("#roleForm").form('clear');
@@ -132,7 +153,7 @@ obj={
         	 $("#editsave").show();
         	 
             $("#tree").tree({
-                url:'getModuleTreeByRoleId',
+                url:'getModuleTreeByRoleId',  //ModuleController
                 method:"post",
                 checkbox:true,
                 lines:true,
@@ -166,7 +187,12 @@ obj={
     				},function(data){
     					if(data>0){
     						$("#roleForm").form('clear');
-    						$("#tree").tree("reload");
+    						$("#tree").tree({
+    					        url:'getModuleTree',
+    					        method:"post",
+    					        checkbox:true,
+    					        lines:true
+    						})
 	                		obj.find();
 	                        $.messager.progress('close');
 	                	}

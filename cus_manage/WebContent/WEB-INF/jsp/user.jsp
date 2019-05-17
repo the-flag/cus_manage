@@ -141,8 +141,8 @@
 		</div>
 		<div style="float: left; width:20%">
 			<center >
-				<button class="easyui-linkbutton"  onclick="obj.addUserRole()">>></button> 
-				<a href="#" class="easyui-linkbutton"  onclick="obj.delUserRole()"><<</a>
+				<button id="addUserRole" class="easyui-linkbutton"  >>></button> 
+				<button id="delUserRole" class="easyui-linkbutton" >111<<</button>
 			</center>
 		</div>
 		<div style="float: right;width:40%">

@@ -47,7 +47,10 @@
         </div>
         <!--表格列表-->
         <div class="tableCon">
-            <table id="table" class="tableStyle"></table>
+            <table id="table" class="tableStyle" data-options="singleSelect:true,  onClickRow:function(index, row){
+        	obj.editForm(row);
+        	
+        },"></table>
             <div id="tabelBut">
                 <div>
                     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="obj.addBox()">新增</a>

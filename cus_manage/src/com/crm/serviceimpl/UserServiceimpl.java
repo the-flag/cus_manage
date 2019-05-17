@@ -80,7 +80,7 @@ public class UserServiceimpl implements UserService {
 				}
 			}
 			try {
-				if(!(userRoleService.insertUserRole(list)>0)) {
+				if(!(userRoleService.insertUserRoles(list)>0)) {
 					return 0;
 				}
 			} catch (Exception e) {

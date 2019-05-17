@@ -22,8 +22,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insertModule" parameterType="module">
 		INSERT INTO module(module_name,module_path,module_weight,module_parent_id) 
-		VALUE(#{module_name},#{module_path},#{module_weight},#{module_parent_id})
-	
+		select #{module_name},#{module_path},#{module_weight},#{module_parent_id} from dual 
+		where not exists (select 1 from module a where a.module_id=#{module_id})
 	</insert>
 	
 	<delete id="deleteModule" parameterType="int">

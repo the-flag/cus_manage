@@ -14,9 +14,9 @@ public class UserRoleServiceimpl implements UserRoleService {
 	@Autowired
 	private UserRoleMapper userRoleMapper;
 	@Override
-	public Integer insertUserRole(List<UserRole> list) throws Exception{
+	public Integer insertUserRoles(List<UserRole> list) throws Exception{
 		// TODO Auto-generated method stub
-		return userRoleMapper.insertUserRole(list);
+		return userRoleMapper.insertUserRoles(list);
 	}
 	@Override
 	public Integer deleteUserRoles(String user_ids) throws Exception {
@@ -34,6 +34,11 @@ public class UserRoleServiceimpl implements UserRoleService {
 	public Integer deleteUserRoleByUserIdAndRoleId(UserRole userRole) {
 		// TODO Auto-generated method stub
 		return userRoleMapper.deleteUserRoleByUserIdAndRoleId(userRole);
+	}
+	@Override
+	public Integer insertUserRole(UserRole userRole) {
+		// TODO Auto-generated method stub
+		return userRoleMapper.insertUserRole(userRole);
 	}
 
 }

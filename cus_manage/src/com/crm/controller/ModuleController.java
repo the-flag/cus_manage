@@ -33,7 +33,10 @@ public class ModuleController {
 		return "module";
 		
 	}
-	
+	/**
+	 * 查询所有的模块  
+	 * @return
+	 */
 	@RequestMapping(value="/getModuleTree",method=RequestMethod.POST)
 	@ResponseBody
 	public List<EasyUITreeJson> getModuleTree() {
@@ -59,7 +62,12 @@ public class ModuleController {
 		
 	}
 	
-	
+	/**
+	 * 根据角色id查询对应模块
+	 * 当前角色的模块设置为选中状态
+	 * @param role_id
+	 * @return
+	 */
 	@RequestMapping(value="/getModuleTreeByRoleId",method=RequestMethod.POST)
 	@ResponseBody
 	public List<EasyUITreeJson> getModuleTreeByRoleId(Integer role_id) {
@@ -82,6 +90,11 @@ public class ModuleController {
 		return moduleService.deleteModule(module_id);
 		
 	}
+	/**
+	 * 修改模块
+	 * @param module
+	 * @return
+	 */
 	@RequestMapping(value="/updateModule",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer updateModule(Module module) {
@@ -89,6 +102,11 @@ public class ModuleController {
 		return moduleService.updateModule(module);
 		
 	}
+	/**
+	 * 添加模块时不能存在重复的模块名称
+	 * @param module
+	 * @return
+	 */
 	@RequestMapping(value="/insertModule",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer insertModule(Module module) {
