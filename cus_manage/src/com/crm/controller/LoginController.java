@@ -57,6 +57,23 @@ public class LoginController {
 	
 	
 	/**
+	  * 跳转登陆页面
+	 * @return
+	 */
+	@RequestMapping(value="/exitlogin")
+	public void exitlogin(HttpServletRequest request,HttpServletResponse response){
+		request.getSession().removeAttribute("m");
+		try {
+			response.sendRedirect("login");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	/**
 	 * 获取生成验证码显示到 UI 界面
 	 * @param request
 	 * @param response
