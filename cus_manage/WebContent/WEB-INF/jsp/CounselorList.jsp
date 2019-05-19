@@ -356,38 +356,38 @@
 					<td><label for="name">学生名字:</label></td>
 					<td><input name="customer_name" class="easyui-validatebox" type="text"
 						id="look-customer_name" /></td>
-				</tr>
-			   <tr>
+			<!-- 	</tr>
+			   <tr> -->
 					<td><label for="name">地址:</label></td>
 					<td><input name="customer_address" class="easyui-validatebox"
 						type="text" id="customer_address" /></td>
-				</tr>
-				<tr>
+				<!-- </tr>
+				<tr> -->
 					<td><label for="name">电话:</label></td>
 					<td><input name="customer_phone" class="easyui-validatebox"
 						type="text" id="customer_phone" /></td>
-				</tr>
-				<tr>
+				<!-- </tr>
+				<tr> -->
 					<td><label for="name">qq:</label></td>
 					<td><input name="customer_qq" class="easyui-validatebox"
 						type="text" id="customer_qq" /></td>
-				</tr>
+				<!-- </tr> -->
 				<tr>
 					<td><label for="name">用户等级:</label></td>
 					<td><input name="customer_level" class="easyui-validatebox"
 						type="text" id="customer_level" /></td>
-				</tr>
-				<tr>
+				<!-- </tr>
+				<tr> -->
 					<td><label for="name">学历:</label></td>
 					<td><input name="customer_academic" class="easyui-validatebox"
 						type="text" id="customer_academic" /></td>
-				</tr>
-				<tr>
+				<!-- </tr>
+				<tr> -->
 					<td><label for="name">邮政编码:</label></td>
 					<td><input name="customer_post" class="easyui-validatebox"
 						type="text" id="address" /></td>
-				</tr>
-				<tr>
+				<!-- </tr>
+				<tr> -->
 					<td><label for="name">订金时间：：</label></td>
 					<td><input name="customer_dtime" class="easyui-validatebox"
 						type="text" id="customer_dtime" /></td>
@@ -396,46 +396,43 @@
 					<td><label for="name">是否缴费：：</label></td>
 					<td><input name="customer_jiaofei" class="easyui-validatebox"
 						type="text" id="customer_jiaofei" /></td>
-				</tr>
-					<tr>
+				<!-- </tr>
+					<tr> -->
 					<td><label for="name">缴费金额：：</label></td>
 					<td><input name="customer_jiaomoney" class="easyui-validatebox"
 						type="text" id="customer_jiaomoney" /></td>
-				</tr>
+				<!--  </tr>
 				
-				</tr>
-				<tr>
+				</tr>  -->
+			<!-- 	<tr> -->
 					<td><label for="name">是否退费：</label></td>
 					<td><input name="customer_istui" class="easyui-validatebox"
 						type="text" id="customer_istui" /></td>
-				</tr>
-					<tr>
+			<!-- 	</tr> -->
+					<!-- <tr> -->
 					<td><label for="name">退费原因：</label></td>
 					<td><input name="customer_tuicause" class="easyui-validatebox"
 						type="text" id="customer_tuicause" /></td>
 				</tr>
-				
 				
 				</tr>
 					<tr>
 					<td><label for="name">缴费时间：</label></td>
 					<td><input name="customer_jiaotime" class="easyui-validatebox"
 						type="text" id="customer_jiaotime" /></td>
-				</tr>
+			<!-- 	</tr>
 				
-				
-				
-				<tr>
+				<tr> -->
 					<td><label for="name">首次回访时间:</label></td>
 					<td><input name="customer_onevisit_time" class="easyui-datebox"
 						type="text" id="customer_onevisit_time" /></td>
-				</tr>
-				<tr>
+				<!-- </tr>
+				<tr> -->
 					<td><label for="name">定金金额：</label></td>
 					<td><input name="customer_dmoney" class="easyui-validatebox"
 						type="text" id="customer_dmoney" /></td>
-				</tr>
-				<tr>
+				<!-- </tr>
+				<tr> -->
 					<td><label for="name">订金时间:</label></td>
 					<td><input name="customer_dtime" class="easyui-datebox"
 						type="text" id="customer_dtime" /></td>
@@ -467,76 +464,78 @@
 	">
 		<form id="edit-frm" class="easyui-form">
 			<table cellpadding="5">
-				 <tr><td><label for="name">id:</label></td>
+				 <tr>
+				    <td><label for="name">id:</label></td>
 					<td><input disabled="disabled" name="customer_id"
 						class="easyui-validatebox" type="text" id="customer_id1" /></td>
-				</tr>
-				<tr>
+			<!-- 	</tr>
+				<tr> -->
 					<td><label for="name">名字:</label></td>
 					<td><input name="customer_name" class="easyui-validatebox" type="text"
 						id="customer_name1" /></td>
-				</tr>
-			   <tr>
+			 	</tr>
+			   <tr> 
 					<td><label for="name">地址:</label></td>
 					<td><input name="customer_address" class="easyui-validatebox"
 						type="text" id="customer_address1" /></td>
-				</tr>
-				<tr>
+				<!-- </tr>
+				<tr> --> 
 					<td><label for="name">电话:</label></td>
 					<td><input name="customer_phone" class="easyui-validatebox"
 						type="text" id="customer_phone1" /></td>
-				</tr>
-				<tr>
+			</tr>	
+			 
+				<tr> 
 					<td><label for="name">qq:</label></td>
 					<td><input name="customer_qq" class="easyui-validatebox"
 						type="text" id="customer_qq1" /></td>
-				</tr>
-				<tr>
+			<!-- 	</tr>
+				<tr> -->
 					<td><label for="name">用户等级:</label></td>
 					<td><input name="customer_level" class="easyui-validatebox"
 						type="text" id="customer_level1" /></td>
-				</tr>
-				<tr>
+			 	</tr>
+				<tr> 
 					<td><label for="name">学历:</label></td>
 					<td><input name="customer_academic" class="easyui-validatebox"
 						type="text" id="customer_academic1" /></td>
-				</tr>
-				<tr>
+			 	<!-- </tr>
+				<tr>  -->
 					<td><label for="name">是否上门:</label></td>
 					<!-- <td><input name="customer_ingate" class="easyui-validatebox"
 		
 						type="text" id="customer_ingate1" /></td> -->
-       			<td>
+       		     	<td>
 		     	 	 <select id="customer_ingate1" > 
 				         <option value="">--请选择--</option>  
 				         <option value="1">是</option>   
 				         <option value="2">否</option>   
 	         		</select>  
 		         </td>		
-				</tr>
-				<tr>
+	            </tr>
+				<tr> 
 					<td><label for="name">邮政编码:</label></td>
 					<td><input name="customer_post" class="easyui-validatebox"
 			
 					type="text" id="customer_post1" /></td>
-				</tr>
-				<tr>
+		    <!--     </tr>
+				<tr>  -->
 					<td><label for="name">首次回访时间:</label></td>
 					<td><input name="customer_onevisit_time" class="easyui-datebox"
 						type="text" id="customer_onevisit_time1" /></td>
-				</tr>
+				 </tr>
 				<tr>
 					<td><label for="name">定金金额：</label></td>
 					<td><input name="customer_dmoney" class="easyui-validatebox"
 						type="text" id="customer_dmoney1" /></td>
-				</tr>
+			 <!-- 	</tr>
 				
-				<tr>
+				<tr>  -->
 					<td><label for="name">订金时间:</label></td>
 					<td><input name="customer_dtime" class="easyui-datebox"
 						type="text" id="customer_dtime1" /></td>
-				</tr>
-				<tr>
+		       </tr>
+				<tr> 
 					<td><label for="name">咨询师备注：</label></td>
 					<td><input name="customer_zixunremark" class="easyui-validatebox"
 						type="text" id="customer_zixunremark1" /></td>
@@ -605,7 +604,7 @@
 				</tr>
 				<tr>
 					<td><label for="name">咨询师id:</label></td>
-					<td><input name="user_id" class="easyui-validatebox"
+					<td><input disabled="disabled" name="user_id" class="easyui-validatebox"
 						type="text" id="add-user_id" /></td>
 				</tr>
 				
