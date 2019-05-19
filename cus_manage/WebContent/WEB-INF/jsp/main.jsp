@@ -80,7 +80,7 @@
            data-options="menu:'#mm',iconCls:'icon-admin'">${m.user_name }帐号</div>
         <div id="mm" >
             <div data-options="iconCls:'icon-man'"><a href="javascript:void(0)" onclick="openMes()">个人信息</a> </div>
-            <div data-options="iconCls:'icon-redo'"><a href="javascript:void(0) "onclick="saveExit()">安全退出</a> </div>
+            <div data-options="iconCls:'icon-redo'"><a href="javascript:void(0) "onclick="myUpdPass()">安全设置</a> </div>
             <div data-options="iconCls:'icon-cancel'"><a href="javascript:void(0)" onclick="saveCanle()"> 注销</a> </div>
 
         </div>
@@ -101,20 +101,23 @@
     </div>
 </div>
 <div id="myMes">
-
-<p><label class="diaLable">用户名：</label><input  class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true,novalidate:true" value="张林海"></p>
-   <p><label class="diaLable">登录名称：</label><input  class="easyui-validatebox TailInput" data-options="required:true" value="zhanglinghai"></p>
-    <p><label class="diaLable">用户密码：</label><input  type="password" value="123456" class="easyui-validatebox TailInput" data-options="required:true,"></p>
-    <p><label class="diaLable">用户角色：</label><input  class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true,novalidate:true" value="管理员"></p>
+ 	<p><label class="diaLable">登录账号：</label><input  class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true" value="zhanglinghai"></p>
+	<p><label class="diaLable">用户名：</label><input  class="easyui-validatebox TailInput"  data-options="required:true,novalidate:true" value="张林海"></p>
+   <!--  <p><label class="diaLable">用户密码：</label><input  type="password" value="123456" class="easyui-validatebox TailInput" data-options="required:true,"></p> -->
+   <!--  <p><label class="diaLable">用户角色：</label><input  class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true,novalidate:true" value="管理员"></p>
     <p><label class="diaLable">所属部门：</label><input  class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true,novalidate:true" value="行政部门"></p>
-    <p><label class="diaLable areaLabel">描述：</label><textarea class="TailArea01" ></textarea></p>
+    <p><label class="diaLable areaLabel">描述：</label><textarea class="TailArea01" ></textarea></p> -->
     <div class="forSubmint"> <a href="#" class="easyui-linkbutton"  iconCls="icon-save" >保存</a><a href="#" class="easyui-linkbutton"  iconCls="icon-redo" >重置</a> </div>
+</div>
+<div id="myUpdPass">
+ 	<p><label class="diaLable">旧密码：</label><input  class="easyui-validatebox TailInput"  data-options="required:true" value=""></p>
+	<p><label class="diaLable">新密码：</label><input type="password"  class="easyui-validatebox TailInput"  data-options="required:true" value=""></p>
+    <p><label class="diaLable">再次确定密码：</label><input  type="password"  class="easyui-validatebox TailInput" data-options="required:true" value=""></p>
+    <div class="forSubmint"> <a href="javascript:void(0)" class="easyui-linkbutton"  iconCls="icon-save" onclick="editPass()">保存</a><a href="#" class="easyui-linkbutton"  iconCls="icon-redo" >取消</a> </div>
 </div>
 
 
 <script src="js/main.js"></script>
-
-
 
 </body>
 </html>
