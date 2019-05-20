@@ -127,7 +127,7 @@ public class LoginController {
 			}
 			User admin = (User) request.getSession().getAttribute("m");
 			if(admin!=null) {
-				return "main";
+				return "redirect:getMain";
 			}
 			request.setAttribute("key", "正确");
 			if(remember == null){

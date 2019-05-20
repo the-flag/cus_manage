@@ -32,8 +32,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 			if (admin != null) {
 				String sessionid = MemoryData.getSeeesionIdMap().get(admin.getUser_account());
     			// 如果用户名存在放心（即登录放行）
-    			if (sessionid.equals(request.getSession().getId())) {
-    				return true;
+				if(sessionid!=null) {
+	    			if (sessionid.equals(request.getSession().getId())) {
+	    				return true;
+					}
 				}
 			}
 			// 获取到项目名，以便下面进行重定向
