@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.crm.pojo.Access_record;
 import com.crm.pojo.FenYe;
 import com.crm.service.ManagerService;
 import com.crm.service.NetWorkTeacherService;
@@ -43,6 +44,24 @@ public class NetWorkTeacherController {
 		List<String> list=new ArrayList<String>();
 		list.add(user_id);
 		return managerService.updateSignStatus(list);
+				
+	}
+	
+	
+	@RequestMapping(value="/insertTrackInfo",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer insertTrackInfo(Access_record access_record) {
+	
+		return netWorkTeacherService.insertTrackInfo(access_record);
+				
+	}
+	
+	
+	@RequestMapping(value="/selectDateLog",method=RequestMethod.POST)
+	@ResponseBody
+	public List<Access_record> selectDateLog() {
+	
+		return netWorkTeacherService.selectDateLog();
 				
 	}
 	

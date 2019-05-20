@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.crm.pojo.Customer;
+import com.crm.pojo.CustomerTrackParameters;
 import com.crm.pojo.FenYe;
 import com.crm.pojo.User;
 
@@ -23,5 +24,10 @@ public interface ManagerMapper {
 	Integer  updateUserStatus(List<String> s);
 	//签到
 	Integer updateUserSignin(int id);
-
+	//获取所有的咨询师
+	List<User> selectUserReferTeacher();
+	//对客户进行跟踪
+	Integer  updateCustomerTrack(CustomerTrackParameters customerTrackParameters);
+    //修改客户的基本信息
+	Integer UpdateCustomer(Customer customer);
 }

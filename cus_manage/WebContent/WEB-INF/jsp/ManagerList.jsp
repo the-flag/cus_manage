@@ -1,4 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+
+
+<%-- <%
+    Customer customer=new Customer();
+    List<Customer> list=(List<Customer>)request.getSession().getAttribute("selectCustomer");
+ %> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -116,6 +123,43 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 	  $("#Addwin").window("open"); 
    }
    
+   function addcustomer(){
+	   alert("sfs");
+	   $.messager.confirm('确认','确认添加？',function(r){
+		   if(r){   
+			   $.post("insertCustomer",{      
+				   customer_no:$("#customer_no").val(),
+				   customer_name:$("#customer_name").val(),
+				   customer_age:$("#customer_age").val(),
+				   customer_status:$("#customer_status").val(),
+				   customer_region:$("#customer_region").val(),
+				   customer_post:$("#customer_post").val(),
+				   customer_address:$("#customer_address").val(),
+				   customer_phone:$("#customer_phone").val(),
+				   customer_qq:$("#customer_qq").val(),
+				   customer_sex:$("#customer_sex").val(),
+				   customer_academic:$("#customer_academic").val(),
+				   customer_source:$("#customer_source").val(),
+				   customer_level:$("#customer_level").val(),
+				   user_id:${m.user_id}
+			              },function(data){
+			            	  if(data>0){
+			            		  $.messager.alert('提示','添加成功');
+			            		  $("#Addwin").window("close");
+			            		  $("#managerTab").datagrid("reload");
+			            	  }
+			              },"json");
+		   }
+		   
+	   });
+
+   }
+   //添加中的重置
+   function resetForm(){
+	   
+	   $("#MangerFrom").form('reset');
+   }
+   
    function testcolumn(){
 	/*    var row = $('#datagrid').datagrid('getData').rows[index]; */
 	   
@@ -165,12 +209,131 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		} 
 	  
   }
+  //格式化操作列
+  function formatterusercaozuo(value,row,index){
+	  return "<a href='javascript:void(0)' onclick='chakan("+index+")'>查看</a>  <a href='javascript:void(0)' onclick='删除("+index+")'>删除</a>"
+  }
+  //查看
+  function chakan(index){
+	 var data=$("#managerTab").datagrid("getData");
+	 var row=data.rows[index];
+	 alert(row.customer_sex);
+	 $("#ChaFrom").form("load",row);
+	 $("#Ucustomer_sex").combobox('setValue',row.customer_sex);
+	 $("#Ucustomer_status").combobox('setValue',row.customer_status);
+	 $("#Ucustomer_region").combobox('setValue',row.customer_region);
+	 $("#Ucustomer_academic").combobox('setValue',row.customer_academic);
+	 $("#Ucustomer_source").combobox('setValue',row.customer_source);
+	 $("#Ucustomer_course").combobox('setValue',row.customer_course);
+	 $("#Ucustomer_level").combobox('setValue',row.customer_level);
+	 $("#Ucustomer_visit").combobox('setValue',row.customer_visit);
+	 $("#Ucustomer_ingate").combobox('setValue',row.customer_ingate);
+	 $("#Ucustomer_jiaofei").combobox('setValue',row.customer_jiaofei);
+	 $("#Ucustomer_istui").combobox('setValue',row.customer_istui);
+	 $("#Ucustomer_isjinban").combobox('setValue',row.customer_isjinban);
+	 $("#btncus").linkbutton("disable");
+	 $("#ChaKanWin").window("open");
+	  
+  }
+  
+ 
+  //跟踪
+  function fenpeiCustomer(){
+	  $("#GZwin").window("open");
+	  
+  }
+  
+  function CustomerTrack(){
+	    var s="";
+		var data=$("#managerTab").datagrid('getSelections');
+	    for(var i=0;i<data.length;i++){
+	    	s=s+data[i].customer_id+",";
+	    }
+	    s = s.substring(0,s.length - 1);
+	    alert(s);
+	    $.post("updateCustomerTrack",{s:s,user_id:$("#geTesgt").val()},
+	   function(r){
+	    	if(r>0){
+	    		$.messager.alert('提示','更换咨询师成功');
+	    		$("#GZwin").window("close");
+	    	}else{
+	    		$.messager.alert('提示','更换咨询师失败');
+	    	}
+	    },"josn");
+  }
+  //修改
+  function editCustomer(){
+	 
+		var data1=$("#managerTab").datagrid('getSelected');
+		var data2=$("#managerTab").datagrid("getData");
+		alert(data1.customer_id);
+		 var row=data2.rows[data1.customer_id-1];
+		 $("#ChaFrom").form("load",row);
+		 $("#Ucustomer_sex").combobox('setValue',row.customer_sex);
+		 $("#Ucustomer_status").combobox('setValue',row.customer_status);
+		 $("#Ucustomer_region").combobox('setValue',row.customer_region);
+		 $("#Ucustomer_academic").combobox('setValue',row.customer_academic);
+		 $("#Ucustomer_source").combobox('setValue',row.customer_source);
+		 $("#Ucustomer_course").combobox('setValue',row.customer_course);
+		 $("#Ucustomer_level").combobox('setValue',row.customer_level);
+		 $("#Ucustomer_visit").combobox('setValue',row.customer_visit);
+		 $("#Ucustomer_ingate").combobox('setValue',row.customer_ingate);
+		 $("#Ucustomer_jiaofei").combobox('setValue',row.customer_jiaofei);
+		 $("#Ucustomer_istui").combobox('setValue',row.customer_istui);
+		 $("#Ucustomer_isjinban").combobox('setValue',row.customer_isjinban);
+		 $("#btncus").linkbutton("enable");
+		 $("#ChaKanWin").window("open");
+	  
+  }     
+  function updateSave(){
+	  $.messager.confirm("确认","确认修改吗",
+	function(r){
+		if(r){
+			  $.post("UpdateCustomer",{
+				  customer_id:$("#Ucustomer_id").val(),
+				  customer_no:$("#Ucustomer_no").val(),
+				  customer_name:$("#Ucustomer_name").val(),
+				  customer_academic:$("#Ucustomer_academic").combobox("getValue"),
+				  customer_region:$("#Ucustomer_region").combobox("getValue"),
+				  customer_post:$("#Ucustomer_post").val(),
+				  customer_address:$("#Ucustomer_address").val(),
+				  customer_phone:$("#Ucustomer_phone").val(),
+				  customer_source:$("#Ucustomer_source").combobox("getValue"),
+				  customer_qq:$("#Ucustomer_qq").val(),
+				  customer_course:$("#Ucustomer_course").combobox("getValue"),
+				  customer_age:$("#Ucustomer_age").val(),
+				  customer_level:$("#Ucustomer_level").combobox("getValue"),
+				  customer_status:$("#Ucustomer_status").combobox("getValue"),
+				  customer_visit:$("#Ucustomer_visit").combobox("getValue"),
+				  customer_ingate:$("#Ucustomer_ingate").combobox("getValue"),
+				  customer_dmoney:$("#Ucustomer_dmoney").val(),
+				  customer_jiaomoney:$("#Ucustomer_jiaomoney").val(),
+				  customer_istui:$("#Ucustomer_istui").combobox("getValue"),
+				  customer_tuicause:$("#Ucustomer_tuicause").val(),
+				  customer_isjinban:$("#Ucustomer_isjinban").combobox("getValue"),
+				  customer_zixunremark:$("#Ucustomer_zixunremark").val(),
+			              },function(data){
+			            	  if(data>0){
+			            		  $.messager.alert('提示','修改成功');
+			            		  $("#Addcolumn").window("close");
+			            		  $("#managerTab").datagrid("reload");
+			            	  }else{
+			            		  $.messager.alert('提示','修改失败');
+			            	  }
+			            	
+			              },"json");
+		     }
+	          });
+	 
+	  
+  }
 </script>
 <body>
   <table id="managerTab" class="easyui-datagrid"    
-        data-options="fitColumns:true,singleSelect:true">   
+        data-options="fitColumns:true">   
     <thead>   
-        <tr>   
+        <tr> 
+             <th data-options="field:'',width:100,checkbox:true"></th>  
             <th data-options="field:'customer_id',width:100">No</th>
             <th data-options="field:'customer_no',width:100">客户编号</th>
             <th data-options="field:'customer_name',width:100">名字</th>
@@ -192,7 +355,8 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
             <th data-options="field:'customer_create_time',width:100">创建时间</th>
             <th data-options="field:'customer_source',width:100">来源渠道</th>
             <th data-options="field:'user.user_name',width:100,formatter:formatteruser_name">咨询师</th>
-           
+            <th data-options="field:'caozuo',width:100,formatter:formatterusercaozuo">操作</th>
+            
             
            
         </tr>   
@@ -223,13 +387,16 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="searchM()" data-options="iconCls:'icon-search'">搜索</a>
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="addCumtomer()" data-options="iconCls:'icon-add'">添加</a>
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="testcolumn()" data-options="iconCls:'icon-add'">设置显示隐藏列</a>
+         <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="fenpeiCustomer()" data-options="iconCls:'icon-redo'">设置跟踪人员</a>
+         <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="editCustomer()" data-options="iconCls:'icon-edit'">编辑</a>
          
    </form>
  </div>
  
  <div id="Addwin" class="easyui-dialog" title="Add Customer" style="width:250px;height:400px"   
         data-options="iconCls:'icon-save',modal:true,closed:true,draggable:true">   
-           <label for="name">客户编号</label>  
+         <form id="MangerFrom">
+           <label for="name">客户编号</label> 
           <input type="text" name="name" id="customer_no" />
           <br/>
            <label for="name">客户名字</label> 
@@ -285,7 +452,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
              <select id="customer_sex">   
 	         <option value="">--请选择--</option>
 	         <option value="1">男</option>   
-	         <option value="0">女</option>   
+	         <option value="2">女</option>   
          </select>         
           <br/>
           <label for="name">客户学历</label>
@@ -319,7 +486,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
          </select>               
           <br/>
           <label for="name">客户等级</label> 
-           <select id="customer_sex">   
+           <select id="customer_level">   
 	         <option value="">--请选择--</option>
 	         <option value="1">一级</option>   
 	         <option value="2">二级</option>   
@@ -330,10 +497,11 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 	         <option value="7">七级</option>   
          </select>           
           <br/>
+         </form>
           
     <center>
     <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="addcustomer()" data-options="iconCls:'icon-save'">保存</a>  
-    <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="abolish()" data-options="iconCls:'icon-remoce'">取消</a>  
+    <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="resetForm()" data-options="iconCls:'icon-remoce'">重置</a>  
    </center>
           
           <!-- 
@@ -395,6 +563,178 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
     <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="nonecolumn()" data-options="iconCls:'icon-save'">隐藏</a>  
    </center>
  
+ </div>
+ <!-- 查看窗口 -->
+ <div id="ChaKanWin" class="easyui-dialog" title="CustomerInfo" style="width:680px;height:400px"   
+        data-options="iconCls:'icon-save',modal:true,closed:true,draggable:true">   
+         <form id="ChaFrom" class="easyuii-form">
+           <input type="hidden" name="customer_id" id="Ucustomer_id" class="easyui-textbox"  />
+          <label for="name">客户编号</label> 
+          <input type="text" name="customer_no" id="Ucustomer_no"   />
+     
+          <label for="name">客户名字</label> 
+          <input type="text" name="customer_name" id="Ucustomer_name"   />
+          <label for="name">客户年龄</label>
+          <input type="text" name="customer_age" id="Ucustomer_age"   /><br/>
+           <label for="name">客户状态</label>
+              <select id="Ucustomer_status" class="easyui-combobox">   
+	         <option value="">--请选择--</option>
+	         <option value="1">未知</option>   
+	         <option value="2">待业</option>
+	         <option value="3">在职</option>
+	         <option value="4">在读</option>   
+         </select>   
+          <label for="name">所属地区</label>
+           <select id="Ucustomer_region" class="easyui-combobox">   
+	         <option value="">--请选择--</option>
+	         <option value="未知">未知</option>   
+	         <option value="其它">其它</option>
+	         <option value="郑州">郑州</option>
+	         <option value="开封">开封</option>   
+	         <option value="洛阳">洛阳</option>   
+	         <option value="南阳">南阳</option>
+	         <option value="漯河">漯河</option>
+	         <option value="三门峡">三门峡</option>   
+	         <option value="平顶山">平顶山</option>   
+	         <option value="周口">周口</option>
+	         <option value="驻马店">驻马店</option>
+	         <option value="新乡">新乡</option> 
+	          <option value="鹤壁">鹤壁</option>
+	         <option value="濮阳">濮阳</option> 
+	          <option value="安阳">安阳</option>
+	         <option value="信阳">信阳</option>   
+         </select>         
+           <label for="name">邮政编码</label> 
+          <input type="text" name="customer_post" id="Ucustomer_post"   /> <br/>       
+         
+           <label for="name">客户地址</label>     
+          <input type="text" name="customer_address" id="Ucustomer_address"   />   
+          
+            <label for="name">客户电话</label> 
+          <input type="text" name="customer_phone" id="Ucustomer_phone"  />     
+          
+          <label for="name">客户QQ</label>     
+          <input type="text" name="customer_qq" id="Ucustomer_qq"   />  <br/>   
+          
+           <label for="name">客户性别</label>
+            <select class="easyui-combobox" id="Ucustomer_sex">   
+	         <option value="">--请选择--</option>
+	         <option value="1">男</option>   
+	         <option value="2">女</option>   
+         </select>         
+          
+          <label for="name">客户学历</label>
+            <select id="Ucustomer_academic" class="easyui-combobox">   
+	         <option value="">--请选择--</option>
+	         <option value="高中以下">高中以下</option>   
+	         <option value="高中">高中</option> 
+	         <option value="大专">大专</option>
+	         <option value="本科">本科</option> 
+	    	 <option value="本科以上">本科以上</option>        
+         </select>                     
+          
+             <label for="name">来源渠道</label>
+               <select id="Ucustomer_source" class="easyui-combobox">   
+	         <option value="">--请选择--</option>
+	         <option value="网络信息">网络信息</option>   
+	         <option value="咨询电话">咨询电话</option> 
+   	         <option value="促销活动">促销活动</option> 
+   	         <option value="上门拜访">上门拜访</option>   
+         </select>         
+              <br/>      
+         
+          
+          <label for="name">课程方向</label>
+           <select id="Ucustomer_course" class="easyui-combobox">   
+	         <option value="">--请选择--</option>
+	         <option value="软件开发">软件开发</option>   
+	         <option value="软件设计">软件设计</option>
+   	         <option value="网络营销">网络营销</option> 
+     
+         </select>            
+          
+          <label for="name">客户等级</label>
+           <select id="Ucustomer_level" class="easyui-combobox">   
+	         <option value="">--请选择--</option>
+	         <option value="1">一级</option>   
+	         <option value="2">二级</option>   
+	          <option value="3">三级</option>   
+	         <option value="4">四级</option>   
+	          <option value="5">五级</option>   
+	         <option value="6">六级</option>  
+	         <option value="7">七级</option>   
+         </select>       
+          
+            <label for="name">是否访问</label>
+             <select id="Ucustomer_visit" class="easyui-combobox">   
+	         <option value="">--请选择--</option>
+	         <option value="1">是</option>   
+	         <option value="2">否</option>
+             </select>          
+           <label for="name">是否上门</label>
+            <select id="Ucustomer_ingate" class="easyui-combobox">   
+	         <option value="">--请选择--</option>
+	         <option value="1">是</option>   
+	         <option value="2">否</option>
+             </select>  <br/>  
+          
+          <label for="name">首次回访时间</label>   
+          <input type="text" name="customer_onevisit_time" id="Ucustomer_onevisit_time"  />
+           <label for="name">上门时间</label>   
+          <input type="text" name="customer_ingate_time" id="Ucustomer_ingate_time"   />
+          <label for="name">定金金额</label>   
+          <input type="text" name="customer_dmoney" id="Ucustomer_dmoney"  />
+          <label for="name">定金时间</label>   
+          <input type="text" name="customer_dtime" id="Ucustomer_dtime"  />
+          <label for="name">是否缴费</label> 
+             <select id="Ucustomer_jiaofei" class="easyui-combobox">   
+	         <option value="">--请选择--</option>
+	         <option value="1">是</option>   
+	         <option value="2">否</option>
+             </select>      
+          <br/>
+          <label for="name">缴费时间</label>   
+          <input type="text" name="customer_jiaotime" id="Ucustomer_jiaotime"   />
+          <label for="name">缴费金额</label>   
+          <input type="text" name="customer_jiaomoney" id="Ucustomer_jiaomoney" />
+          <label for="name">是否退费</label>
+            <select id="Ucustomer_istui" class="easyui-combobox">   
+	         <option value="">--请选择--</option>
+	         <option value="1">是</option>   
+	         <option value="2">否</option>
+             </select>        
+          <label for="name">退费原因</label>   
+          <input type="text" name="customer_tuicause" id="Ucustomer_tuicause"  />
+          <label for="name">是否进班</label> 
+          <select id="Ucustomer_isjinban" class="easyui-combobox">   
+	         <option value="">--请选择--</option>
+	         <option value="1">是</option>   
+	         <option value="2">否</option>
+             </select>      
+            <label for="name">进班时间</label>   
+          <input type="text" name="customer_jinbantime" id="Ucustomer_jinbantime"  /><br/>
+            <label for="name">进班备注</label>   
+          <input type="text" name="customer_jinbanremark" id="Ucustomer_jinbanremark"   />
+            <label for="name">咨询师备注</label>   
+          <input type="text" name="customer_zixunremark" id="Ucustomer_zixunremark"   /> 
+          <center>
+         <a id="btncus" href="javascript:void(0)" class="easyui-linkbutton" onclick="updateSave()" data-options="iconCls:'icon-save'">提交</a>    
+        </center>
+        </form> 
+     
+</div>  
+ <!-- 跟踪 -->
+ <div id="GZwin" class="easyui-dialog" title="Add Customer" style="width:250px;height:400px"   
+        data-options="iconCls:'icon-save',modal:true,closed:true,draggable:true">
+        <select id="geTesgt">
+        <option value="">--请选择--</option>
+        <c:forEach items="${selectUserReferTeacher}" var="surt">
+         <option value="${surt.user_id}">${surt.user_name}</option>
+        </c:forEach>
+        </select>
+        <center>
+         <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="CustomerTrack()" data-options="iconCls:'icon-save'">提交</a>    
+        </center>
  </div>
 </body>
 </html>
