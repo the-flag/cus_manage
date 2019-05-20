@@ -83,9 +83,9 @@ canvas {
 		 
 	}
 	function submitForm() {
-		if(validate()){
+		/* if(validate()){ */
 		    document.getElementById("myForm").submit();
-		}
+		/* } */
 	}
 	
 </script>

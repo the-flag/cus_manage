@@ -116,7 +116,7 @@ public class LoginController {
 		}
 		User login = userService.selectUserByAccount(user);
 		if(login==null) {
-			request.setAttribute("key", "账号或密码错误!!!");
+			request.setAttribute("key", "账号或密码错误 账号");
 			return "login";
 		}
 		Boolean filg=md5Utils.getSaltverifyMD5(user.getUser_password(),login.getUser_password());
@@ -167,8 +167,7 @@ public class LoginController {
 			 
 		}else {
 			userService.updateUserWrongNumberByAccount(login);
-			System.out.println("账号或密码错误!!!");
-			request.setAttribute("key", "账号或密码错误");
+			request.setAttribute("key", "账号或密码错误22222");
 			if(login.getUser_wrong_number()==4) {
 				login.setUser_is_lock(0);;
 				userService.updateUserIsLockByUserId(user);
