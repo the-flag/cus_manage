@@ -21,7 +21,11 @@
 			 url:'selectCounselor',
 			 method:'post',
 			 pagination:true,
-			 toolbar:"#searchTab"
+			 toolbar:"#searchTab",
+			 queryParams: {
+					user_id:${m.user_id}
+				}
+
 			 
 		   })
 }
@@ -278,7 +282,7 @@
 </script>
 <body>
   <table id="managerTab" class="easyui-datagrid"    
-        data-options="fitColumns:true,singleSelect:true">   
+        data-options="fitColumns:true,singleSelect:false">   
     <thead>   
         <tr>   
         <th data-options="field:'check',checkbox:true"></th>
@@ -621,12 +625,16 @@
 <script type="text/javascript">
 //这里开始excel导出
 	$("#btnExport").click(function() {
-		var data = JSON.stringify($('#managerTab').datagrid('getData').rows);
-		if (data == '')
-			return;
+	var rows=$("#managerTab").datagrid("getSelections");
+	if(rows.length==0){
+		$.messages.alert("提示","请选择你要导出的数据");
+	}
+	var data = JSON.stringify(rows);
+	if (data == '')
+		return;
 
-		JSONToCSVConvertor(data, "数据信息", true);
-	});
+	JSONToCSVConvertor(data, "k数据信息", true);
+});
 
 	function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
 		//如果jsondata不是对象，那么json.parse将分析对象中的json字符串。

@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.crm.dao.ManagerMapper;
 import com.crm.pojo.Customer;
+import com.crm.pojo.CustomerTrackParameters;
 import com.crm.pojo.FenYe;
+import com.crm.pojo.User;
 import com.crm.service.ManagerService;
 @Service
 public class ManagerServiceImp implements ManagerService {
@@ -46,5 +48,25 @@ public class ManagerServiceImp implements ManagerService {
 		// TODO Auto-generated method stub
 		return managerMapper.updateUserSignin(id);
 	}
+
+	@Override
+	public List<User> selectUserReferTeacher() {
+		// TODO Auto-generated method stub
+		return managerMapper.selectUserReferTeacher() ;
+	}
+
+	@Override
+	public Integer updateCustomerTrack(CustomerTrackParameters customerTrackParameters) {
+		// TODO Auto-generated method stub
+		return managerMapper.updateCustomerTrack(customerTrackParameters);
+	}
+
+	@Override
+	public Integer UpdateCustomer(Customer customer) {
+		// TODO Auto-generated method stub
+		return managerMapper.UpdateCustomer(customer);
+	}
+
+
 
 }

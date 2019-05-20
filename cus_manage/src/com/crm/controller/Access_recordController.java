@@ -38,10 +38,6 @@ public FenYe showAccess_record (int page,int rows,FenYe fenYe) {
 @ResponseBody
 public int insert(Access_record access_record,Customer customer) {
 
-	System.out.println("this is ���"+access_recordService.insertAccess_record(access_record));
-	
-	
-
 	 int a=   access_recordService.updateCustomer_view(customer);
 	return access_recordService.insertAccess_record(access_record);
 }

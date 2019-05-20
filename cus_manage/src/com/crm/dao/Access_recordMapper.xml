@@ -74,6 +74,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        <if test="maxTime!='' and maxTime!=null">
        and a.record_time &lt;=#{maxTime}
        </if>
+        <if test="user_id>0">
+        and a.user_id=#{user_id}
+       </if>
     </where> 
    </select>
    
@@ -101,6 +104,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        </if>
        <if test="maxTime!='' and maxTime!=null">
        and a.record_time &lt;=#{maxTime}
+       </if>
+         <if test="user_id>0">
+        and a.user_id=#{user_id}
        </if>
   </where> 
      <!--      <include refid="stusql"></include> -->

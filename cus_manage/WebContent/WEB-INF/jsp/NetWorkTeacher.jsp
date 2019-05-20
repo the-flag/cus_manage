@@ -65,7 +65,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 
 
 $(function(){
-	
+	shezhidongtai();
 	$("#NetWorkTeacherTab").datagrid({
 		url:'selectNetWorkTeacher',
 		method:'post',
@@ -75,30 +75,17 @@ $(function(){
 			user_id:${m.user_id}
 		}
 
+	}
+	);
+	
+
+	$("#datelogId").datagrid({
+		url:'selectDateLog',
+		method:'post',
+		pagination:true
 	});
 	
 })
-   function exportexcel(filter) {
-        
-        var grid = $("#NetWorkTeacherTab");
-        var rows=grid.datagrid("getRows");
-        if(filter){
-          rows=[rows[0],rows[1]];
-        }
-        var obj = $.ExportExcelDlg({
-            HeadInfo: grid.datagrid("options").columns,
-            RowInfo: rows,
-            FooterInfo: grid.datagrid("getFooterRows"),
-            RowStart: 2,
-            ColumStart: 2,
-            SheetName: 'sheet名字',
-            MainTitle: { Displayname: '主标题', Alignment: 'Center' },
-            SecondTitle: { Displayname: '父标题', Alignment: 'Right' },
-            SaveName: "js导出excel",
-            Swf: 'ExportExcel.swf'
-        });
-        obj.ExportExcelDlg('open');
-    }
 
  //搜索
    function searchM(){
@@ -152,7 +139,7 @@ function Signin(){
 	
 	
 }
-
+//签退
 function Signback(){
 	
 	   $.messager.confirm('确认','确认进行签退吗？',function(r){
@@ -166,10 +153,111 @@ function Signback(){
 	            	
 	            },"json");
 	    	}
-	    })
+	    });
 	    
 	
 	
+}
+//跟踪
+function CustomerTrack(index){
+	$("#AddTrackwin").window("open");
+}
+function TrackSave(){
+	var data=$("#NetWorkTeacherTab").datagrid("getSelected");
+	var myDate = new Date();//回访时间（当前时间）
+	var record_lasttime = new Date(($("#record_lasttime").combobox('getValue')).replace(/-/g,"/"));//下次跟踪时间
+	var record_time=new Date((myDate.toLocaleDateString()).replace(/-/g,"/"));;
+	alert(record_lasttime);
+	if(record_lasttime>record_time){
+		alert("成功");
+		$.post("insertTrackInfo",{
+			       user_id:${m.user_id},
+			       customer_id:data.customer_id,
+			       record_time:myDate.toLocaleDateString(),
+			       record_lasttime:$("#record_lasttime").combobox('getValue'),
+			       record_condition:$("#record_condition").val(),
+			       record_remark:$("#record_remark").val()
+			
+		          },function(data){
+		        	  if(data>0){
+		        		  $.messager.alert('提示','添加跟踪信息成功!');
+		        		  $("#AddTrackwin").window("close");
+		        	  }else{
+		        		  $.messager.alert('提示','失败!');
+		        	  }
+		        	  
+		        	  
+		          },"json");
+		
+	}else{
+		$.messager.alert('提示','请合理规划下次跟踪的时间');
+	}
+	
+	
+}
+//格式化操作行
+function formattercaozuo(value,row,index){
+	return "<a  href='javascript:void(0)' class='easyui-linkbutton' onclick='CustomerTrack("+index+")'>跟踪</a>   <a  href='javascript:void(0)' class='easyui-linkbutton' onclick='datelog("+index+")'>日志</a>";
+}
+//查看日志信息
+function datelog(index){
+	$("#datelogwin").window("open");
+}
+//导出excel
+	function shezhidongtai(){
+		var createGridHeaderContextMenu = function(e, field) {
+			e.preventDefault();
+			var grid = $(this);/* grid本身 */
+			var headerContextMenu = this.headerContextMenu;/* grid上的列头菜单对象 */
+			var okCls = 'tree-checkbox1';// 选中
+			var emptyCls = 'tree-checkbox0';// 取消
+			if (!headerContextMenu) {
+				var tmenu = $('<div style="width:100px;"></div>').appendTo('body');
+				var fields = grid.datagrid('getColumnFields');
+				for (var i = 0; i < fields.length; i++) {
+					var fildOption = grid.datagrid('getColumnOption', fields[i]);
+					if (!fildOption.hidden) {
+						$('<div iconCls="' + okCls + '" field="' + fields[i] + '"/>')
+								.html(fildOption.title).appendTo(tmenu);
+					} else {
+						$('<div iconCls="' + emptyCls + '" field="' + fields[i] + '"/>')
+								.html(fildOption.title).appendTo(tmenu);
+					}
+				}
+				headerContextMenu = this.headerContextMenu = tmenu.menu({
+					onClick : function(item) {
+						var field = $(item.target).attr('field');
+						if (item.iconCls == okCls) {
+							grid.datagrid('hideColumn', field);
+							$(this).menu('setIcon', {
+								target : item.target,
+								iconCls : emptyCls
+							});
+						} else {
+							grid.datagrid('showColumn', field);
+							$(this).menu('setIcon', {
+								target : item.target,
+								iconCls : okCls
+							});
+						}
+					}
+				});
+			}
+			headerContextMenu.menu('show', {
+				left: e.pageX,
+	            top: e.pageY
+			});
+		};
+		$.fn.datagrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
+		$.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
+	}
+
+function formatterName(value,row,index){
+	return row.customer.customer_name;
+}
+
+function formaterrCaoZuo(value,row,index){
+	return "<a href='javascript:void(0)' onclick='chakanlog("+index+")'>查看</a>";
 }
 </script>
 <body>
@@ -178,19 +266,19 @@ function Signback(){
     <thead>   
         <tr>  
             <th data-options="field:'checkbox',width:100,checkbox:true"></th>  
-            <th data-options="field:'customer_id',width:100">No</th>
+            <th data-options="field:'customer_id',width:50">No</th>
             <th data-options="field:'customer_no',width:100">客户编号</th>
-            <th data-options="field:'customer_name',width:100">名字</th>
-            <th data-options="field:'customer_age',width:100">年龄</th>
-            <th data-options="field:'customer_academic',width:100">学历</th>
+            <th data-options="field:'customer_name',width:50">名字</th>
+            <th data-options="field:'customer_age',width:50">年龄</th>
+           <!--  <th data-options="field:'customer_academic',width:100">学历</th>
             <th data-options="field:'customer_region',width:100">所属地区</th>
             <th data-options="field:'customer_level',width:100">客户等级</th>
             <th data-options="field:'customer_address',width:100">地址</th>
-            <th data-options="field:'customer_post',width:100">邮政编码</th>
+            <th data-options="field:'customer_post',width:100">邮政编码</th> -->
             <th data-options="field:'customer_status',width:100,formatter:formatterstatus">客户状态</th>
             <th data-options="field:'customer_source',width:100">来源渠道</th>
-            <th data-options="field:'customer_qq',width:100">QQ</th>
-            <th data-options="field:'customer_course',width:100">课程方向</th>
+           <!--  <th data-options="field:'customer_qq',width:100">QQ</th>
+            <th data-options="field:'customer_course',width:100">课程方向</th> -->
             <th data-options="field:'customer_onevisit_time',width:100">首次回访时间</th>
             <th data-options="field:'customer_ingate_time',width:100">上门时间</th>
             <th data-options="field:'customer_sex',width:100,formatter:formattersex">性别</th>
@@ -198,6 +286,8 @@ function Signback(){
             <th data-options="field:'customer_ingate',width:100,formatter:formatteringate">是否上门</th>
             <th data-options="field:'customer_create_time',width:100">创建时间</th>
             <th data-options="field:'customer_source',width:100">来源渠道</th>
+            <th data-options="field:'caozuo',width:100,formatter:formattercaozuo">操作</th>
+            
           
            
             
@@ -228,14 +318,141 @@ function Signback(){
          <input type="text"  class= "easyui-datebox" id="maxTime"/>    
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="searchM()" data-options="iconCls:'icon-search'">搜索</a>
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="addCumtomer()" data-options="iconCls:'icon-add'">添加</a>
-         <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="exportexcel(false)">导出全部</a>
-         <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="exportexcel(true)">导出前两条</a>
-         <br/>
+         			<a href="javascript:void(0);" id="btnExport" class="easyui-linkbutton" iconCls='icon-print'>导出Excel</a>
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="Signin()" data-options="iconCls:'icon-redo'">签到</a>
-         <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="Signback()" data-options="iconCls:'icon-undo'">签退</a>  
+         <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="Signback()" data-options="iconCls:'icon-undo'">签退</a>
+
          
    </form>
  </div>
- 
+ <div id="AddTrackwin" class="easyui-dialog" title="Add TrackInfo" style="width:280px;height:400px"   
+        data-options="iconCls:'icon-save',modal:true,closed:true,draggable:true"> 
+                             <!-- 下次跟踪时间 -->
+            <form id="trackform" class="easyui-form">
+           <input type="text" name="name" id="record_condition" />
+           <label for="name">回访情况</label> 
+           <br/>
+         
+          <input type="text" name="name" id="record_status" />
+            <label for="name">跟踪方式</label> 
+          <br/>
+           
+          <input type="text" class= "easyui-datebox"  name="name" id="record_lasttime" />
+          <label for="name">下次跟踪时间</label> 
+          <br/>
+          
+          <input type="text" name="name" id="record_remark" />
+           <label for="name">备注</label> 
+        <center>
+                 <a  href="javascript:void(0)" class="easyui-linkbutton" onclick="TrackSave()" data-options="iconCls:'icon-save'">提交</a>
+                 <a  href="javascript:void(0)" class="easyui-linkbutton" onclick="TrackReset()" data-options="iconCls:'icon-remove'">重置</a>
+        </center>
+        </form>
+  </div>
+  
+   
+  <div id="datelogwin" class="easyui-dialog" title="look datelog" style="width:600px;height:400px"   
+        data-options="iconCls:'icon-save',modal:true,closed:true,draggable:true"> 
+        <table id="datelogId" class="easyui-datagrid" style="width:400px;height:250px"   
+        data-options="fitColumns:true,singleSelect:true">   
+         <thead>   
+            <tr>   
+            <th data-options="field:'customer.customer_name',width:50,formatter:formatterName">学生名称</th>   
+            <th data-options="field:'record_time',width:100">跟踪时间</th>
+            <th data-options="field:'record_content',width:100">内容</th>   
+            <th data-options="field:'record_lasttime',width:100">下次跟踪时间</th>
+            <th data-options="field:'caozuo',width:100,formatter:formaterrCaoZuo">操作</th>   
+        </tr>   
+        </thead>   
+   </table>  
+        
+ </div>
 </body>
+<script type="text/javascript">
+//这里开始excel导出
+	$("#btnExport").click(function() {
+	var rows=$("#NetWorkTeacherTab").datagrid("getSelections");
+	if(rows.length==0){
+		$.messages.alert("提示","请选择你要导出的数据");
+	}
+	var data = JSON.stringify(rows);
+	if (data == '')
+		return;
+
+	JSONToCSVConvertor(data, "k数据信息", true);
+});
+
+	function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
+		//如果jsondata不是对象，那么json.parse将分析对象中的json字符串。
+		var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+		var CSV = '';
+
+		//在第一行拼接标题
+		CSV += ReportTitle + '\r\n\n';
+
+		//产生数据标头
+		if (ShowLabel) {
+			var row = "";
+			//此循环将从数组的第一个索引中提取标签
+			for ( var index in arrData[0]) {
+
+				//现在将每个值转换为字符串和逗号分隔
+				row += index + ',';
+			}
+
+			row = row.slice(0, -1);
+
+			//添加带换行符的标签行
+			CSV += row + '\r\n';
+		}
+
+		//第一个循环是提取每一行
+		for (var i = 0; i < arrData.length; i++) {
+			var row = "";
+
+			//2nd loop will extract each column and convert it in string comma-seprated
+			for ( var index in arrData[i]) {
+				row += '"' + arrData[i][index] + '",';
+			}
+
+			row.slice(0, row.length - 1);
+
+			//add a line break after each row
+			CSV += row + '\r\n';
+		}
+
+		if (CSV == '') {
+			alert("Invalid data");
+			return;
+		}
+
+		//Generate a file name
+		var fileName = "我的学生_";
+		//this will remove the blank-spaces from the title and replace it with an underscore
+		fileName += ReportTitle.replace(/ /g, "_");
+
+		//Initialize file format you want csv or xls
+		//var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+		var uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURI(CSV);
+
+		// Now the little tricky part.
+		// you can use either>> window.open(uri);
+		// but this will not work in some browsers
+		// or you will not get the correct file extension    
+
+		//this trick will generate a temp <a /> tag
+		var link = document.createElement("a");
+		link.href = uri;
+
+		//set the visibility hidden so it will not effect on your web-layout
+		link.style = "visibility:hidden";
+		link.download = fileName + ".csv";
+
+		//this part will append the anchor tag and remove it after automatic click
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	}
+	</script>
+	
 </html>

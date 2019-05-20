@@ -31,6 +31,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    <result column="customer_jinbantime" property="customer_jinbantime" />
       <result column="customer_jinbanremark" property="customer_jinbanremark" />
    <result column="customer_zixunremark" property="customer_zixunremark" />
+ 
+   <!-- <result column="user_id" property="user.user_id" /> -->
    
    <result column="user_name" property="user.user_name" />
    </resultMap>
@@ -56,12 +58,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        <if test="maxTime!='' and maxTime!=null">
        and c.customer_create_time &lt;=#{maxTime}
        </if>
+        <if test="user_id>0">
+        and c.user_id=#{user_id}
+       </if>
   </where>
    </select>
    
    
    <select id="selectCounselor" parameterType="fenye" resultMap="CustomerTab">
-  SELECT c.*,u.user_name FROM customer c INNER JOIN user u on c.user_id=u.user_id
+  SELECT c.*,u.user_name,u.user_id FROM customer c INNER JOIN user u on c.user_id=u.user_id
   <where>
        <if test="cname!='' and cname!=null">
        and c.customer_name like "%"#{cname}"%"
@@ -81,6 +86,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        <if test="maxTime!='' and maxTime!=null">
        and c.customer_create_time &lt;=#{maxTime}
        </if>
+       <if test="user_id>0">
+        and c.user_id=#{user_id}
+       </if>
+      
+       
   </where>
   limit #{page},#{row}
    </select>

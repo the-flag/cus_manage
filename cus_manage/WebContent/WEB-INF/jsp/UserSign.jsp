@@ -59,7 +59,7 @@ function SignBack(){
     for(var i=0;i<status.length;i++){
     	alert(status[i]);
     } */
-     var s='';
+    var s='';
 	var datas=[];
 	var data=$("#UserTab").datagrid('getSelections');
     for(var i=0;i<data.length;i++){

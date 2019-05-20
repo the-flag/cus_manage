@@ -22,6 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    <result column="user_name" property="user.user_name" />
    </resultMap>
    
+   
    <select id="selectManagerCount" parameterType="fenye" resultType="int">
     SELECT count(customer_id) FROM customer c INNER JOIN user u on c.user_id=u.user_id
      <where>
@@ -74,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    
    <insert id="insertCustomer" parameterType="customer">
    insert into customer(customer_no,customer_name,customer_academic,customer_region,customer_post,customer_address,customer_phone,customer_source,customer_qq,customer_course,customer_age,customer_sex,customer_level,customer_status,user_id)
-   values(#{customer_no},#{customer_name},#{customer_academic},#{customer_region},#{customer_post},#{customer_address},#{customer_phone},#{customer_source},#{customer_qq},#{customer_course},#{customer_sex},#{customer_level},#{customer_status},#{user_id});
+               values(#{customer_no},#{customer_name},#{customer_academic},#{customer_region},#{customer_post},#{customer_address},#{customer_phone},#{customer_source},#{customer_qq},#{customer_course},#{customer_age},#{customer_sex},#{customer_level},#{customer_status},#{user_id});
    </insert>
    
    <select id="selectUserSigninOrback" parameterType="FenYe" resultType="User">
@@ -142,9 +143,95 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
    </update>
    
-       <!--  签到 -->
+    <!--  签到 -->
    <update id="updateUserSignin" parameterType="int">
    update user set user_status=1,user_login_time=(select sysdate()) where user_id=#{user_id}
    </update>
+   <!-- 查询出所有的咨询师 -->
+    <select id="selectUserReferTeacher" resultType="user">
+       select u.user_id,u.user_name from 
+		user u INNER JOIN user_role ur on u.user_id=ur.user_id
+		INNER JOIN role r on r.role_id=ur.role_id
+		where ur.role_id=3
+    </select>
+    <!-- 对客户进行跟踪 -->
+       <update id="updateCustomerTrack" parameterType="customerTrackParameters">
+   update customer set user_id=#{user_id} where customer_id in
+   <foreach collection="s" item="item" index="index" open="(" separator="," close=")" >
+   #{item}
+   </foreach>
+    
+   </update>
    
+   <update id="UpdateCustomer" parameterType="customer">
+   update customer
+   <set>
+     <if test="customer_no!='' and customer_no!=null">
+     customer_no=#{customer_no},
+     </if>
+     <if test="customer_name!='' and customer_name!=null">
+      customer_name=#{customer_name},
+     </if>
+     <if test="customer_age>0">
+      customer_age=#{customer_age},   
+     </if>
+     <if test="customer_status>0">
+      customer_status=#{customer_status},
+     </if>
+     <if test="customer_region!='' and customer_region!=null">
+      customer_region=#{customer_region},
+     </if>
+     <if test="customer_post!='' and customer_post!=null">
+      customer_post=#{customer_post},
+     </if>
+     <if test="customer_phone!='' and customer_phone!=null">
+      customer_phone=#{customer_phone},
+     </if>
+     <if test="customer_qq!='' and customer_qq!=null">
+      customer_qq=#{customer_qq},
+     </if>
+     <if test="customer_sex>0">
+      customer_sex=#{customer_sex},
+     </if>
+     <if test="customer_source!='' and customer_source!=null">
+     customer_source=#{customer_source},
+     </if>
+     <if test="customer_course!='' and customer_academic!=null">
+     customer_course=#{customer_course},
+     </if>
+     <if test="customer_level>0">
+      customer_level=#{customer_level},
+     </if>
+     <if test="customer_visit>0">
+      customer_visit=#{customer_visit},
+     </if>
+     <if test="customer_ingate>0">
+      customer_ingate=#{customer_ingate},
+     </if>
+     <if test="customer_dmoney>0">
+     customer_dmoney=#{customer_dmoney},
+     </if>
+     <if test="customer_jiaofei>0">
+     customer_jiaofei=#{customer_jiaofei},
+     </if>
+    
+     <if test="customer_jiaomoney>0">
+     customer_jiaomoney=#{customer_jiaomoney},
+     </if>
+     <if test="customer_istui>0">
+     customer_istui=#{customer_istui},
+     </if>
+     <if test="customer_isjinban>0">
+       customer_isjinban=#{customer_isjinban},
+     </if>
+   
+     <if test="customer_jinbanremark!='' and customer_jinbanremark!=null">
+     customer_jinbanremark=#{customer_jinbanremark},
+     </if>
+     <if test="customer_zixunremark!='' and customer_zixunremark!=null">
+      customer_zixunremark=#{customer_zixunremark},
+     </if>
+   </set>
+   where customer_id=#{customer_id}
+   </update>
 </mapper>
