@@ -69,6 +69,20 @@ public class UserController {
 		return true;
 	}
 	
+	
+	/**
+	 * 修改密码时验证
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping("/validationPass")
+	@ResponseBody
+	public Boolean validationPass(User user) {
+		User selectUserByAccount = userService.selectUserByAccount(user);
+		boolean saltverifyMD5 = MD5Utils.getSaltverifyMD5(user.getUser_password(), selectUserByAccount.getUser_password());
+		return saltverifyMD5;
+	}
+	
 	/**
 	 * 添加用户
 	 * @param user
@@ -111,6 +125,9 @@ public class UserController {
 	@RequestMapping(value="/updateUserByAccount",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer updateUserByAccount(User user) {
+		if(user.getUser_password()!=null && !"".equals(user.getUser_password())) {
+			user.setUser_password(md5Utils.getSaltMD5(user.getUser_password()));
+		}
 		return userService.updateUserByAccount(user);
 	}
 	

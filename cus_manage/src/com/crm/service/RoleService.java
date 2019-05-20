@@ -43,7 +43,7 @@ public interface RoleService {
 	 * @param role_name
 	 * @return
 	 */
-	Integer selectRoleByRoleName(String role_name);
+	Role selectRoleByRoleName(String role_name);
 	
 	/**
 	 * 修改角色信息

@@ -47,7 +47,41 @@
 	                $("#con").tabs('select', node.text); //直接选中title对应的选项卡
 	            }
 	       }
-		}		
+		}
+		//修改密码，保存
+		function editPass(){
+			if(validate()){
+				
+				 var editOldPass=$("#editOldPass").val();
+				var user_account=$("#user_account").val();
+				  var editNewPass=$("#editNewPass").val();
+				  var editTowPass=$("#editTowPass").val(); 
+				 
+				$.post("validationPass",{
+					user_password:editOldPass,
+					user_account:user_account
+				},function(data){
+					if(data){
+						$.post("updateUserByAccount",{
+							user_password:editNewPass,
+							user_account:user_account
+						},function(i){
+							if(i>0){
+								$.messager.alert('提示','修改成功');
+								closeeditPass();
+							}
+						},"json")
+						
+					}
+					
+				},"json")
+			}
+			 
+		}
+		function closeeditPass(){
+			$("#myUpdPass").dialog("close");
+			$("#myUpdPassForm").form("clear");
+		}
 	</script>
 	
 	
@@ -80,7 +114,7 @@
            data-options="menu:'#mm',iconCls:'icon-admin'">${m.user_name }帐号</div>
         <div id="mm" >
             <div data-options="iconCls:'icon-man'"><a href="javascript:void(0)" onclick="openMes()">个人信息</a> </div>
-            <div data-options="iconCls:'icon-redo'"><a href="javascript:void(0) "onclick="saveExit()">安全退出</a> </div>
+            <div data-options="iconCls:'icon-redo'"><a href="javascript:void(0) "onclick="myUpdPass()">安全设置</a> </div>
             <div data-options="iconCls:'icon-cancel'"><a href="javascript:void(0)" onclick="saveCanle()"> 注销</a> </div>
 
         </div>
@@ -92,7 +126,7 @@
         <ul id="homeTree"></ul>  
     </div>
     <div data-options="region:'center'" style="padding:5px;background:#eee;">
-        <div id="con">
+        <div id="con" fit="true">
             <div title="系统首页" >
                <iframe frameborder="0" width="100%" height="100%" name="frameName" src="getHome" scrolling="auto" id="ifDiv" ></iframe>
             </div>
@@ -101,20 +135,22 @@
     </div>
 </div>
 <div id="myMes">
-
-<p><label class="diaLable">用户名：</label><input  class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true,novalidate:true" value="张林海"></p>
-   <p><label class="diaLable">登录名称：</label><input  class="easyui-validatebox TailInput" data-options="required:true" value="zhanglinghai"></p>
-    <p><label class="diaLable">用户密码：</label><input  type="password" value="123456" class="easyui-validatebox TailInput" data-options="required:true,"></p>
-    <p><label class="diaLable">用户角色：</label><input  class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true,novalidate:true" value="管理员"></p>
-    <p><label class="diaLable">所属部门：</label><input  class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true,novalidate:true" value="行政部门"></p>
-    <p><label class="diaLable areaLabel">描述：</label><textarea class="TailArea01" ></textarea></p>
+ 	<p><label class="diaLable">登录账号：</label><input  class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true" value="${m.user_account}"></p>
+	<p><label class="diaLable">用户名：</label><input  class="easyui-validatebox TailInput"  data-options="required:true,novalidate:true" value="${m.user_name}"></p>
     <div class="forSubmint"> <a href="#" class="easyui-linkbutton"  iconCls="icon-save" >保存</a><a href="#" class="easyui-linkbutton"  iconCls="icon-redo" >重置</a> </div>
+</div>
+<div id="myUpdPass">
+	<form id="myUpdPassForm" class="easyui-form">
+	<input id="user_account" type="hidden" value="${m.user_account}">
+ 	<p><label class="diaLable">旧密码：</label><input id="editOldPass"  class="easyui-validatebox TailInput"  data-options="required:true"><span id="editOldPassSpan"></span></p>
+	<p><label class="diaLable">新密码：</label><input id="editNewPass" type="password"  class="easyui-validatebox TailInput"  data-options="required:true"><span id="editNewPassSpan"></span></p>
+    <p><label class="diaLable">再次确定密码：</label><input id="editTowPass"  type="password"  class="easyui-validatebox TailInput" data-options="required:true" value=""><span id="editTowPassSpan"></span></p>
+    </form>
+    <div class="forSubmint"> <a href="javascript:void(0)" class="easyui-linkbutton"  iconCls="icon-save" onclick="editPass()">保存</a><a href="#" class="easyui-linkbutton"  iconCls="icon-redo" onclick="closeeditPass()">取消</a> </div>
 </div>
 
 
 <script src="js/main.js"></script>
-
-
 
 </body>
 </html>

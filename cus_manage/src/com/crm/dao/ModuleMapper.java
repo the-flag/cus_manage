@@ -26,6 +26,12 @@ public interface ModuleMapper {
 	 */
 	List<Integer> selectModuleByRoleId(Integer role_id);
 	
+	/**
+	 * 根据模块名称查询，是否该模块已存在
+	 * @param module_name
+	 * @return
+	 */
+	Module selectModuleByModuleName(String module_name);
 	
 	/**
 	 * 添加模块信息

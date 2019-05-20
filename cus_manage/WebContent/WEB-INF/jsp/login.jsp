@@ -36,19 +36,15 @@ canvas {
 		//测试提交，对接程序删除即可
 	/* 	$(".submit_btn").click(function() {
 			
-			
-			
-			
 		}); */
+		
 	});
 	$(function(){
 		
 		if(getCookie('remember_ticket')!=null && getCookie('remember_ticket')!="" ){
 			$('#checkbox').attr('checked', 'checked');
 		}
-		
 		//遍历获取cookie中的值
-		
 		  function getCookie(name){
 			  var strcookie = document.cookie;//获取cookie字符串
 			  var arrcookie = strcookie.split(";");//分割
@@ -61,9 +57,37 @@ canvas {
 			  }
 			 return "";
 		 }
-
 		
 	})
+	$("#denglu").click(function(){
+		alert("sdfs");
+	})
+	  function validate() {
+		  var uPattern = /^[a-zA-Z0-9_-]{4,16}$/;
+		  var pPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/; //密码强度正则，最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符
+		  var password=$("#user_password").val();
+		  var account=$("#user_account").val();
+		  var passwordVali=pPattern.test(password);
+		  var accountVali=uPattern.test(account);
+		  
+		  if(accountVali){
+			  /* if(passwordVali){
+				  return true;
+			   } else {
+				  	$("#tishi").text("密码格式错误!!!");
+			     return false;
+			   } */
+			   return true;
+		  }
+		  $("#tishi").text("用户名格式错误!!!");
+		 
+	}
+	function submitForm() {
+		if(validate()){
+		    document.getElementById("myForm").submit();
+		}
+	}
+	
 </script>
 </head>
 <body>
@@ -71,14 +95,14 @@ canvas {
 		<dt>
 			<strong>CRM管理系统登录页面</strong> <em>Management System</em>
 			<br/>
-			<span style="font-size: 14px;color: red;">${key}</span>
+			<span id="tishi" style="font-size: 14px;color: red;">${key}</span>
 		</dt>
-		<form action="loginValidation" method="POST">
+		<form id="myForm" action="loginValidation" method="POST">
 		<dd class="user_icon">
-			<input type="text" placeholder="账号" class="login_txtbx" name="user_account"/>
+			<input type="text" placeholder="账号" class="login_txtbx" name="user_account" id="user_account"/>
 		</dd>
 		<dd class="pwd_icon">
-			<input type="password" placeholder="密码" class="login_txtbx" name="user_password" />
+			<input type="password" placeholder="密码" class="login_txtbx" name="user_password" id="user_password" />
 		</dd>
 		<dd class="val_icon">
 			<div class="checkcode">
@@ -92,7 +116,7 @@ canvas {
 			<input id="checkbox" type="checkbox" name="remember"  value="1"><span style="color:#f4f4f4">下次自动登陆</span><br/>
 		</dd>
 		<dd>
-			<input type="submit" value="立即登陆" class="submit_btn" />
+			<input  type="button" value="立即登陆"  class="submit_btn" onclick="submitForm();" />
 		</dd>
 		</form>
 		<dd>
@@ -100,5 +124,10 @@ canvas {
 			<p>京B2-8998988-1</p>
 		</dd>
 	</dl>
+	
 </body>
+
+<script type="text/javascript">
+ 
+ </script>
 </html>

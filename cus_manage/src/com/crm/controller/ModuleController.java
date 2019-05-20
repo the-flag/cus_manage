@@ -90,6 +90,27 @@ public class ModuleController {
 		return moduleService.deleteModule(module_id);
 		
 	}
+	
+	/**
+	 * 修改时验证模块名称是否已存在
+	 * @param module
+	 * @return
+	 */
+	@RequestMapping(value="/moduleValidata",method=RequestMethod.POST)
+	@ResponseBody
+	public Boolean moduleValidata(Module module) {
+		
+		 Module selectModuleByModuleName = moduleService.selectModuleByModuleName(module.getModule_name());
+		 if(selectModuleByModuleName!=null) {
+			 if(selectModuleByModuleName.getModule_id()==module.getModule_id()) {
+				 return true;
+			 }
+			 return false;
+		 }
+		 return true;
+		
+	}
+	
 	/**
 	 * 修改模块
 	 * @param module
@@ -114,6 +135,9 @@ public class ModuleController {
 		return moduleService.insertModule(module);
 		
 	}
+	
+	
+	
 	
 	
 }

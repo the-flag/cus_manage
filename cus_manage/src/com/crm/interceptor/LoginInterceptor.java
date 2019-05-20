@@ -7,6 +7,9 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.crm.pojo.User;
+import com.crm.util.MemoryData;
+
 public class LoginInterceptor implements HandlerInterceptor {
 	
 		
@@ -25,11 +28,14 @@ public class LoginInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
 			System.out.println("进入拦截器");
-			if (request.getSession().getAttribute("m") != null) {
-				return true;
+    		User admin = (User) request.getSession().getAttribute("m");
+			if (admin != null) {
+				String sessionid = MemoryData.getSeeesionIdMap().get(admin.getUser_account());
+    			// 如果用户名存在放心（即登录放行）
+    			if (sessionid.equals(request.getSession().getId())) {
+    				return true;
+				}
 			}
-			System.out.println("Interceptor：跳转到login页面！");
-			 System.out.println("request.getContextPath() = "+ request.getContextPath() + "/login.jsp");
 			// 获取到项目名，以便下面进行重定向
             String homeUrl = request.getContextPath();
          	// 如果是 ajax 请求，则设置 session 状态 、CONTEXTPATH 的路径值
@@ -37,7 +43,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")){
             	System.out.println("sdfdsfdsfjdsoifjosdaijfoisdjfoijsdoifjosdifiosdahfiu");
             	response.setHeader("SESSIONSTATUS", "TIMEOUT");
-            	response.setHeader("CONTEXTPATH", homeUrl+"/WEB-INF/jsp/login.jsp");
+            	response.setHeader("CONTEXTPATH", homeUrl+"login");
                 // FORBIDDEN，forbidden。也就是禁止、403
             	response.setStatus(HttpServletResponse.SC_FORBIDDEN); 
             }else{

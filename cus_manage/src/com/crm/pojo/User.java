@@ -31,10 +31,19 @@ public class User {
 	private String user_end_time;//签退时间
 	private Integer user_status;//签到状态
     private String user_uuid;
+    private Integer customer_num;//客户数量
     //引用角色
     private List<Role> roles;
     
     
+    
+    
+	public Integer getCustomer_num() {
+		return customer_num;
+	}
+	public void setCustomer_num(Integer customer_num) {
+		this.customer_num = customer_num;
+	}
 	public Integer getUser_id() {
 		return user_id;
 	}

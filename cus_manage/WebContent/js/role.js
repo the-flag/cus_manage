@@ -175,10 +175,11 @@ obj={
         	}
         	var row=datas[0];
     		var role_name=$("#roleName").val();
-    		/*$.post("validationRoleName",{
-    			role_name:role_name
+    		$.post("validationRoleName",{
+    			role_name:role_name,
+    			role_id:row.role_id
     		},function(validation){
-    			if(validation){*/
+    			if(validation){
     				$.post("updateRoleAndRoleModule",{
     					module_ids:data,
     					role_id:row.role_id,
@@ -197,11 +198,11 @@ obj={
 	                        $.messager.progress('close');
 	                	}
     				},"json")
-        		/*}else{
+        		}else{
         			$("#roleNamespan").text("角色已存在!");
         		}     
     			
-    		},"json")*/
+    		},"json")
         },
         // 编辑
         edit:function (id) {
