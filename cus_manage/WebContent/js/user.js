@@ -48,9 +48,9 @@ $(function () {
                 nowrap:true,
                 height:'auto',
                 sortName:'user_id',
-                checkOnSelect:false,
                 sortOrder:'asc',
                 toolbar: '#tabelBut',
+                checkOnSelect:true,
                 queryParams:{
                 	user_name:$("#user_name").val(),
                     min_creat_time:$('#min_creat_time').datebox('getValue'),
@@ -237,7 +237,7 @@ obj={
                         closed: false
 
                 })
-                $("#addForm").form('reset');
+                $("#addForm").form('clear');
                 $("#can").hide();
                 $("#res").show();
 
@@ -397,7 +397,8 @@ obj={
                 $("#updateBox").dialog({
                         closed: false,
                 })
-                var row=$("#table").datagrid("getSelected");
+               var data=$("#table").datagrid("getData");
+                var row=data.rows[id];
                 $("#updateForm").form('load',row);
                /* $.ajax({
                         url:'js/json/user.json',
@@ -515,7 +516,6 @@ obj={
         },
         // 提交表单
         updatesum:function () {
-        				alert("wwef");
     	                $('#updateForm').form('submit', {
     	                            url:'updateUserByAccount',
     	                            method:"post",

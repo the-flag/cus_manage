@@ -163,12 +163,17 @@ public class LoginController {
 			}
 			
 			System.out.println("登陆成功！！！！！！！！");
-			return "redirect:/main"; 		
+			return "redirect:getMain"; 		
 			 
 		}else {
 			userService.updateUserWrongNumberByAccount(login);
 			System.out.println("账号或密码错误!!!");
 			request.setAttribute("key", "账号或密码错误");
+			if(login.getUser_wrong_number()==4) {
+				login.setUser_is_lock(0);;
+				userService.updateUserIsLockByUserId(user);
+				request.setAttribute("key", "错误次数过多,此"+login.getUser_account()+"账号已被锁定!!");
+			}
 		}
 		return "login";
 	}

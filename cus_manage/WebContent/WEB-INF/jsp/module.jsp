@@ -4,7 +4,7 @@
 <html>
 <head>
  <meta charset="UTF-8">
-    <title>部门管理</title>
+    <title>模块管理</title>
 
     <link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/default/easyui.css"/>
     <link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/icon.css"/>
@@ -23,10 +23,10 @@
     <div data-options="region:'center',split:true">
        <form id="formBox">
            <div class="formDiv01">
-               <label>模块编号：</label><input type="text" name="module_id" id="partId" class="easyui-validatebox" data-options="required:true,readonly:true"><span class="formSpan">*</span>
+               <label>模块编号：</label><input type="text" name="module_id" id="partId" class="easyui-validatebox" data-options="readonly:true"><span class="formSpan">*</span>
            </div>
            <div class="formDiv01">
-               <label>模块名称：</label><input type="text" name="module_name" id="partName" class="easyui-validatebox" data-options="required:true"><span class="formSpan">*</span>
+               <label>模块名称：</label><input type="text" name="module_name" id="partName" class="easyui-validatebox" data-options="required:true"><span id="partNameSpan" class="formSpan">*</span>
            </div>
            <div class="formDiv01">
                <label>上级模块：</label><input type="text" name="module_parent_id" id="parentPart"><span class="formSpan"></span>
@@ -54,17 +54,17 @@
        </form>
         <div class="formFoot">
             <p><span>注意事项：</span></p>
-            <p>1,该界面为详情界面，当新增的时候，部门编号为自动生成，其中部门名称为必填写项</p>
-            <p>2,该界面为详情界面，当新增的时候，部门编号为自动生成，其中部门名称为必填写项</p>
-            <p>3,该界面为详情界面，当新增的时候，部门编号为自动生成，其中部门名称为必填写项</p>
+            <p>1,该界面为详情界面，当新增的时候，模块编号为自动生成，其中模块名称为必填写项</p>
+            <p>2,该界面为详情界面，当新增的时候，模块编号为自动生成，其中模块名称为必填写项</p>
+            <p>3,该界面为详情界面，当新增的时候，模块编号为自动生成，其中模块名称为必填写项</p>
         </div>
 
     </div>
 </div>
 <div id="mean" class="easyui-menu treemenu" >
-    <div data-options="iconCls:'icon-add'" onclick="addPart()">新增部门</div>
-    <div data-options="iconCls:'icon-edit'" onclick="editForm()">修改部门</div>
-    <div data-options="iconCls:'icon-cancel'" onclick="delPart()">删除部门</div>
+    <div data-options="iconCls:'icon-add'" onclick="addPart()">新增模块</div>
+    <div data-options="iconCls:'icon-edit'" onclick="editForm()">修改模块</div>
+    <div data-options="iconCls:'icon-cancel'" onclick="delPart()">删除模块</div>
 </div>
 <script src="js/part.js"></script>
 

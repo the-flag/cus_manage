@@ -69,7 +69,7 @@ public class RoleServiceimpl implements RoleService {
 		return 0;
 	}
 	@Override
-	public Integer selectRoleByRoleName(String role_name) {
+	public Role selectRoleByRoleName(String role_name) {
 		// TODO Auto-generated method stub
 		return roleMapper.selectRoleByRoleName(role_name);
 	}

@@ -48,8 +48,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</insert>
 	
-	<select id="selectRoleByRoleName" parameterType="string" resultType="int">
-		SELECT count(role_id) FROM role
+	<select id="selectRoleByRoleName" parameterType="string" resultType="role">
+		SELECT role_id,role_name,role_desc,role_flag FROM role
 		where role_name=#{role_name}
 	</select>
 	

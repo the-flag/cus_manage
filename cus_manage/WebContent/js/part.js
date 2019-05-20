@@ -27,6 +27,7 @@ $("#tree").tree({
                 }else{
                 	parentName=$("#tree").tree('getParent',node.target).text;
                 }
+                $("#partNameSpan").text("");
                 var url=node.url;
                 var module_weight=node.weight;
                 $("#partId").val(partId);
@@ -63,14 +64,12 @@ function addPart() {
 	
         var selectNode=$("#tree").tree("getSelected");
         var id=parseInt(Math.random()*1000+1);
-        $("#partId").val(id);
+        $("#partId").val("");
+        $("#partName").val("");
         $("#parentPart").combotree('setValue',selectNode.text);
         $("#partper").val("");
         $("#module_path").val("");
-        /*$("#partEmail").val("");
-        $("#partTele").val("");
-        $("#note").val("");
-        $("#partName").val("");*/
+        $("#partNameSpan").text("");
         $("#edit").hide();
         $("#save").show();
 
@@ -128,9 +127,11 @@ function saveForm(){
 	                $("#save").hide();
 	                $.messager.show({
 	                        title:'提示',
-	                        msg:'部门新增成功'
+	                        msg:'模块新增成功'
 	                });
 	                $("#partId").attr('readonly',true).css('background',"#eee");
+	    		}else{
+	    			$("#partNameSpan").text("模块名称已存在!!");
 	    		}
 		 	},"json")
 	  	}	
@@ -139,36 +140,55 @@ function saveForm(){
 function editForm(){
 	var s=$("#parentPart").combotree('getValue');
 	 if($("#formBox").form('validate')){
-		$.post("updateModule",{
-	 		module_id:$("#partId").val(),
-	 		module_name:$("#partName").val(),
-	 		module_parent_id:s,
-	 		module_path:$("#module_path").val(),
-	 		module_weight:$("#module_weight").val()
-	 	},function(data){
-	 		if(data>0){
-	 			/* var partName=$("#partName").val();
-	             var selectNode=$("#tree").tree('getSelected');
-	             $('#tree').tree('update',{
-	                     target: selectNode.target,
-	                     data:[{
-	                             text:partName,
-	                     }]
-	             });*/
-	 			$("#tree").tree("reload");
-	             $.messager.show({
-	                     title:'提示',
-	                     msg:'部门修改成功'
-	             });
+		$.post("moduleValidata",{
+			module_id:$("#partId").val(),
+	 		module_name:$("#partName").val()
+		},function(vali){
+			if(vali){
+				$.post("updateModule",{
+			 		module_id:$("#partId").val(),
+			 		module_name:$("#partName").val(),
+			 		module_parent_id:s,
+			 		module_path:$("#module_path").val(),
+			 		module_weight:$("#module_weight").val()
+			 	},function(data){
+			 		if(data>0){
+			 			/* var partName=$("#partName").val();
+			             var selectNode=$("#tree").tree('getSelected');
+			             $('#tree').tree('update',{
+			                     target: selectNode.target,
+			                     data:[{
+			                             text:partName,
+			                     }]
+			             });*/
+			 			$("#tree").tree("reload");
+			             $.messager.show({
+			                     title:'提示',
+			                     msg:'部门修改成功'
+			             });
+					}
+			 	},"json")
+			}else{
+				$("#partNameSpan").text("模块名称已存在!!");
 			}
-	 	},"json")
+			
+		},"json")
+	
 	 }
 }
 // 删除部门
 function delPart() {
-        var selectNode=$("#tree").tree('getSelected');
-        $("#tree").tree("remove",selectNode.target);
+	
+	$.messager.confirm('确认','您确认想要删除该节点吗？',function(r){    
+	    if (r){    
+	    	var selectNode=$("#tree").tree('getSelected');
+	        $("#tree").tree("remove",selectNode.target);
 
+	    }    
+	});  
+
+	
+        
 
 }
 // 初始化部门信息

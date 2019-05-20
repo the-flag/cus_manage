@@ -58,14 +58,16 @@ public class RoleController {
 	 */
 	@RequestMapping(value="/validationRoleName",method=RequestMethod.POST)
 	@ResponseBody
-	public Boolean validationRoleName(String role_name) {
-		
-		if(roleService.selectRoleByRoleName(role_name)>0) {
+	public Boolean validationRoleName(String role_name,Integer role_id) {
+		Role selectRoleByRoleName = roleService.selectRoleByRoleName(role_name);
+		if(selectRoleByRoleName!=null) {
+			if(selectRoleByRoleName.getRole_id()==role_id) {
+				return true;
+			}
 			return false;
 		}
 		return true;
 	}
-	
 	@RequestMapping(value="/insertRole",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer insertRole(Role role,String module_ids) {
