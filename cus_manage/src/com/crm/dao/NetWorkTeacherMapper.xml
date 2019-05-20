@@ -3,7 +3,14 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.crm.dao.NetWorkTeacherMapper">
+<resultMap type="Access_record" id="LogTab">
+  <id column="record_id" property="record_id"/>
+  <result column="record_time" property="record_time"/>
+  <result column="record_content" property="record_content"/>
+  <result column="record_content" property="record_content"/>
+  <result column="customer_name" property="customer.customer_name"/>
 
+</resultMap>
 <select id="selectCustomerCount" parameterType="fenye" resultType="int">
   select count(customer_id) from customer
   <where>
@@ -51,5 +58,16 @@ select * from customer
        </if>
   </where>
 limit #{page},#{row}
+</select>
+
+<insert id="insertTrackInfo" parameterType="Access_record">
+insert into access_record(user_id,customer_id,record_condition,record_lasttime,record_status,record_remark,record_time)
+values(#{user_id},#{customer_id},#{record_condition},#{record_lasttime},#{record_status},#{record_remark},#{record_time})
+</insert>
+
+<select id="selectDateLog" resultMap="LogTab">
+select a.record_content,a.record_lasttime,a.record_time,c.customer_name
+FROM access_record a INNER JOIN customer c ON  a.customer_id=c.customer_id
+
 </select>
 </mapper>
