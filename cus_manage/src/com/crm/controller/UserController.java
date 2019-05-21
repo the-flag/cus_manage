@@ -150,6 +150,10 @@ public class UserController {
 	@RequestMapping(value="/updateUserIsLockByUserId",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer updateUserIsLockByUserId(User user) {
+		userService.updateUserIsLockByUserId(user);
+		if(user.getUser_is_lock()==1) {
+			user.setUser_wrong_number(0);
+		}
 		return userService.updateUserIsLockByUserId(user);
 	}
 	

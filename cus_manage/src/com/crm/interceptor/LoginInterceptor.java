@@ -28,7 +28,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
 			System.out.println("进入拦截器");
+			String parameter = request.getParameter("user_account"); //获取前台传的账号
     		User admin = (User) request.getSession().getAttribute("m");
+    		System.out.println(admin);
 			if (admin != null) {
 				String sessionid = MemoryData.getSeeesionIdMap().get(admin.getUser_account());
     			// 如果用户名存在放心（即登录放行）
