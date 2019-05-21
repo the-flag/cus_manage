@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   <result column="record_time" property="record_time"/>
   <result column="record_content" property="record_content"/>
   <result column="record_content" property="record_content"/>
+  <result column="customer_id" property="customer_id"/>
   <result column="customer_name" property="customer.customer_name"/>
 
 </resultMap>
@@ -29,8 +30,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        <if test="maxTime!='' and maxTime!=null">
        and customer_ingate_time &lt;=#{maxTime}
        </if>
-       <if test="user_id>0">
-       and user_id=#{user_id}
+       <if test="userw_id>0">
+       and userw_id=#{userw_id}
        </if>
   </where>
 </select>
@@ -53,10 +54,11 @@ select * from customer
        <if test="maxTime!='' and maxTime!=null">
        and customer_ingate_time &lt;=#{maxTime}
        </if>
-       <if test="user_id>0">
-       and user_id=#{user_id}
+      <if test="userw_id>0">
+       and userw_id=#{userw_id}
        </if>
   </where>
+ORDER BY customer_id asc
 limit #{page},#{row}
 </select>
 
@@ -68,6 +70,7 @@ values(#{user_id},#{customer_id},#{record_condition},#{record_lasttime},#{record
 <select id="selectDateLog" resultMap="LogTab">
 select a.record_content,a.record_lasttime,a.record_time,c.customer_name
 FROM access_record a INNER JOIN customer c ON  a.customer_id=c.customer_id
+where c.customer_id=#{customer_id}
 
 </select>
 </mapper>

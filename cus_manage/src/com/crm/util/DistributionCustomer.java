@@ -40,16 +40,17 @@ public class DistributionCustomer {
 		Collections.sort(UserList, new Comparator<User>() {
 			@Override
 			public int compare(User o1, User o2) {
-				
-				if(o1.getCustomer_num()>o2.getCustomer_num()){
-	                return 1;
-	            }else if(o1.getCustomer_num()<o2.getCustomer_num()){
-	                return -1;
-	            }else if(o1.getCustomer_num()==o2.getCustomer_num()) {
-	            	if(o1.getUser_weight()>o2.getUser_weight()) {
-	            		return -1;
-	            	}
-	            }
+				if(o1!=null && o2!=null) {
+					if(o1.getCustomer_num()>o2.getCustomer_num()){
+		                return 1;
+		            }else if(o1.getCustomer_num()<o2.getCustomer_num()){
+		                return -1;
+		            }else if(o1.getCustomer_num()==o2.getCustomer_num()) {
+		            	if(o1.getUser_weight()>o2.getUser_weight()) {
+		            		return -1;
+		            	}
+		            }
+				}
 	            return 0;
 			}
 		});

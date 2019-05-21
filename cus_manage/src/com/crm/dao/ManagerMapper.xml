@@ -70,12 +70,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        and c.customer_ingate_time &lt;=#{maxTime}
        </if>
   </where>
+ ORDER BY c.customer_id asc
  LIMIT #{page},#{row}
    </select>
    
    <insert id="insertCustomer" parameterType="customer">
-   insert into customer(customer_no,customer_name,customer_academic,customer_region,customer_post,customer_address,customer_phone,customer_source,customer_qq,customer_course,customer_age,customer_sex,customer_level,customer_status,user_id)
-               values(#{customer_no},#{customer_name},#{customer_academic},#{customer_region},#{customer_post},#{customer_address},#{customer_phone},#{customer_source},#{customer_qq},#{customer_course},#{customer_age},#{customer_sex},#{customer_level},#{customer_status},#{user_id});
+   insert into customer(customer_no,customer_name,customer_academic,customer_region,customer_post,customer_address,customer_phone,customer_source,customer_qq,customer_course,customer_age,customer_sex,customer_level,customer_status,userw_id)
+               values(#{customer_no},#{customer_name},#{customer_academic},#{customer_region},#{customer_post},#{customer_address},#{customer_phone},#{customer_source},#{customer_qq},#{customer_course},#{customer_age},#{customer_sex},#{customer_level},#{customer_status},#{userw_id});
+             <selectKey resultType="int" keyProperty="customer_id" order="AFTER">  
+		    		select @@IDENTITY as customer_id;  
+			</selectKey>
    </insert>
    
    <select id="selectUserSigninOrback" parameterType="FenYe" resultType="User">
@@ -104,6 +108,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        and user_end_time &lt;=#{endTime}
        </if>
     </where>
+    ORDER BY user_id asc
     limit #{page},#{row}
    </select>
    

@@ -118,48 +118,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 
 	   
    }
-   //添加
-   function addCumtomer(){
-	  $("#Addwin").window("open"); 
-   }
-   
-   function addcustomer(){
-	   alert("sfs");
-	   $.messager.confirm('确认','确认添加？',function(r){
-		   if(r){   
-			   $.post("insertCustomer",{      
-				   customer_no:$("#customer_no").val(),
-				   customer_name:$("#customer_name").val(),
-				   customer_age:$("#customer_age").val(),
-				   customer_status:$("#customer_status").val(),
-				   customer_region:$("#customer_region").val(),
-				   customer_post:$("#customer_post").val(),
-				   customer_address:$("#customer_address").val(),
-				   customer_phone:$("#customer_phone").val(),
-				   customer_qq:$("#customer_qq").val(),
-				   customer_sex:$("#customer_sex").val(),
-				   customer_academic:$("#customer_academic").val(),
-				   customer_source:$("#customer_source").val(),
-				   customer_level:$("#customer_level").val(),
-				   user_id:${m.user_id}
-			              },function(data){
-			            	  if(data>0){
-			            		  $.messager.alert('提示','添加成功');
-			            		  $("#Addwin").window("close");
-			            		  $("#managerTab").datagrid("reload");
-			            	  }
-			              },"json");
-		   }
-		   
-	   });
-
-   }
-   //添加中的重置
-   function resetForm(){
-	   
-	   $("#MangerFrom").form('reset');
-   }
-   
+  
    function testcolumn(){
 	/*    var row = $('#datagrid').datagrid('getData').rows[index]; */
 	   
@@ -349,7 +308,6 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
             <th data-options="field:'customer_address',width:100">地址</th>
             <th data-options="field:'customer_post',width:100">邮政编码</th>
             <th data-options="field:'customer_status',width:100,formatter:formatterstatus">客户状态</th>
-            <th data-options="field:'customer_source',width:100">来源渠道</th>
             <th data-options="field:'customer_qq',width:100">QQ</th>
             <th data-options="field:'customer_course',width:100">课程方向</th>
             <th data-options="field:'customer_onevisit_time',width:100">首次回访时间</th>
@@ -390,7 +348,6 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
          <label for="name">上门时间max</label>
          <input type="text"  class= "easyui-datebox" id="maxTime"/>    
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="searchM()" data-options="iconCls:'icon-search'">搜索</a>
-         <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="addCumtomer()" data-options="iconCls:'icon-add'">添加</a>
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="testcolumn()" data-options="iconCls:'icon-add'">设置显示隐藏列</a>
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="fenpeiCustomer()" data-options="iconCls:'icon-redo'">设置跟踪人员</a>
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="editCustomer()" data-options="iconCls:'icon-edit'">编辑</a>
@@ -399,129 +356,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
    </form>
  </div>
  
- <div id="Addwin" class="easyui-dialog" title="Add Customer" style="width:250px;height:400px"   
-        data-options="iconCls:'icon-save',modal:true,closed:true,draggable:true">   
-         <form id="MangerFrom">
-           <label for="name">客户编号</label> 
-          <input type="text" name="name" id="customer_no" />
-          <br/>
-           <label for="name">客户名字</label> 
-          <input type="text" name="name" id="customer_name" />
-          <br/>
-          <label for="name">客户年龄</label>
-          <input type="text" name="name" id="customer_age" />
-          <br/>
-           <label for="name">客户状态</label>
-            <select id="customer_status">   
-	         <option value="">--请选择--</option>
-	         <option value="1">未知</option>   
-	         <option value="2">待业</option>
-	         <option value="3">在职</option>
-	         <option value="4">在读</option>   
-         </select>             
-          <br/>
-          <label for="name">所属地区</label>
-          <select id="customer_region">   
-	         <option value="">--请选择--</option>
-	         <option value="未知">未知</option>   
-	         <option value="其它">其它</option>
-	         <option value="郑州">郑州</option>
-	         <option value="开封">开封</option>   
-	         <option value="洛阳">洛阳</option>   
-	         <option value="南阳">南阳</option>
-	         <option value="漯河">漯河</option>
-	         <option value="三门峡">三门峡</option>   
-	         <option value="平顶山">平顶山</option>   
-	         <option value="周口">周口</option>
-	         <option value="驻马店">驻马店</option>
-	         <option value="新乡">新乡</option> 
-	          <option value="鹤壁">鹤壁</option>
-	         <option value="濮阳">濮阳</option> 
-	          <option value="安阳">安阳</option>
-	         <option value="信阳">信阳</option>   
-         </select>         
-              
-          <br/>
-           <label for="name">邮政编码</label> 
-          <input type="text" name="name" id="customer_post" />        
-          <br/>
-           <label for="name">客户地址</label>     
-          <input type="text" name="name" id="customer_address" />   
-          <br/>
-            <label for="name">客户电话</label> 
-          <input type="text" name="name" id="customer_phone" />     
-          <br/>
-          <label for="name">客户QQ</label>     
-          <input type="text" name="name" id="customer_qq" />     
-          <br/>
-           <label for="name">客户性别</label>
-             <select id="customer_sex">   
-	         <option value="">--请选择--</option>
-	         <option value="1">男</option>   
-	         <option value="2">女</option>   
-         </select>         
-          <br/>
-          <label for="name">客户学历</label>
-          <select id="customer_academic">   
-	         <option value="">--请选择--</option>
-	         <option value="高中以下">高中以下</option>   
-	         <option value="高中">高中</option> 
-	         <option value="大专">大专</option>
-	         <option value="本科">本科</option> 
-	    	 <option value="本科以上">本科以上</option>        
-         </select>         
-          <br/>
-          
-           <label for="name">来源渠道</label>
-             <select id="customer_source">   
-	         <option value="">--请选择--</option>
-	         <option value="网络信息">网络信息</option>   
-	         <option value="咨询电话">咨询电话</option> 
-   	         <option value="促销活动">促销活动</option> 
-   	         <option value="上门拜访">上门拜访</option>   
-         </select>           
-          <br/>
-          
-          <label for="name">课程方向</label>
-           <select id="customer_course">   
-	         <option value="">--请选择--</option>
-	         <option value="软件开发">软件开发</option>   
-	         <option value="软件设计">软件设计</option>
-   	         <option value="网络营销">网络营销</option> 
-     
-         </select>               
-          <br/>
-          <label for="name">客户等级</label> 
-           <select id="customer_level">   
-	         <option value="">--请选择--</option>
-	         <option value="1">一级</option>   
-	         <option value="2">二级</option>   
-	          <option value="3">三级</option>   
-	         <option value="4">四级</option>   
-	          <option value="5">五级</option>   
-	         <option value="6">六级</option>  
-	         <option value="7">七级</option>   
-         </select>           
-          <br/>
-         </form>
-          
-    <center>
-    <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="addcustomer()" data-options="iconCls:'icon-save'">保存</a>  
-    <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="resetForm()" data-options="iconCls:'icon-remoce'">重置</a>  
-   </center>
-          
-          <!-- 
-           <label for="name">是否访问</label>   
-          <input type="text" name="name" id="customer_visit" /><br/>
-           <label for="name">是否上门</label>   
-          <input type="text" name="name" id="customer_ingate" /><br/>
-           <label for="name">首次回访时间</label>   
-          <input type="text" name="name" id="customer_onevisit_time" /><br/>
-           <label for="name">上门时间</label>   
-          <input type="text" name="name" id="customer_ingate_time" /><br/> -->
-</div>  
- 
- 
+
  <div id="Addcolumn" class="easyui-dialog" title="Add Customer" style="width:200px;height:400px"   
         data-options="iconCls:'icon-save',modal:true,closed:true,draggable:true">
    

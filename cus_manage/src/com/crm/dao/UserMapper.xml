@@ -52,8 +52,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	<select id="selectUser"  resultType="user">
-		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
-		FROM user;
+		SELECT u.user_id,u.user_account,u.user_password,u.user_name,u.user_sex,u.user_creat_time,u.user_is_lock,u.user_wrong_number,u.user_email,u.user_phone,u.user_weight,(SELECT COUNT(c.customer_id) 
+		FROM customer c 
+		WHERE c.user_id=u.user_id) as customer_num 
+		FROM user u INNER JOIN user_role rc on u.user_id=rc.user_id INNER JOIN role r on r.role_id=rc.role_id where r.role_id=3;
 	</select>
 	
 	<select id="selectUserByUserStatus"  resultType="user">

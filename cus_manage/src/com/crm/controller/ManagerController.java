@@ -1,6 +1,9 @@
 package com.crm.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.mail.Session;
@@ -18,7 +21,11 @@ import com.crm.pojo.Customer;
 import com.crm.pojo.CustomerTrackParameters;
 import com.crm.pojo.FenYe;
 import com.crm.pojo.User;
+import com.crm.pojo.UserCust;
 import com.crm.service.ManagerService;
+import com.crm.service.UserCustService;
+import com.crm.service.UserService;
+import com.crm.util.DistributionCustomer;
 import com.google.gson.JsonArray;
 
 
@@ -29,6 +36,10 @@ public class ManagerController {
 	@Autowired
 	private FenYe fenye;
 	private CustomerTrackParameters customerTrackParameters;
+	@Autowired
+	 private UserService userService;
+	@Autowired
+	 private UserCustService userCustService;
 	@RequestMapping(value="/selectManager",method=RequestMethod.POST)
 	@ResponseBody
 	public FenYe selectManager(HttpServletRequest request,Integer page,Integer rows,FenYe fenye) {
@@ -42,9 +53,11 @@ public class ManagerController {
 	@RequestMapping(value="/insertCustomer",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer insertCustomer(Customer customer){
-		return managerService.insertCustomer(customer);
-		
-		
+		List<User> selectUser = userService.selectUser();
+		 paixu(selectUser);
+		 customer.setUser_id(selectUser.get(0).getUser_id());
+		Integer insertCustomer = managerService.insertCustomer(customer);
+		return insertCustomer;
 	}
 	//查询签到or签退
 	@RequestMapping(value="/selectUserSign",method=RequestMethod.POST)
@@ -109,5 +122,23 @@ public class ManagerController {
 	public String getSigninorback() {
 		return "UserSign";
 	}
-
+	public static void paixu(List<User> UserList) {
+		Collections.sort(UserList, new Comparator<User>() {
+			@Override
+			public int compare(User o1, User o2) {
+				if(o1!=null && o2!=null) {
+					if(o1.getCustomer_num()>o2.getCustomer_num()){
+		                return 1;
+		            }else if(o1.getCustomer_num()<o2.getCustomer_num()){
+		                return -1;
+		            }else if(o1.getCustomer_num()==o2.getCustomer_num()) {
+		            	if(o1.getUser_weight()>o2.getUser_weight()) {
+		            		return -1;
+		            	}
+		            }
+				}
+	            return 0;
+			}
+		});
+	}
 }

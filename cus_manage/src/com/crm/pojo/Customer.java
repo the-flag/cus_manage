@@ -22,6 +22,13 @@ public class Customer {
 	private Integer customer_visit;//是否访问
 	private Integer customer_ingate;//是否上门
 	private Integer user_id;//用户编号
+	private Integer userw_id;//网络咨询师编号
+	public Integer getUserw_id() {
+		return userw_id;
+	}
+	public void setUserw_id(Integer userw_id) {
+		this.userw_id = userw_id;
+	}
 	private User user;
 	
 	private Integer customer_dmoney;//定金金额
@@ -243,10 +250,10 @@ public class Customer {
 				+ ", customer_ingate_time=" + customer_ingate_time + ", customer_id=" + customer_id + ", customer_age="
 				+ customer_age + ", customer_sex=" + customer_sex + ", customer_level=" + customer_level
 				+ ", customer_status=" + customer_status + ", customer_visit=" + customer_visit + ", customer_ingate="
-				+ customer_ingate + ", user_id=" + user_id + ", user=" + user + ", customer_dmoney=" + customer_dmoney
-				+ ", customer_dtime=" + customer_dtime + ", customer_jiaofei=" + customer_jiaofei
-				+ ", customer_jiaotime=" + customer_jiaotime + ", customer_jiaomoney=" + customer_jiaomoney
-				+ ", customer_istui=" + customer_istui + ", customer_tuicause=" + customer_tuicause
+				+ customer_ingate + ", user_id=" + user_id + ", userw_id=" + userw_id + ", user=" + user
+				+ ", customer_dmoney=" + customer_dmoney + ", customer_dtime=" + customer_dtime + ", customer_jiaofei="
+				+ customer_jiaofei + ", customer_jiaotime=" + customer_jiaotime + ", customer_jiaomoney="
+				+ customer_jiaomoney + ", customer_istui=" + customer_istui + ", customer_tuicause=" + customer_tuicause
 				+ ", customer_isjinban=" + customer_isjinban + ", customer_jinbantime=" + customer_jinbantime
 				+ ", customer_jinbanremark=" + customer_jinbanremark + ", customer_zixunremark=" + customer_zixunremark
 				+ "]";

@@ -28,9 +28,9 @@ public class NetWorkTeacherServiceImpl implements NetWorkTeacherService {
 	}
 
 	@Override
-	public List<Access_record> selectDateLog() {
+	public List<Access_record> selectDateLog(Access_record access_record) {
 		// TODO Auto-generated method stub
-		return netWorkTeacherMapper.selectDateLog();
+		return netWorkTeacherMapper.selectDateLog(access_record);
 	}
 
 }

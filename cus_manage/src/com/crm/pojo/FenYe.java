@@ -34,6 +34,13 @@ public class FenYe {
 		this.record_status = record_status;
 	}
 	private Integer user_id;
+	private Integer userw_id;
+	public Integer getUserw_id() {
+		return userw_id;
+	}
+	public void setUserw_id(Integer userw_id) {
+		this.userw_id = userw_id;
+	}
 	public Integer getUser_id() {
 		return user_id;
 	}

@@ -59,9 +59,9 @@ public class NetWorkTeacherController {
 	
 	@RequestMapping(value="/selectDateLog",method=RequestMethod.POST)
 	@ResponseBody
-	public List<Access_record> selectDateLog() {
+	public List<Access_record> selectDateLog(Access_record access_record) {
 	
-		return netWorkTeacherService.selectDateLog();
+		return netWorkTeacherService.selectDateLog(access_record);
 				
 	}
 	

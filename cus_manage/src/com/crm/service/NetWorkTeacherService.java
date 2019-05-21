@@ -10,5 +10,5 @@ FenYe selectNetWorkTeacher(FenYe fenye);
 
 Integer insertTrackInfo(Access_record access_record);
 
-List<Access_record> selectDateLog();
+List<Access_record> selectDateLog(Access_record access_record);
 }
