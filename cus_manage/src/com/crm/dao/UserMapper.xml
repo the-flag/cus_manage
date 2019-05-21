@@ -56,6 +56,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM user;
 	</select>
 	
+	<select id="selectUserByUserStatus"  resultType="user">
+		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
+		FROM user;
+	</select>
 	<select id="selectUsersByFenYe" parameterType="fenYe" resultType="user">
 		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
 		FROM user

@@ -15,6 +15,12 @@ public interface UserMapper {
 	List<User> selectUser();
 	
 	/**
+	 * 查询已签到的用户
+	 * @return
+	 */
+	List<User> selectUserByUserStatus();
+	
+	/**
 	 * 多条件分页查询用户数据
 	 * @param fenYe
 	 * @return
