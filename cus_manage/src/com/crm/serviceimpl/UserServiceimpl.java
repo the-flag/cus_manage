@@ -31,6 +31,11 @@ public class UserServiceimpl implements UserService {
 	@Override
 	public User selectUserByAccount(User user) {
 		// TODO Auto-generated method stub
+		User selectUserByAccount = usermapper.selectUserByAccount(user);
+		System.out.println("dao:"+selectUserByAccount);
+		System.out.println("dao:"+selectUserByAccount);
+		System.out.println("dao:"+selectUserByAccount);
+		System.out.println("dao:"+selectUserByAccount);
 		return usermapper.selectUserByAccount(user);
 	}
 	@Override
