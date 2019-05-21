@@ -327,6 +327,11 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 	 
 	  
   }
+  //测试
+  function  autoCustomer(){
+	 var  status= $("#autoCustomer").switchbutton("options").checked;
+	  alert("师傅师傅说"+status);
+  }
 </script>
 <body>
   <table id="managerTab" class="easyui-datagrid"    
@@ -389,7 +394,8 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="testcolumn()" data-options="iconCls:'icon-add'">设置显示隐藏列</a>
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="fenpeiCustomer()" data-options="iconCls:'icon-redo'">设置跟踪人员</a>
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="editCustomer()" data-options="iconCls:'icon-edit'">编辑</a>
-         
+         <a  href="javascript:void(0)"  class="easyui-switchbutton"  id="autoCustomer" data-options="onText:'Yes',offText:'No'">自动分配</a>
+          <a  href="javascript:void(0)"  class="easyui-linkbutton" onclick="autoCustomer()"  data-options="iconCls:'icon-remove'">自动分配</a>
    </form>
  </div>
  

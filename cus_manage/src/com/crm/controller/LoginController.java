@@ -119,6 +119,7 @@ public class LoginController {
 			request.setAttribute("key", "账号或密码错误 账号");
 			return "login";
 		}
+		System.out.println("数据库查询:"+login);
 		Boolean filg=md5Utils.getSaltverifyMD5(user.getUser_password(),login.getUser_password());
 		if(filg) {
 			if(login.getUser_is_lock()<1) {
