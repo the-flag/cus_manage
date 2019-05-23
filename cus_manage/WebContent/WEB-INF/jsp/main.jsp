@@ -82,6 +82,18 @@
 			$("#myUpdPass").dialog("close");
 			$("#myUpdPassForm").form("clear");
 		}
+		
+		function saveCanle() {
+	        $.messager.confirm('注销确认','你是否注销用户？',function () {
+	        	/* $.post("exitlogin",{
+	        		user_account:${m.user_account}
+	        	},function(data){
+	        		
+	        	},"json") */
+	        	window.location.href="exitlogin";
+
+	        })
+		}
 	</script>
 	
 	

@@ -142,20 +142,19 @@ canvas {
 	
 		<form id="ff" method="post">   
 		    <div>   
-		        <input type="text" placeholder="手机号" class="login_txtbx" name="user_phone" id="user_phone"/>   
+		        <input type="text" placeholder="手机号" class="easyui-validatebox" name="user_phone" id="user_phone"/>   
 		    </div>   
 		    <div>   
-		       <input type="text"   placeholder="验证码" maxlength="4" class="login_txtbx" name="user_phone_validata" id="user_phone_validata">
+		       <input type="text"   placeholder="验证码" maxlength="6" class="login_txtbx" name="user_phone_validata" id="user_phone_validata">
 		       <span> <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="phone_validata()">获取验证码</a> </span>
 		    </div>   
-		    <div><input  type="button" value="重置密码"  class="submit_btn" onclick="submitForm();" /></div>
+		    <div><input  type="button" value="重置密码"  class="submit_btn" onclick="ResetForm();" /></div>
 		</form>  
 	</div>
 	
 </body>
 
 <script type="text/javascript">
-	
 	function updatePass(){
 		$("#ff").form("clear");
 		$('#updateBox').dialog({
@@ -163,19 +162,87 @@ canvas {
 			closed: false
 		})
 	}
+	var user_phone;
 	function phone_validata(){
-		var user_phone=$("#user_phone").val();
-		var r = /^[1][3,5,8][0-9]{9}$/;
+		user_phone=$("#user_phone").val();
+		var r = /^[1][3,5,8,7][0-9]{9}$/;
 		if(user_phone!=null && user_phone!=""){
 		 if (!r.test(user_phone)) {
-		      alert("手机号码格式不正确!");
+			 $.messager.alert('警告','手机号码格式不对!'); 
 		      return false;
 		 }
 		}else{
-			alert("手机号码不能为空!");
+			$.messager.alert('警告','手机号码不能为空!'); 
 			return false;
 		}
-		location.href="phoneValidata?phone="+user_phone
+		$.post("selectUserByPhone",{
+			phone:user_phone
+		},function(data){
+			if(data){
+				$.post("phoneValidata",{
+					phone:user_phone
+				},function(datacode){
+					if(datacode=="00000"){
+						// 消息将显示在顶部中间
+						$.messager.show({
+							title:'我的消息',
+							msg:'验证码发送成功,请注意查收!',
+							timeout:2000,
+							showType:'show',
+							style:{
+								right:'',
+								top:document.body.scrollTop+document.documentElement.scrollTop,
+								bottom:''
+							}
+						});
+					}else{
+						$.messager.alert('警告','发送失败,网络异常');    
+					}
+				},"json")
+			}else{
+				$.messager.alert('警告','未绑定');    
+
+			}
+			
+		},"json")
 	}
+	function validata(){
+		var user_phone_validata=$("#user_phone_validata").val().trim();
+	    if(user_phone_validata.length==0){    
+	        alert('对不起，验证码不能为空或者为空格!');//请将“文本框”改成你需要验证的属性名称!   
+	        return false;
+	    }    
+	    var reg=/^[-+]?\d*$/;
+	    if(!reg.test(user_phone_validata)){    
+            alert("对不起，您输入的整数类型格式不正确!");//请将“整数类型”要换成你要验证的那个属性名称！    
+        	return false;
+	    }
+	    if(user_phone_validata.length!=6){    
+	        alert('对不起，验证码不够6位!');//请将“文本框”改成你需要验证的属性名称!   
+	        return false;
+	    }
+	    return true;
+	}
+	function ResetForm(){
+			if(validata()){
+				var user_phone_validata=$("#user_phone_validata").val().trim();
+				$.post("updatePasswordByUserPhone",{
+					validata:user_phone_validata,
+					user_phone:user_phone
+				},function(data){
+					if(data>0){
+						$('#updateBox').dialog({
+							closed: true
+						})
+						$.messager.alert('警告','密码重置成功!');
+						
+						// 消息将显示在顶部中间
+					}else{
+						$.messager.alert('警告','验证码错误!');    
+					}
+				},"json")
+			}
+	}
+	
  </script>
 </html>

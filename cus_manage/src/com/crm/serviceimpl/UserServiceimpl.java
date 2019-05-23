@@ -130,5 +130,15 @@ public class UserServiceimpl implements UserService {
 		// TODO Auto-generated method stub
 		return usermapper.updateUserWrongNumberByAccount(user);
 	}
+	@Override
+	public Integer updatePasswordByUserPhone(String user_phone) {
+		// TODO Auto-generated method stub
+		return usermapper.updatePasswordByUserPhone(user_phone);
+	}
+	@Override
+	public User selectUserByPhone(String user_phone) {
+		// TODO Auto-generated method stub
+		return usermapper.selectUserByPhone(user_phone);
+	}
 
 }

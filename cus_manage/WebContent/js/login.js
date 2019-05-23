@@ -1,12 +1,12 @@
 /**
  * Created by Administrator on 2017/11/8.
  */
-$("#user").validatebox({
+$("#user_account").validatebox({
         required:true,
         missingMessage:"请输入用户名",
         invalidMessage:"用户名不能为空"
 })
-$("#pass").validatebox({
+$("#user_password").validatebox({
         required:true,
         missingMessage:"请输入密码",
         invalidMessage:"密码不能为空"

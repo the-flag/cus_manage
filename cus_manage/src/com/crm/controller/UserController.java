@@ -3,6 +3,8 @@ package com.crm.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,6 +71,21 @@ public class UserController {
 		return true;
 	}
 	
+	
+	/**
+	 * 验证用户是否已存在
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping("/selectUserByPhone")
+	@ResponseBody
+	public Boolean selectUserByPhone(String phone) {
+		User selectUserByAccount = userService.selectUserByPhone(phone);
+		if(selectUserByAccount!=null) {
+			return true;
+		}
+		return false;
+	}
 	
 	/**
 	 * 修改密码时验证
@@ -140,6 +157,26 @@ public class UserController {
 	@ResponseBody
 	public Integer updatePasswordByUserId(Integer user_id) {
 		return userService.updatePasswordByUserId(user_id);
+	}
+	
+	
+	
+	/**
+	 * 根据用户id设置密码为默认密码
+	 * @param user_id
+	 * @return
+	 */
+	@RequestMapping(value="/updatePasswordByUserPhone",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer updatePasswordByUserPhone(String user_phone,String validata,HttpServletRequest request) {
+		String attribute =(String) request.getSession().getAttribute("phonevalidata");
+		System.out.println("验证码:"+attribute);
+		if(attribute!=null) {
+			if(attribute.trim().equals(validata)) {
+				return userService.updatePasswordByUserPhone(user_phone);
+			}
+		}
+		return 0;
 	}
 	
 	/**
