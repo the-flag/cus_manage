@@ -11,7 +11,7 @@ public class Config
 	/**
 	 * url前半部分
 	 */
-	public static final String BASE_URL = "https://api.miaodiyun.com";
+	public static final String BASE_URL = "https://openapi.miaodiyun.com/distributor/sendSMS";
 
 	/**
 	 * 开发者注册后系统自动生成的账号，可在官网登录后查看

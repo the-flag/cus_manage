@@ -44,11 +44,6 @@ public class RememberInterceptor implements HandlerInterceptor {
 		System.out.println("自动登录拦截器");
 		//获取id地址
 		String ipAddress = IpAdrressUtil.getIpAddress(request);
-		String parameter = request.getParameter("user_account"); //获取前台传的账号
-		System.out.println(arg2.toString());
-		String remember = request.getParameter("remember");
-		System.out.println("获取前台传的账号："+parameter);
-		System.out.println("获取前台传的账号："+remember);
 		System.out.println("IP地址:"+ipAddress);
 		//判断是否已经登录过
 		if (request.getSession().getAttribute("m") != null) {return true;}

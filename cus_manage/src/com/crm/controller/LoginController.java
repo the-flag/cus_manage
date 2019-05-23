@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -65,12 +66,14 @@ public class LoginController {
 	
 	
 	/**
-	  * 跳转登陆页面
+	  * 退出,跳转登陆页面
 	 * @return
 	 */
 	@RequestMapping(value="/exitlogin")
 	public void exitlogin(HttpServletRequest request,HttpServletResponse response){
-		request.getSession().removeAttribute("m");
+		Map<String, String> seeesionIdMap = MemoryData.getSeeesionIdMap();
+		User user =(User) request.getSession().getAttribute("m");
+		seeesionIdMap.remove(user.getUser_account());
 		try {
 			response.sendRedirect("login");
 		} catch (IOException e) {
@@ -99,7 +102,7 @@ public class LoginController {
 	
 	
 	/**
-	 * 获取生成验证码显示到 UI 界面
+	 * 获取生成验证码显示到 登陆 界面
 	 * @param request
 	 * @param response
 	 * @throws ServletException
@@ -133,7 +136,6 @@ public class LoginController {
 	public String loginValidation(HttpServletRequest request,HttpServletResponse response,User user,Integer remember,String yanzhengma) {
 		String parameter = request.getParameter("user_account"); //获取前台传的账号
 		
-		System.out.println("获取前台传的账号："+parameter);
 		String code = (String) request.getSession().getAttribute("randomcode_key"); //获取图片验证码
 		if(yanzhengma==null || yanzhengma=="" || !code.equalsIgnoreCase(yanzhengma)) {
 			request.setAttribute("key", "验证码错误!!!!!!");
@@ -145,15 +147,18 @@ public class LoginController {
 			request.setAttribute("key", "账号或密码错误 账号");
 			return "login";
 		}
+		
 		Boolean filg=md5Utils.getSaltverifyMD5(user.getUser_password(),login.getUser_password()); //如果账号正确,判断用户输入的密码是否正确
 		if(filg) {
 			if(login.getUser_is_lock()<1) { //账号密码都没有问题,进一步判断该账号是否被锁定
 				request.setAttribute("key", "该账号已被锁定,请联系管理员!!!");
 				return "login";
 			}
+			/*if(request.getSession().getAttribute("m")==null) { //判断session是否已存在用户信息*/
 			//登陆成功后,用户信息存在session中
-			request.getSession().setAttribute("m", login);//根据账号为Key存储到会话中
-			request.getSession().setAttribute("loginType", "standard");//登录方式是标准登录
+				request.getSession().setAttribute("m", login);//根据账号为Key存储到会话中
+				request.getSession().setAttribute("loginType", "standard");//登录方式是标准登录
+			/*}*/
 			String sessionID = request.getRequestedSessionId();
 			String User_account=login.getUser_account();
 			if(!MemoryData.getSeeesionIdMap().containsKey(User_account)) {
@@ -186,7 +191,6 @@ public class LoginController {
 				login.setUser_login_time(sdf2.format(new Date()));
 				userService.updateUser(login);
 			}
-			
 			
 			System.out.println("登陆成功！！！！！！！！");
 			return "redirect:getMain"; 		

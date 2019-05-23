@@ -123,13 +123,7 @@ function validate() {
         })
 
 }*/
-function saveCanle() {
-        $.messager.confirm('注销确认','你是否注销用户？',function () {
-        	window.location.href="exitlogin";
 
-        })
-
-}
 $(".topText a").click(function () {
         $(this).addClass('textActive').siblings().removeClass('textActive');
 
