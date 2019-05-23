@@ -11,15 +11,15 @@ public class FenYe {
 	private List<?> rows;
 	private Object object;
 	
-	//查询条件
-	private String cname;//名字
-	private String uteacher;//咨询师
-	private Integer visit;//是否访问
-	private Integer ingate;//是否上门
+	//鏌ヨ鏉′欢
+	private String cname;//鍚嶅瓧
+	private String uteacher;//鍜ㄨ甯�
+	private Integer visit;//鏄惁璁块棶
+	private Integer ingate;//鏄惁涓婇棬
 	private String minTime;
-	private String maxTime;//时间区间
-	private String record_condition;//回访情况
-	private String record_status;//回访方式
+	private String maxTime;//鏃堕棿鍖洪棿
+	private String record_condition;//鍥炶鎯呭喌
+	private String record_status;//鍥炶鏂瑰紡
 	
 	public String getRecord_condition() {
 		return record_condition;
