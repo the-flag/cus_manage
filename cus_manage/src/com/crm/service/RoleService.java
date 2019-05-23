@@ -14,6 +14,12 @@ public interface RoleService {
 	
 	
 	/**
+	 * 删除模块失败时
+	 * 根据模块id，关联中间表，查询出引用某个模块的所有角色
+	 */
+	List<Role> selectRoleByModuleId(Integer module_id);
+	
+	/**
 	 * 根据用户id查询
 	 * @param user_id
 	 * @return

@@ -57,6 +57,15 @@ $(function () {
                     max_creat_time:$('#max_creat_time').datebox('getValue'),
                     user_is_lock:$("#user_is_lock").val()
                 },
+                onLoadSuccess:function(){
+                	var data=$("#table").datagrid("getRows");
+                	for(var i=0;i<data.length;i++){
+                		userislockpinjie(data[i].user_id);
+                	}
+                	$.parser.parse();
+                	
+                	
+                },
                 columns:[[
                         {
                                 checkbox:true,
@@ -127,16 +136,7 @@ $(function () {
                             title:'是否锁定',
                             width:100,
                             align:'center',
-                            formatter:function (val,row,index) {
-                                    if(val==0){
-                                    	 e = '<a  id="add" style="color: green" data-id="98"  onclick="obj.unlock(\'' + index + '\')">解锁</a> ';
-                                            return e;
-                                    }
-                                    else{
-                                    	e = '<a  id="add" style="color: red" data-id="98"  onclick="obj.lock(\'' + index + '\')">锁定</a> ';
-                                        return e;
-                                    }
-                            }
+                            formatter:userislock
                         },
                         {
                                 field:"opr",
@@ -155,7 +155,28 @@ $(function () {
         })
 
 })
+function userislockpinjie(user_id){
+	$("#islock"+user_id+"").switchbutton({ 
+	onChange: function(checked){ 
+       if(checked){
+    	   obj.unlock(user_id);
+       }else{
+    	   obj.lock(user_id);
+       }
+     } 
+	}) 
 
+}
+
+function  userislock(val,row,index) {
+         if(val==0){
+        	 e = '<a  id="add" style="color: green" data-id="98"  onclick="obj.unlock(\'' + index + '\')">解锁</a> ';
+           return "<input id=\"islock"+row.user_id+"\"  class=\"easyui-switchbutton\" data-options=\"checked:false,onText:'锁定',offText:'解锁'\" >";;
+         }else{
+             e = '<a  id="add" style="color: red" data-id="98"  onclick="obj.lock(\'' + index + '\')">锁定</a> ';
+             return "<input id=\"islock"+row.user_id+"\" class=\"easyui-switchbutton\" data-options=\"checked:true,onText:'锁定',offText:'解锁'\" >";
+         }
+}
 // 加载部门下拉框
 $("#part").combotree({
         url:'js/json/userTree.json',
@@ -428,23 +449,16 @@ obj={
                                 else{
                                         return false;
                                 }
-
                         }
-
                 })*/
-
-
 
         },
         //解锁
         unlock:function(index){
         	$.messager.confirm('确认','您确认想要解锁该用户吗？',function(r){    
         	    if (r){    
-        	    	var data=$("#table").datagrid("getData");
-                	var row=data.rows[index];
-                	if(row!=null){
 		            	$.post("updateUserIsLockByUserId",{
-		            		user_id:row.user_id,
+		            		user_id:index,
 		            		user_is_lock:1
 		            	},function(data){
 		            		if(data>0){
@@ -454,21 +468,18 @@ obj={
 		            			$.messager.alert('提示','解锁失败!');    
 		            		}
 		            	},"json")   
-                	}
-        	    }    
+        	    }else{
+        	    	$("#islock"+user_id+"").switchbutton("reset");
+        	    }
         	});  
         },
         //锁定
         lock:function(index){
         	$.messager.confirm('确认','您确认想要锁定该用户吗？',function(r){    
         	    if (r){    
-        	    	var data=$("#table").datagrid("getData");
-                	var row=data.rows[index];
-                	if(row!=null){
-		            	$.post("updateUserIsLockByUserId",{
-		            		user_id:row.user_id,
+		           $.post("updateUserIsLockByUserId",{
+		            		user_id:index,
 		            		user_is_lock:0
-		            		
 		            	},function(data){
 		            		if(data>0){
 		            			$.messager.alert('提示','锁定成功!'); 
@@ -477,8 +488,9 @@ obj={
 		            			$.messager.alert('提示','锁定失败!');    
 		            		}
 		            	},"json")  
+                	}else{
+                		$("#islock"+user_id+"").switchbutton("reset");
                 	}
-        	    }    
         	});  
         },
         // 提交表单

@@ -27,11 +27,12 @@ public interface ModuleMapper {
 	List<Integer> selectModuleByRoleId(Integer role_id);
 	
 	/**
-	 * 根据模块名称查询，是否该模块已存在
+	 * 根据模块名称,模块父id查询，
+	 * 判断在同一个父节点下是否该名称重复
 	 * @param module_name
 	 * @return
 	 */
-	Module selectModuleByModuleName(String module_name);
+	Module selectModuleByModuleName(Module module);
 	
 	/**
 	 * 添加模块信息

@@ -24,6 +24,14 @@ canvas {
 <script src="js/verificationNumbers.js"
 	tppabs="js/verificationNumbers.js"></script>
 <script src="js/Particleground.js" tppabs="js/Particleground.js"></script>
+
+
+<link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/default/easyui.css" />
+<link type="text/css" rel="stylesheet" href="js/css/main.css">
+<script src="js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
+<script src="js/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
+
+
 <script>
 	$(document).ready(function() {
 		//粒子背景特效
@@ -113,7 +121,10 @@ canvas {
 			<input type="button" value="验证码核验" class="ver_btn" onClick="validate();">
 		</dd>
 		<dd>
-			<input id="checkbox" type="checkbox" name="remember"  value="1"><span style="color:#f4f4f4">下次自动登陆</span><br/>
+			<input id="checkbox" type="checkbox" name="remember"  value="1"><span style="color:#f4f4f4">下次自动登陆</span>
+			<span style="color:#f4f4f4;"><a id="btn" href="javascript:void(0)"  onclick="updatePass()">忘记密码?</a>  </span>
+		
+			<br/>
 		</dd>
 		<dd>
 			<input  type="button" value="立即登陆"  class="submit_btn" onclick="submitForm();" />
@@ -125,9 +136,46 @@ canvas {
 		</dd>
 	</dl>
 	
+	
+	
+	<div id=updateBox class="easyui-dialog" style="width:500px;height:400px;" data-options="iconCls:'icon-save',resizable:true,modal:true,closed: true">
+	
+		<form id="ff" method="post">   
+		    <div>   
+		        <input type="text" placeholder="手机号" class="login_txtbx" name="user_phone" id="user_phone"/>   
+		    </div>   
+		    <div>   
+		       <input type="text"   placeholder="验证码" maxlength="4" class="login_txtbx" name="user_phone_validata" id="user_phone_validata">
+		       <span> <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="phone_validata()">获取验证码</a> </span>
+		    </div>   
+		    <div><input  type="button" value="重置密码"  class="submit_btn" onclick="submitForm();" /></div>
+		</form>  
+	</div>
+	
 </body>
 
 <script type="text/javascript">
- 
+	
+	function updatePass(){
+		$("#ff").form("clear");
+		$('#updateBox').dialog({
+			title: '重置密码',  
+			closed: false
+		})
+	}
+	function phone_validata(){
+		var user_phone=$("#user_phone").val();
+		var r = /^[1][3,5,8][0-9]{9}$/;
+		if(user_phone!=null && user_phone!=""){
+		 if (!r.test(user_phone)) {
+		      alert("手机号码格式不正确!");
+		      return false;
+		 }
+		}else{
+			alert("手机号码不能为空!");
+			return false;
+		}
+		location.href="phoneValidata?phone="+user_phone
+	}
  </script>
 </html>

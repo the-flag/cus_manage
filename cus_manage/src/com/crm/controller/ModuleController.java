@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crm.pojo.Module;
+import com.crm.pojo.Role;
 import com.crm.service.ModuleService;
+import com.crm.service.RoleService;
 import com.crm.util.EasyUITreeJson;
 import com.crm.util.ModuleTreeExcludeUrl;
 import com.crm.util.ModuleTreeUtil;
@@ -26,6 +28,8 @@ public class ModuleController {
 	private ModuleTreeUtil treeUtil;
 	@Autowired
 	private ModuleTreeExcludeUrl moduleTreeExcludeUrl;
+	@Autowired
+	private RoleService roleService;
 	
 	
 	@RequestMapping(value="/getModulePage",method=RequestMethod.GET)
@@ -82,12 +86,29 @@ public class ModuleController {
 		return listToTree;
 		
 	}
-	
+	/**
+	 * 删除模块,删除时不能被角色引用
+	 * @param module_id
+	 * @return
+	 */
 	@RequestMapping(value="/deleteModule",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer deleteModule(Integer module_id) {
 		
 		return moduleService.deleteModule(module_id);
+		
+	}
+	
+	/**
+	 * 删除失败，查询出引用这个模块的角色
+	 * @param module_id
+	 * @return
+	 */
+	@RequestMapping(value="/selectRoleByModuleId",method=RequestMethod.POST)
+	@ResponseBody
+	public List<Role> selectRoleByModuleId(Integer module_id) {
+		
+		return roleService.selectRoleByModuleId(module_id);
 		
 	}
 	
@@ -100,7 +121,7 @@ public class ModuleController {
 	@ResponseBody
 	public Boolean moduleValidata(Module module) {
 		
-		 Module selectModuleByModuleName = moduleService.selectModuleByModuleName(module.getModule_name());
+		 Module selectModuleByModuleName = moduleService.selectModuleByModuleName(module);
 		 if(selectModuleByModuleName!=null) {
 			 if(selectModuleByModuleName.getModule_id()==module.getModule_id()) {
 				 return true;
@@ -110,6 +131,8 @@ public class ModuleController {
 		 return true;
 		
 	}
+	
+	
 	
 	/**
 	 * 修改模块
@@ -130,8 +153,11 @@ public class ModuleController {
 	 */
 	@RequestMapping(value="/insertModule",method=RequestMethod.POST)
 	@ResponseBody
-	public Integer insertModule(Module module) {
-		System.out.println(module+"::::");
+	public Integer insertModule(Module module,Module node) {
+		System.out.println("父节点信息:"+node);
+		System.out.println("父节点信息:"+node);
+		System.out.println("添加信息:"+module);
+		System.out.println("添加信息:"+module);
 		return moduleService.insertModule(module);
 		
 	}

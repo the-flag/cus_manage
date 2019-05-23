@@ -108,5 +108,10 @@ public class RoleServiceimpl implements RoleService {
 		// TODO Auto-generated method stub
 		return roleMapper.selectRoleByUserId(user_id);
 	}
+	@Override
+	public List<Role> selectRoleByModuleId(Integer module_id) {
+		// TODO Auto-generated method stub
+		return roleMapper.selectRoleByModuleId(module_id);
+	}
 
 }
