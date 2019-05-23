@@ -42,10 +42,6 @@ public class LoginController {
 	private UserService userService;
 	@Autowired
 	private MD5Utils md5Utils;
-	@Autowired 
-	private TreeUtil treeUtil;
-	@Autowired
-	private HttpUtil httpUtil;
 	@Autowired
 	private IndustrySMS industrySMS;
 	
@@ -87,16 +83,19 @@ public class LoginController {
 	  * 获取手机号发送验证码
 	 * @return
 	 */
-	@RequestMapping(value="/phoneValidata",method=RequestMethod.GET)
-	
-	public void phoneValidata(String phone,HttpServletRequest request){
+	@RequestMapping(value="/phoneValidata",method=RequestMethod.POST)
+	@ResponseBody
+	public String phoneValidata(String phone,HttpServletRequest request){
 		int p= (int)((Math.random()*9+1)*100000);//获取6位随机验证码
 		IndustrySMS.setTo(phone);//发送到这个手机号
-		String smsContent = "您的验证码为"+p+"，请于30分钟内正确输入，如非本人操作，请忽略此短信。";//发送的内容
+		String smsContent = "【云间科技】您的验证码为"+p+"，请于30分钟内正确输入，如非本人操作，请忽略此短信。";//发送的内容
 		IndustrySMS.setSmsContent(smsContent);//把发送的信息内容存到这个对象类中
-		IndustrySMS.execute();//执行发送验证码方法
-		request.getSession().setAttribute("p", p);//把验证码存入到键值并存在session中
-		System.out.println("验证码为:"+p);
+		String execute = IndustrySMS.execute();//执行发送验证码方法
+		System.out.println(execute);
+		System.out.println("验证码:"+p);
+		request.getSession().setAttribute("phonevalidata",""+p);
+		return execute;
+		
 	}
 	
 	

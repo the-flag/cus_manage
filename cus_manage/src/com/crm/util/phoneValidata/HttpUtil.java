@@ -10,12 +10,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.stereotype.Component;
 
 /**
  * http请求工具
  */
-@Component
 public class HttpUtil{
 	/**
 	 * 构造通用参数timestamp、sig和respDataType
@@ -25,10 +23,8 @@ public class HttpUtil{
 	public static String createCommonParam()
 	{
 		// 时间戳
-		/*SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");*/
-		
-		//毫秒级时间戳
-		Long timestamp = new Date().getTime();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String timestamp = sdf.format(new Date());
 
 		// 签名
 		String sig = DigestUtils.md5Hex(Config.ACCOUNT_SID + Config.AUTH_TOKEN + timestamp);

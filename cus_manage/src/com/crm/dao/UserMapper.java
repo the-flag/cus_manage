@@ -51,6 +51,13 @@ public interface UserMapper {
 	User selectUserByAccount(User user);
 	
 	/**
+	 * 根据用户的手机号查询对应的用户信息 ==通过手机验证码重置密码
+	 * @param user
+	 * @return
+	 */
+	User selectUserByPhone(String user_phone);
+	
+	/**
 	 * 根据免登陆凭证uuid查找用户
 	 * @param uuid
 	 * @return
@@ -76,6 +83,16 @@ public interface UserMapper {
 	 * @return
 	 */
 	Integer updatePasswordByUserId(Integer user_id);
+	
+	/**
+	  * 重置密码 --- 根据用户id手机号 重置密码
+	 * @param user_id
+	 * @return
+	 */
+	
+	Integer updatePasswordByUserPhone(String user_phone);
+	
+	
 	
 	/**
 	 * 	根据账号修改用户登陆的错误次数

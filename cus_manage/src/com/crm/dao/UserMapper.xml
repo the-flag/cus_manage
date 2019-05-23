@@ -118,7 +118,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM `user` WHERE user_account=#{user_account} 
 	</select>
 	
-	
+	<select id="selectUserByPhone" parameterType="string" resultType="user">
+		SELECT user_id,user_account 
+		FROM `user` WHERE user_phone=#{user_phone} 
+	</select>
 	<select id="selectUserByUuid" parameterType="string" resultType="user">
 		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
 		FROM `user` WHERE user_uuid=#{user_uuid} 
@@ -208,6 +211,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			set	user_password="76db3b18728470644ce0e469346c47454429850e87774510"
 		WHERE user_id=#{user_id}
 	</update>
+	
+	
+	<update id="updatePasswordByUserPhone" parameterType="string">
+		UPDATE user 
+			set	user_password="76db3b18728470644ce0e469346c47454429850e87774510"
+		WHERE user_phone=#{user_phone}
+	</update>
+	
 	<insert id="insertUser" parameterType="user">
 		INSERT INTO `user`(user_account,user_password,user_email,user_phone)
 		select #{user_account},#{user_password},#{user_email},#{user_phone} from dual 

@@ -28,6 +28,8 @@
             <mvc:mapping path="/**"/>				<!-- 拦截所有的controller请求 -->
             <mvc:exclude-mapping path="/login*"/>	<!-- 方行与登陆有关的 -->
             <mvc:exclude-mapping path="/phoneValidata"/> <!-- 手机验证  -->
+            <mvc:exclude-mapping path="/updatePasswordByUserPhone"/> <!-- 手机验证  -->
+             <mvc:exclude-mapping path="/selectUserByPhone"/> <!-- 手机验证  -->
             <mvc:exclude-mapping path="/js/**"/>	
             <mvc:exclude-mapping path="/img/**"/>
             <bean class="com.crm.interceptor.RememberInterceptor"/>
@@ -37,6 +39,8 @@
             <mvc:mapping path="/**"/>				<!-- 拦截所有的controller请求 -->
             <mvc:exclude-mapping path="/login*"/>	<!-- 方行与登陆有关的 -->
              <mvc:exclude-mapping path="/phoneValidata"/> <!-- 手机验证  -->
+              <mvc:exclude-mapping path="/updatePasswordByUserPhone"/> <!-- 手机验证  -->
+              <mvc:exclude-mapping path="/selectUserByPhone"/> <!-- 手机验证  -->
             <mvc:exclude-mapping path="/js/**"/>
             <mvc:exclude-mapping path="/img/**"/>
             <bean class="com.crm.interceptor.LoginInterceptor"/>

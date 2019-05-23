@@ -21,6 +21,13 @@ public interface UserService {
 	User selectUserByAccount(User user);
 	
 	/**
+	 * 根据用户的手机号查询对应的用户信息 ==通过手机验证码重置密码
+	 * @param user
+	 * @return
+	 */
+	User selectUserByPhone(String user_phone);
+	
+	/**
 	 * 根据免登陆凭证查询用户信息
 	 * @param user
 	 * @return
@@ -40,6 +47,14 @@ public interface UserService {
 	 * @return
 	 */
 	Integer updatePasswordByUserId(Integer user_id);
+	
+	/**
+	  * 重置密码 --- 根据用户id手机号 重置密码
+	 * @param user_id
+	 * @return
+	 */
+	
+	Integer updatePasswordByUserPhone(String user_phone);
 	
 	/**
 	  * 修改用户是否锁定 --- 根据用户id 修改
