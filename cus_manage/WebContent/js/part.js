@@ -99,11 +99,14 @@ function saveForm(){
 	var none=$("#tree").tree("getSelected");
 	alert(none.text);
 	 var isLeaf = $('#tree').tree('isLeaf',none.target);
+	 var validata=0;
 	 if(isLeaf){
-		 if(none.url!=null && none.url!=''){
+		 validata=none.id;
+		 /*if(none.url!=null && none.url!=''){
+			 
 			 $.messager.alert('提示','不能在该节点下添加!');    
 			 return ;
-		 }
+		 }*/
 	 }	
 	 if($("#formBox").form('validate')){
 		 	$.post("insertModule",{
@@ -111,8 +114,8 @@ function saveForm(){
 		 		module_name:$("#partName").val(),
 		 		module_parent_id:none.id,
 		 		module_path:""+$("#module_path").val(),
-		 		module_weight:$("#module_weight").val()
-		 		
+		 		module_weight:$("#module_weight").val(),
+		 		validata:validata
 		 	},function(data){
 		 		if(data>0){
 	                var selectNode=$("#tree").tree('getSelected');
@@ -176,9 +179,12 @@ function delPart() {
 	    if (r){    
 	    	
 	    	var none=$("#tree").tree("getSelected");
+	    	var isLeaf = $('#tree').tree('isLeaf',none.target);
 	    	alert(none.text);
+	    	
 	    	$.post("deleteModule",{
-	    		module_id:none.id
+	    		module_id:none.id,
+	    		isLeaf:isLeaf
 	    	},function(data){
 	    		if(data>0){
 	    			$("#tree").tree("reload");

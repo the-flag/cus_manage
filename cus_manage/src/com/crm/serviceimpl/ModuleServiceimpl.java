@@ -47,6 +47,16 @@ public class ModuleServiceimpl implements ModuleService {
 		// TODO Auto-generated method stub
 		return moduleMapper.selectModuleByModuleName(module);
 	}
+	@Override
+	public Module selectModuleByModuleId(Integer module_id) {
+		// TODO Auto-generated method stub
+		return moduleMapper.selectModuleByModuleId(module_id);
+	}
+	@Override
+	public Integer deleteModulesByModuleParentId(Integer module_parent_id) {
+		// TODO Auto-generated method stub
+		return moduleMapper.deleteModulesByModuleParentId(module_parent_id);
+	}
 
 
 }

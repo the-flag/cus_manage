@@ -11,6 +11,12 @@ public interface ModuleService {
 	 */
 	List<Module> selectModules();
 	
+	/**
+	 * 根据模块id查询对应的模块信息
+	 * @param module_id
+	 * @return
+	 */
+	Module selectModuleByModuleId(Integer module_id);
 	
 	/**
 	 * 根据角色id
@@ -53,10 +59,23 @@ public interface ModuleService {
 	Integer updateModule(Module module);
 	
 	/**
-	 * 删除模块信息
+	 * 根据模块id删除模块信息,
+	 * 删除时判断当前是否时父节点，
+	 * 		不是父节点
+	 * 			判断是否有角色引用
+	 * 		是父节点
+	 * 			判断所有的字节的是否有角色引用
+	 * 被角色引用时不删除
 	 * @param module
 	 * @return
 	 */
 	Integer deleteModule(Integer module_id);
+	
+	/**
+	 * 根据模块父id删除模块信息
+	 * @param module
+	 * @return
+	 */
+	Integer deleteModulesByModuleParentId(Integer module_parent_id);
 	
 }
