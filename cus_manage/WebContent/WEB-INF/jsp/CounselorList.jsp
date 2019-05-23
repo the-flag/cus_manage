@@ -9,6 +9,10 @@
 <script type="text/javascript" src="js/jquery-easyui-1.4.3/jquery.min.js"></script>   
 <script type="text/javascript" src="js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>  
 <script type="text/javascript" src="js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>  
+
+
+
+<script type="text/javascript" src="js/area.js"></script>
 </head>
 <script type="text/javascript">
 //展示首页数据
@@ -21,10 +25,18 @@
 			 url:'selectCounselor',
 			 method:'post',
 			 pagination:true,
-			 toolbar:"#searchTab"
+			 toolbar:"#searchTab",
+				 queryParams:{
+						user_id:${m.user_id}
+					}
 			 
-		   })
-}
+			 
+		   });
+	   /*
+	   $("searchTab").Window("clear");
+		$("#searchFRM").form("clear") ; */
+	
+       }
    //咨询师
    function formatteruser_name(value,row,index){
 	   return row.user.user_name;
@@ -54,36 +66,63 @@
    function del(index){
 	   alert("不好意思不可以去删除");
    }
+   //搜索
+   function searchM(){
+/* 	alert($("#minTime").datebox('getValue')); */
+	   $('#managerTab').datagrid('load', {    
+		   cname:$("#cname").val(),
+		   uteacher:$("#uteacher").val(),
+		   visit:$("#visit").val(),//是否访问
+		   ingate:$("#ingate").val(),
+		   minTime:$("#minTime").datebox('getValue'),
+		   maxTime:$("#maxTime").datebox('getValue'),
+		   user_id:${m.user_id}
+	   });  
+   }
+   
+   
   
    //这个是修改
    function edit(index) {
 	 //获取当前行对象
 		var arr = $("#managerTab").datagrid("getData");
 		var row = arr.rows[index];
-	/* 	alert(row.customer_name); */
-
-	
 		//填充表单
 		$("#edit-frm").form("load", row)
 		//打开弹出层
 		$("#edit-dialog").dialog("open")
 
 	}
-   
-  
-	//提交修改的数据
+ 	//提交修改的数据
 	function saveEdit() {
 	/* alert($("#customer_zixunremark1").val())	 */
 	 	var	 customer_dtime1 = $('#customer_dtime1').datebox('getValue');
 	 	var	 customer_onevisit_time1 = $('#customer_onevisit_time1').datebox('getValue');
-
+        var phone=$("#customer_phone1").val();//电话
+        var name=$("#customer_name1").val();//名字
+        var qq=$("#customer_qq1").val();
+       
+           var a=$("#s_province").val();
+			var b=$("#s_city").val();
+			var c=$("#s_county").val();
+			var d=$("#d").val();
+		
+			var Sales=a+b+c+d;//显示收货地址
+        
+        //判断名字
+        if(/^[\Α-\￥]+$/i.test(name) | /^\w+[\w\s]+\w+$/i.test(name)){
+        	//判断qq号码
+        	if(/^[1-9]\d{4,9}$/i.test(qq)){
+        //判断手机
+        if(/^1[3-8]+\d{9}$/.test(phone)){
 	 	$.post("UpdateCounselor", {
+	 		
 			customer_id : $("#customer_id1").val(),
-			customer_name : $("#customer_name1").val(),//名字
-			customer_address : $("#customer_address1").val(),//地址
+			customer_name :name/*  $("#customer_name1").val() */,//名字
+			customer_address :Sales /* $("#customer_address1").val() */,//地址
 			
-			customer_phone : $("#customer_phone1").val(),//电话
-			customer_qq: $("#customer_qq1").val(),//qq
+			customer_phone :phone,
+			customer_qq: qq,//qq
 			customer_level : $("#customer_level1").val(),//等级
 			customer_academic : $("#customer_academic1").val(),//学历
 			customer_post: $("#customer_post1").val(),//邮政编码
@@ -107,38 +146,35 @@
 				$.messager.alert("提示", "修改失败");
 			}
 		}, "json")
+		
+             }else{
+	        	$.messager.alert('提示','请输入正确的手机号');//提示请输入准确的手机号
+		}
+        }else{
+        	$.messager.alert('提示','请输入正确的qq号');//提示请输入准确的手机号
+        }
+        
+        
+        }else{
+			
+			$.messager.alert('提示','请输入正确k名字');//提示请输入正确的名字
+		}
 	}
-   //搜索
-   function searchM(){
-/* 	alert($("#minTime").datebox('getValue')); */
-	   $('#managerTab').datagrid('load', {    
-		   cname:$("#cname").val(),
-		   uteacher:$("#uteacher").val(),
-		   visit:$("#visit").val(),//是否访问
-		   
-		   ingate:$("#ingate").val(),
-		   minTime:$("#minTime").datebox('getValue'),
-		   maxTime:$("#maxTime").datebox('getValue')
-		});  	   
-   }
+ 
+   //这个是查看
 	function chaKan(index) {
 	
 		//获取当前行对象
 		var arr = $("#managerTab").datagrid("getData");
 		var row = arr.rows[index];
-	/* 	alert(row.customer_name); */
-
-	
 		//填充表单
 		$("#look-frm").form("load", row)
 		//打开弹出层
 		$("#look-dialog").dialog("open")
 
 	}
-  
+  //进入日志
   function suoyougen(){
-	  
-	 /*  alert('即将进入后续页面'); */
 /* 	  window.open('access_record.jsp');//不覆盖 */
 	  window.location="access_record";	
   }
@@ -157,24 +193,20 @@
 	//这个还是修改的关闭并且删除表中自己想修改但是没保存的数据
 	function closeDialog() {
 		$("#edit-dialog").dialog("close")
-/* 		$("edit-frm").Window("clear"); */
+     	$("edit-frm").Window("clear"); 
 	}
 	
 	function closeadd() {
 		$("#add-dialog").dialog("close")
-/* 		$("edit-frm").Window("clear"); */
+     	$("add-frm").Window("clear");
 	}
+	
 	//下面点击保存时所执行的方法；
 	
  function addgen(index){
-	   
-	   alert("这是增加");
 	   //获取当前行对象
 		var arr = $("#managerTab").datagrid("getData");
 		var row = arr.rows[index];
-	/* 	alert(row.customer_name); */
-
-	
 		//填充表单
 		$("#add-frm").form("load", row)
 		//打开弹出层
@@ -182,32 +214,22 @@
 	/*    //添加
 
 		  $("#add-dialog").window("open");  */
-	
-	   
-   }
+	 }
    
 	function saveAdd() {
 		var 	record_time = $('#add-record_time').datebox('getValue');
 		 var record_lasttime = $("#add-record_lasttime").datebox('getValue');
 		var	 record_endtime = $('#add-record_endtime').datebox('getValue');
-	
-		/* var v = $('#dd').datebox('getValue');  */
-	
-		    $.post("insert", {
+	    $.post("insert", {
 		    	record_time:record_time,
-		  /*   record_time = $('#add-record_time').datebox('getValue'), */
+		
 		    record_content : $("#add-record_content").val(),//内容
 		    record_address : $("#add-record_address").val(),//地址
 		    user_id   : $("#add-user_id ").val(),//咨询师id
 		    customer_id   : $("#add-customer_id ").val(),//用户id
 		    record_endtime :record_endtime,
-/* 		    record_endtime = $('#add-record_endtime').datebox('getValue'), */
-		
-
 		    record_condition : $("#add-record_condition").val(),//回访情况
 		    record_lasttime:record_lasttime,
-		   /*  record_lasttime : $("#add-record_lasttime").datebox('getValue'),//下次交谈时间 */
-		  
 		    record_status : $("#add-record_status").val(),//回访方式
 	
 		    record_remark : $("#add-record_remark").val()//备注
@@ -225,7 +247,7 @@
 		}, "json")
 
 	}
-	
+	//设置动态的列
 	function shezhidongtai(){
 		var createGridHeaderContextMenu = function(e, field) {
 			e.preventDefault();
@@ -272,9 +294,7 @@
 		};
 		$.fn.datagrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		$.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
-	}
-
-	
+	}	
 </script>
 <body>
   <table id="managerTab" class="easyui-datagrid"    
@@ -293,13 +313,11 @@
             <th data-options="field:'customer_source',width:100">来源渠道</th>
             <th data-options="field:'user.user_name',width:100,formatter:formatteruser_name">咨询师</th>
            <th data-options="field:'caozuo',title:'操作',formatter:formatterCaozuo"></th>
-            
-           
-        </tr>   
+          </tr>   
     </thead>   
 </table>  
- <div id="searchTab">
-   <form>
+ <div id="searchTab" >
+   <form id="searchFRM" class="easyui-form">
          <label for="name">名字</label>   
          <input type="text" name="name" id="cname" /> 
          <label for="name">咨询师</label>   
@@ -389,7 +407,7 @@
 				<!-- </tr>
 				<tr> -->
 					<td><label for="name">订金时间：：</label></td>
-					<td><input name="customer_dtime" class="easyui-validatebox"
+					<td><input name="customer_dtime"  class="easyui-validatebox"
 						type="text" id="customer_dtime" /></td>
 				</tr>
 					<tr>
@@ -424,7 +442,7 @@
 				
 				<tr> -->
 					<td><label for="name">首次回访时间:</label></td>
-					<td><input name="customer_onevisit_time" class="easyui-datebox"
+					<td><input name="customer_onevisit_time" data-options="required:true"  class="easyui-datebox"
 						type="text" id="customer_onevisit_time" /></td>
 				<!-- </tr>
 				<tr> -->
@@ -434,7 +452,7 @@
 				<!-- </tr>
 				<tr> -->
 					<td><label for="name">订金时间:</label></td>
-					<td><input name="customer_dtime" class="easyui-datebox"
+					<td><input name="customer_dtime" data-options="required:true"  class="easyui-datebox"
 						type="text" id="customer_dtime" /></td>
 				</tr>
 				<tr>
@@ -467,21 +485,33 @@
 				 <tr>
 				    <td><label for="name">id:</label></td>
 					<td><input disabled="disabled" name="customer_id"
-						class="easyui-validatebox" type="text" id="customer_id1" /></td>
+						class="easyui-validatebox"  type="text" id="customer_id1" /></td>
 			<!-- 	</tr>
 				<tr> -->
 					<td><label for="name">名字:</label></td>
-					<td><input name="customer_name" class="easyui-validatebox" type="text"
+					<td><input name="customer_name" data-options="required:true" class="easyui-validatebox" type="text"
 						id="customer_name1" /></td>
 			 	</tr>
 			   <tr> 
 					<td><label for="name">地址:</label></td>
-					<td><input name="customer_address" class="easyui-validatebox"
-						type="text" id="customer_address1" /></td>
-				<!-- </tr>
-				<tr> --> 
+	
+				 <!--  地址三级 -->
+				 <td>
+       <div class="info">
+	    	<div>
+		     <label><span class="red">* </span>选择地区:</label>
+			<select id="s_province" name="s_province"></select>  
+		    <select id="s_city" name="s_city" ></select>  
+		    <select id="s_county" name="s_county"></select>
+		    <input name="d"  class="easyui-validatebox"
+			type="text" id="d" />
+		    <script type="text/javascript">_init_area();</script>
+	    </div>
+	<td>
+		 </tr>
+				<tr> 
 					<td><label for="name">电话:</label></td>
-					<td><input name="customer_phone" class="easyui-validatebox"
+					<td><input name="customer_phone" data-options="required:true"  class="easyui-validatebox"
 						type="text" id="customer_phone1" /></td>
 			</tr>	
 			 
@@ -492,13 +522,38 @@
 			<!-- 	</tr>
 				<tr> -->
 					<td><label for="name">用户等级:</label></td>
-					<td><input name="customer_level" class="easyui-validatebox"
-						type="text" id="customer_level1" /></td>
+				<!-- 	<td><input name="customer_level" class="easyui-validatebox"
+						type="text" id="customer_level1" /></td> -->
+						<td>
+		     	 	 <select id="customer_level1" > 
+				       
+				         <option value="1">1</option>   
+				         <option value="2">2</option>
+				         <option value="1">3</option>   
+				         <option value="2">4</option> 
+				         <option value="1">5</option>   
+				         <option value="2">6</option> 
+				         <option value="1">7</option>   
+				         <option value="2">8</option> 
+				         
+	         		</select>  
+		         </td>	
 			 	</tr>
 				<tr> 
 					<td><label for="name">学历:</label></td>
-					<td><input name="customer_academic" class="easyui-validatebox"
-						type="text" id="customer_academic1" /></td>
+					<td>
+						<select id="customer_academic1" > 
+				          
+				         <option value="大专">大专</option>
+				           <option value="1">博士</option>   
+				         <option value="2">研究生</option>
+				         <option value="本科">本科</option>
+				         <option value="高中">高中</option>   
+				         <option value="中专">中专</option> 
+				         <option value="初中">初中</option>   
+				         <option value="小学">小学</option> 
+				      	</select>  
+						</td>
 			 	<!-- </tr>
 				<tr>  -->
 					<td><label for="name">是否上门:</label></td>
@@ -507,7 +562,7 @@
 						type="text" id="customer_ingate1" /></td> -->
        		     	<td>
 		     	 	 <select id="customer_ingate1" > 
-				         <option value="">--请选择--</option>  
+				          
 				         <option value="1">是</option>   
 				         <option value="2">否</option>   
 	         		</select>  
@@ -545,9 +600,9 @@
 	</div>
  
 <!--  easyui-dialog -->
- <!-- 新增的窗口 -->
+ <!-- 新增的窗口  增加的-->
 	<div id="add-dialog" class="easyui-dialog"
-		data-options="modal:true,closed:true,modal:true,title:'修改',
+		data-options="modal:true,closed:true,modal:true,title:'增加',
 	buttons:[{
 				text:'保存',
 				handler:function(){
@@ -564,33 +619,54 @@
 			<table cellpadding="5">
 			    <tr>
 					<td><label for="name">交谈日期::</label></td>
-					<td><input name="record_time" class="easyui-datebox"
+					<td><input name="record_time" data-options="required:true"  class="easyui-datebox"
 						type="text" id="add-record_time" /></td>
 				</tr>
 			    <tr>
-					<td><label for="name">家庭住址:</label></td>
-					<td><input name="record_address" class="easyui-validatebox"
+					<td><label for="name">交谈住址:</label></td>
+					
+					<td><input name="record_address"  class="easyui-validatebox"
 						type="text" id="add-record_address" /></td>
 				</tr>
 				 <tr>
 					<td><label for="name">下次交谈日期:</label></td>
-					<td><input name="record_lasttime" class="easyui-datebox" type="text"
+					<td><input name="record_lasttime" data-options="required:true"  class="easyui-datebox" type="text"
 						id="add-record_lasttime" /></td>
 				</tr> 
 				<tr>
 					<td><label for="name">结束时间:</label></td>
-					<td><input name="record_endtime" class="easyui-datebox" type="text"
+					<td><input name="record_endtime" data-options="required:true"  class="easyui-datebox" type="text"
 						id="add-record_endtime" /></td>
 				</tr> 
 				<tr>
 					<td><label for="name">回访情况:</label></td>
-					<td><input name="record_condition" class="easyui-validatebox"
-						type="text" id="add-record_condition" /></td>
+					
+					<td>
+					 <select id="add-record_condition" > 
+			         <option value="">--请选择--</option>  
+			         <option value="上门">很好</option>   
+			         <option value="电话">好</option> 
+			          <option value="微信">一般</option>   
+			         <option value="qq">差</option>  
+			         </select>  
+					</td>
+					
 				</tr>
 				<tr>
 					<td><label for="name">回访方式:</label></td>
-					<td><input name="record_status" class="easyui-validatebox"
-						type="text" id="add-record_status" /></td>
+					
+					
+				<td>
+					 <select id="add-record_status" > 
+			         <option value="">--请选择--</option>  
+			         <option value="上门">上门</option>   
+			         <option value="电话">电话</option> 
+			          <option value="微信">微信</option>   
+			         <option value="qq">qq</option>  
+			         </select>  
+					</td>
+					<!-- <td><input name="record_status" class="easyui-validatebox"
+						type="text" id="add-record_status" /></td> -->
 				</tr>
 				<tr>
 					<td><label for="name">交谈内容:</label></td>

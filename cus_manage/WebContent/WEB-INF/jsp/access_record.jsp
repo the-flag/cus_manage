@@ -18,7 +18,11 @@
 		 url:'showAccess_record',
 		 method:'post',
 		 pagination:true,
-		 toolbar:"#searchTab"
+		 toolbar:"#searchTab",
+		 queryParams:{
+				user_id:${m.user_id}
+			}
+	 
 	   })
 	   
       })
@@ -53,8 +57,10 @@
 		   record_status:$("#record_status").val(),//回访方式
 		   
 		   minTime:$("#minTime1").datebox('getValue'),
-		   maxTime:$("#maxTime1").datebox('getValue')
-		});  
+		   maxTime:$("#maxTime1").datebox('getValue'),
+		   user_id:${m.user_id}
+		  
+	   })
 
 	   
    }
