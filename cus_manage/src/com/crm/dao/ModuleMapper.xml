@@ -19,20 +19,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE rm.role_id=#{role_id}
 	</select>
 	
-	<select id="selectModuleByModuleName" parameterType="string" resultType="module">
+	<select id="selectModuleByModuleName" parameterType="module" resultType="module">
 		SELECT module_id,module_name,module_path,module_weight,module_parent_id FROM module
-		WHERE module_name=#{module_name}
+		WHERE module_name=#{module_name} AND module_parent_id=#{module_parent_id}
 	</select>
 	
 	
 	<insert id="insertModule" parameterType="module">
 		INSERT INTO module(module_name,module_path,module_weight,module_parent_id) 
 		select #{module_name},#{module_path},#{module_weight},#{module_parent_id} from dual 
-		where not exists (select 1 from module a where a.module_name=#{module_name})
+		where not exists (select 1 from module a where a.module_name=#{module_name} AND a.module_parent_id=#{module_parent_id})
 	</insert>
 	
 	<delete id="deleteModule" parameterType="int">
-		DELETE FROM module WHERE module_id=#{module_id}
+		DELETE FROM module WHERE module_id=#{module_id} AND NOT EXISTS (SELECT * FROM role_module r WHERE r.module_id=#{module_id})
 	</delete>
 	<update id="updateModule" parameterType="module">
 		UPDATE module 

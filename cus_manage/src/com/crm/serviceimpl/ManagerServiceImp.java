@@ -9,6 +9,7 @@ import com.crm.dao.ManagerMapper;
 import com.crm.pojo.Customer;
 import com.crm.pojo.CustomerTrackParameters;
 import com.crm.pojo.FenYe;
+import com.crm.pojo.Sign;
 import com.crm.pojo.User;
 import com.crm.service.ManagerService;
 @Service
@@ -65,6 +66,24 @@ public class ManagerServiceImp implements ManagerService {
 	public Integer UpdateCustomer(Customer customer) {
 		// TODO Auto-generated method stub
 		return managerMapper.UpdateCustomer(customer);
+	}
+
+	@Override
+	public Integer insertSignInfo(int user_id) {
+		// TODO Auto-generated method stub
+		return managerMapper.insertSignInfo(user_id);
+	}
+
+	@Override
+	public Integer updateSignInfo(int user_id,String s) {
+		// TODO Auto-generated method stub
+		return managerMapper.updateSignInfo(user_id,s);
+	}
+
+	@Override
+	public User selectUserStatus(int user_id) {
+		// TODO Auto-generated method stub
+		return managerMapper.selectUserStatus(user_id);
 	}
 
 

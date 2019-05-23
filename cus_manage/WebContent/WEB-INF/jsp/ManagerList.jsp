@@ -1,11 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
-
-
-<%-- <%
-    Customer customer=new Customer();
-    List<Customer> list=(List<Customer>)request.getSession().getAttribute("selectCustomer");
- %> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,15 +61,24 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
    $(function(){
 	   $("#managerTab").datagrid({
 		 url:'selectManager',
-		 method:'POST',
+		 method:'post',
 		 pagination:true,
 		 toolbar:"#searchTab"
 	   })
 	   
    })
    //咨询师
-   function formatteruser_name(value,row,index){
-	   return row.user.user_name;
+   function formatteruser_nameZ(value,row,index){
+	if(row.userw_id!=row.user_id){
+       return row.user.user_name;
+	}
+   }
+   
+   //网络咨询师
+   function formatteruser_nameW(value,row,index){
+	if(row.userw_id==row.user_id){
+       return row.user.user_name;
+	}
    }
    //格式化性别
    function formattersex(value,row,index){
@@ -298,26 +301,27 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
     <thead>   
         <tr> 
              <th data-options="field:'',width:100,checkbox:true"></th>  
-            <th data-options="field:'customer_id',width:100">No</th>
-            <th data-options="field:'customer_no',width:100">客户编号</th>
-            <th data-options="field:'customer_name',width:100">名字</th>
-            <th data-options="field:'customer_age',width:100">年龄</th>
-             <th data-options="field:'customer_academic',width:100">学历</th>
-            <th data-options="field:'customer_region',width:100">所属地区</th>
-            <th data-options="field:'customer_level',width:100">客户等级</th>
+            <th data-options="field:'customer_id',width:20">No</th>
+            <th data-options="field:'customer_no',width:50">客户编号</th>
+            <th data-options="field:'customer_name',width:50">名字</th>
+            <th data-options="field:'customer_age',width:20">年龄</th>
+             <th data-options="field:'customer_academic',width:30">学历</th>
+            <th data-options="field:'customer_region',width:50">所属地区</th>
+            <th data-options="field:'customer_level',width:20">客户等级</th>
             <th data-options="field:'customer_address',width:100">地址</th>
-            <th data-options="field:'customer_post',width:100">邮政编码</th>
-            <th data-options="field:'customer_status',width:100,formatter:formatterstatus">客户状态</th>
+            <th data-options="field:'customer_post',width:50">邮政编码</th>
+            <th data-options="field:'customer_status',width:50,formatter:formatterstatus">客户状态</th>
             <th data-options="field:'customer_qq',width:100">QQ</th>
-            <th data-options="field:'customer_course',width:100">课程方向</th>
+            <th data-options="field:'customer_course',width:50">课程方向</th>
             <th data-options="field:'customer_onevisit_time',width:100">首次回访时间</th>
             <th data-options="field:'customer_ingate_time',width:100">上门时间</th>
-            <th data-options="field:'customer_sex',width:100,formatter:formattersex">性别</th>
-            <th data-options="field:'customer_visit',width:100,formatter:formattervisit">是否访问</th>
-            <th data-options="field:'customer_ingate',width:100,formatter:formatteringate">是否上门</th>
+            <th data-options="field:'customer_sex',width:30,formatter:formattersex">性别</th>
+            <th data-options="field:'customer_visit',width:30,formatter:formattervisit">是否访问</th>
+            <th data-options="field:'customer_ingate',width:30,formatter:formatteringate">是否上门</th>
             <th data-options="field:'customer_create_time',width:100">创建时间</th>
-            <th data-options="field:'customer_source',width:100">来源渠道</th>
-            <th data-options="field:'user.user_name',width:100,formatter:formatteruser_name">咨询师</th>
+            <th data-options="field:'customer_source',width:50">来源渠道</th>
+             <th data-options="field:'user.user_nameW',width:100,formatter:formatteruser_nameW">网络咨询师</th>
+            <th data-options="field:'user.user_nameZ',width:100,formatter:formatteruser_nameZ">咨询师</th>
             <th data-options="field:'caozuo',width:100,formatter:formatterusercaozuo">操作</th>
             
             

@@ -5,6 +5,7 @@ import java.util.List;
 import com.crm.pojo.Customer;
 import com.crm.pojo.CustomerTrackParameters;
 import com.crm.pojo.FenYe;
+import com.crm.pojo.Sign;
 import com.crm.pojo.User;
 
 public interface ManagerService {
@@ -24,4 +25,10 @@ public interface ManagerService {
     Integer  updateCustomerTrack(CustomerTrackParameters customerTrackParameters);
     //查询客户的基本信息
     Integer UpdateCustomer(Customer customer);
+  /*  增加签到信息统计*/
+    Integer insertSignInfo(int user_id);
+    Integer updateSignInfo(int user_i,String s);
+    
+   //查询员工的状态
+    User selectUserStatus(int user_id);
 }

@@ -75,8 +75,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    </select>
    
    <insert id="insertCustomer" parameterType="customer">
-   insert into customer(customer_no,customer_name,customer_academic,customer_region,customer_post,customer_address,customer_phone,customer_source,customer_qq,customer_course,customer_age,customer_sex,customer_level,customer_status,userw_id)
-               values(#{customer_no},#{customer_name},#{customer_academic},#{customer_region},#{customer_post},#{customer_address},#{customer_phone},#{customer_source},#{customer_qq},#{customer_course},#{customer_age},#{customer_sex},#{customer_level},#{customer_status},#{userw_id});
+   insert into customer(customer_no,customer_name,customer_academic,customer_region,customer_post,customer_address,customer_phone,customer_source,customer_qq,customer_course,customer_age,customer_sex,customer_level,customer_status,userw_id,user_id)
+               values(#{customer_no},#{customer_name},#{customer_academic},#{customer_region},#{customer_post},#{customer_address},#{customer_phone},#{customer_source},#{customer_qq},#{customer_course},#{customer_age},#{customer_sex},#{customer_level},#{customer_status},#{userw_id},#{user_id});
              <selectKey resultType="int" keyProperty="customer_id" order="AFTER">  
 		    		select @@IDENTITY as customer_id;  
 			</selectKey>
@@ -239,4 +239,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    </set>
    where customer_id=#{customer_id}
    </update>
+ <!--    增加签到信息统计 -->
+   <insert id="insertSignInfo" parameterType="int">
+   insert into sign(user_login_time,user_id)
+   values((select sysdate()),#{user_id})
+   </insert>
+   
+   <update id="updateSignInfo">
+   UPDATE sign SET user_leave_time=NOW() WHERE user_id=#{user_id} AND DATE(user_login_time)=#{s} AND user_leave_time IS NULL;
+    
+   </update>
+   
+   <!--获取员工的状态  -->
+   
+   <select id="selectUserStatus" resultType="user">
+    SELECT user_status from user where user_id=#{user_id}
+   </select>
 </mapper>

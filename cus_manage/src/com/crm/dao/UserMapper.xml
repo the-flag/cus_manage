@@ -198,6 +198,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="user_is_lock !=null ">
 				user_is_lock=#{user_is_lock},
 			</if>
+			<if test="user_wrong_number !=null ">
+				user_wrong_number=0,
+			</if>
 		</set>
 		WHERE user_id=#{user_id}
 	</update>

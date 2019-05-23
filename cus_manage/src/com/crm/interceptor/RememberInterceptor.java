@@ -42,37 +42,42 @@ public class RememberInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
 		System.out.println("自动登录拦截器");
-		//判断是否已经登录过
+		//获取id地址
 		String ipAddress = IpAdrressUtil.getIpAddress(request);
+		String parameter = request.getParameter("user_account"); //获取前台传的账号
+		System.out.println(arg2.toString());
+		String remember = request.getParameter("remember");
+		System.out.println("获取前台传的账号："+parameter);
+		System.out.println("获取前台传的账号："+remember);
 		System.out.println("IP地址:"+ipAddress);
+		//判断是否已经登录过
 		if (request.getSession().getAttribute("m") != null) {return true;}
 		Cookie[] cookies = request.getCookies();//获取请求中的cookies
 		if (cookies != null && cookies.length > 0) {
-			System.out.println("请求中存在cookie：：：：：：：：：：：：：");
 			for (Cookie c:cookies){
 				if(c.getName().equals("remember_ticket")){
 					System.out.println(c.getValue());
 					User login = userService.selectUserByUuid(c.getValue());
-				if (login != null){
-					if(!(login.getUser_is_lock()<1)) {
-						System.out.println("自动登录成功!!");
-						request.getSession().setAttribute("m",login);
-						request.getSession().setAttribute("loginType","auto");//登录方式是自动登录
-						String sessionID = request.getRequestedSessionId();
-						if(!MemoryData.getSeeesionIdMap().containsKey(login.getUser_account())) {
-							MemoryData.getSeeesionIdMap().put(login.getUser_account(), sessionID);
-						}else if(MemoryData.getSeeesionIdMap().containsKey(login.getUser_account())&&!StringUtils.equals(sessionID, MemoryData.getSeeesionIdMap().get(login.getUser_account()))){
-							MemoryData.getSeeesionIdMap().remove(login.getUser_account());
-							MemoryData.getSeeesionIdMap().put(login.getUser_account(),
-							 sessionID);
-						}
-					}else {
-						System.out.println("此账号已被锁定,请联系管理员!!");
-						request.setAttribute("key", login.getUser_account()+"此账号已被锁定,请联系管理员!!");
-						request.getRequestDispatcher("login").forward(request, response);;
-						return false;
-					}	
-				}
+					if (login != null){
+						if(!(login.getUser_is_lock()<1)) {
+							System.out.println("自动登录成功!!");
+							request.getSession().setAttribute("m",login);
+							request.getSession().setAttribute("loginType","auto");//登录方式是自动登录
+							String sessionID = request.getRequestedSessionId();
+							if(!MemoryData.getSeeesionIdMap().containsKey(login.getUser_account())) {
+								MemoryData.getSeeesionIdMap().put(login.getUser_account(), sessionID);
+							}else if(MemoryData.getSeeesionIdMap().containsKey(login.getUser_account())&&!StringUtils.equals(sessionID, MemoryData.getSeeesionIdMap().get(login.getUser_account()))){
+								MemoryData.getSeeesionIdMap().remove(login.getUser_account());
+								MemoryData.getSeeesionIdMap().put(login.getUser_account(),
+								 sessionID);
+							}
+						}else {
+							System.out.println("此账号已被锁定,请联系管理员!!");
+							request.setAttribute("key", login.getUser_account()+"此账号已被锁定,请联系管理员!!");
+							request.getRequestDispatcher("login").forward(request, response);;
+							return false;
+						}	
+					}
 				}
 			}
 		}
