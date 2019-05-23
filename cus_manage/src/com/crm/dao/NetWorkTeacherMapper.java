@@ -12,6 +12,6 @@ public interface NetWorkTeacherMapper {
 	List<Customer> selectCustomer(FenYe fenye);
 	//学生信息跟踪
 	Integer insertTrackInfo(Access_record access_record);
-     List<Access_record> selectDateLog(Access_record access_record);
+    List<Access_record> selectDateLog(Access_record access_record);
 	
 }

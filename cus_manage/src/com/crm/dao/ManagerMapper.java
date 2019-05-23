@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.crm.pojo.Customer;
 import com.crm.pojo.CustomerTrackParameters;
 import com.crm.pojo.FenYe;
+import com.crm.pojo.Sign;
 import com.crm.pojo.User;
 
 public interface ManagerMapper {
@@ -30,4 +31,10 @@ public interface ManagerMapper {
 	Integer  updateCustomerTrack(CustomerTrackParameters customerTrackParameters);
     //修改客户的基本信息
 	Integer UpdateCustomer(Customer customer);
+	//增加签到信息统计
+	Integer  insertSignInfo(int user_id);
+	//获取员工签退的时间
+	Integer updateSignInfo(@Param("user_id")int user_id,@Param("s")String s);
+	//获取员工的状态
+	User selectUserStatus(int user_id);
 }

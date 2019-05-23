@@ -75,12 +75,34 @@ $(function(){
 			userw_id:${m.user_id}
 		}
 
-	}
-	);
+	});
 	
 	
 })
 
+ $(function(){
+	$.post("selectUserstatus",{user_id:${m.user_id}},function(data){
+		alert("员工状态"+data.user_status);
+		if(data.user_status!=1){
+			$.messager.confirm('提示','今天还没有签到呢！',function(r){
+				if(r){
+
+					$.post("updateSignin",{user_id:${m.user_id}},function(data){
+						if(data>0){
+							$.messager.alert('提示','签到成功');
+						}else{
+							$.messager.alert('提示','签到失败');
+						}
+						
+					},"json");
+				
+				}
+			});
+		}
+		
+		
+	},"json");
+}); 
  //搜索
    function searchM(){
 	   $('#NetWorkTeacherTab').datagrid('load', {    
@@ -120,35 +142,38 @@ function formatterstatus(value,row,index){
 		return "在读";
 	}
 	}
-//签到	  
-function Signin(){
-	$.post("updateSignin",{user_id:${m.user_id}},function(data){
-		if(data>0){
-			$.messager.alert('提示','签到成功');
-		}else{
-			$.messager.alert('提示','签到失败');
-		}
-		
-	},"json");
-	
-	
-}
+
 //签退
 function Signback(){
 	
-	   $.messager.confirm('确认','确认进行签退吗？',function(r){
-	    	if(r){
-	    		$.post("updateSignback",{user_id:${m.user_id}},function(data){
-	            	if(data>0){
-	            		$.messager.alert("提示","签退成功！");
-	            	}else{
-	            		$.messager.alert("提示","签退失败！");
-	            	}
-	            	
-	            },"json");
-	    	}
-	    });
-	    
+	$.post("selectUserstatus",{user_id:${m.user_id}},function(data){
+		if(data.user_status!=1){
+			$.messager.alert('提示','不能重复签退呢！');
+		}else{
+			var myDate = new Date();
+			alert(myDate.toLocaleDateString());
+			   $.messager.confirm('确认','确认进行签退吗？',function(r){
+			    	if(r){
+			    		$.post("updateSignback",{user_id:${m.user_id},s:myDate.toLocaleDateString()},function(data){
+			            	if(data>0){
+			            		$.messager.alert("提示","签退成功！");
+			            		$("#NetWorkTeacherTab").datagrid("reload");
+			            	}else{
+			            		$.messager.alert("提示","签退失败！");
+			            	}
+			            	
+			            },"json");
+			    	}
+			    });
+			
+		}
+		
+		
+	},"json");
+		
+		    
+	
+	
 	
 	
 }
@@ -176,7 +201,8 @@ function addcustomer(){
 				   customer_source:$("#customer_source").val(),
 				   customer_course:$("#customer_course").val(),
 				   customer_level:$("#customer_level").val(),
-				   userw_id:${m.user_id}
+				   userw_id:${m.user_id},
+				   user_id:${m.user_id}
 			              },function(data){
 			            	  if(data>0){
 			            		  $.messager.alert('提示','添加成功');
@@ -368,9 +394,8 @@ function formaterrCaoZuo(value,row,index){
          <label for="name">上门时间max</label>
          <input type="text"  class= "easyui-datebox" id="maxTime"/>    
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="searchM()" data-options="iconCls:'icon-search'">搜索</a>
-                  <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="addCumtomer()" data-options="iconCls:'icon-add'">添加</a>
-         			<a href="javascript:void(0);" id="btnExport" class="easyui-linkbutton" iconCls='icon-print'>导出Excel</a>
-         <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="Signin()" data-options="iconCls:'icon-redo'">签到</a>
+         <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="addCumtomer()" data-options="iconCls:'icon-add'">添加</a>
+         <a href="javascript:void(0);" id="btnExport" class="easyui-linkbutton" iconCls='icon-print'>导出Excel</a>
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="Signback()" data-options="iconCls:'icon-undo'">签退</a>
 
          
