@@ -2,6 +2,7 @@ package com.crm.controller;
 
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -93,9 +94,12 @@ public class ModuleController {
 	 */
 	@RequestMapping(value="/deleteModule",method=RequestMethod.POST)
 	@ResponseBody
-	public Integer deleteModule(Integer module_id) {
-		
-		return moduleService.deleteModule(module_id);
+	public Integer deleteModule(Integer module_id,Boolean isLeaf) {
+		Integer deleteModule = moduleService.deleteModule(module_id);
+		if(!isLeaf && deleteModule>0) {
+			return moduleService.deleteModulesByModuleParentId(module_id);
+		}
+		return deleteModule;
 		
 	}
 	
@@ -144,7 +148,6 @@ public class ModuleController {
 	public Integer updateModule(Module module) {
 		
 		return moduleService.updateModule(module);
-		
 	}
 	/**
 	 * 添加模块时不能存在重复的模块名称
@@ -153,11 +156,31 @@ public class ModuleController {
 	 */
 	@RequestMapping(value="/insertModule",method=RequestMethod.POST)
 	@ResponseBody
-	public Integer insertModule(Module module,Module node) {
-		System.out.println("父节点信息:"+node);
-		System.out.println("父节点信息:"+node);
-		System.out.println("添加信息:"+module);
-		System.out.println("添加信息:"+module);
+	public Integer insertModule(Module module,Integer validata) {
+		if(validata>0) {
+			Module selectModuleByModuleId = moduleService.selectModuleByModuleId(validata);
+			selectModuleByModuleId.setModule_parent_id(selectModuleByModuleId.getModule_id());
+			moduleService.insertModule(selectModuleByModuleId);
+		}
+		
+		return moduleService.insertModule(module);
+	}
+	
+	
+	
+	/**
+	 * 添加模块时不能存在重复的模块名称
+	 * @param module
+	 * @return
+	 */
+	@RequestMapping(value="/insertModules",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer insertModules(Module module) {
+		
+		Module selectModuleByModuleId = moduleService.selectModuleByModuleId(module.getModule_id());
+		selectModuleByModuleId.setModule_parent_id(selectModuleByModuleId.getModule_id());
+		moduleService.insertModule(selectModuleByModuleId);
+		
 		return moduleService.insertModule(module);
 		
 	}

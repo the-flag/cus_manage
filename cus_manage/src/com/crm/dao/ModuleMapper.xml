@@ -8,6 +8,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT module_id,module_name,module_path,module_weight,module_parent_id FROM module;
 	</select>
 	
+	<select id="selectModuleByModuleId" parameterType="int" resultType="module">
+			SELECT module_id,module_name,module_path,module_weight,module_parent_id FROM module WHERE module_id=#{module_id}
+	</select>
+	
 	<select id="selectModulesByRoleId" parameterType="int" resultType="module">
 		SELECT m.module_id,m.module_name,m.module_path,m.module_weight,m.module_parent_id 
 		FROM module m INNER JOIN role_module rm ON m.module_id=rm.module_id 
@@ -30,10 +34,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select #{module_name},#{module_path},#{module_weight},#{module_parent_id} from dual 
 		where not exists (select 1 from module a where a.module_name=#{module_name} AND a.module_parent_id=#{module_parent_id})
 	</insert>
-	
+	<!-- DELETE FROM module WHERE module_id=#{module_id} AND NOT EXISTS (SELECT * FROM role_module r WHERE r.module_id=#{module_id}) -->
 	<delete id="deleteModule" parameterType="int">
-		DELETE FROM module WHERE module_id=#{module_id} AND NOT EXISTS (SELECT * FROM role_module r WHERE r.module_id=#{module_id})
+		
+		DELETE FROM module 
+		WHERE module_id=#{module_id} AND NOT EXISTS (SELECT * FROM role_module r INNER JOIN (SELECT m1.* FROM module m INNER JOIN module m1 ON m.module_id=m1.module_parent_id  WHERE m.module_id=#{module_id}) m ON r.module_id=m.module_id) 
+		AND NOT EXISTS (SELECT * FROM role_module r WHERE r.module_id=#{module_id})
 	</delete>
+	
+	<delete id="deleteModulesByModuleParentId" parameterType="int">
+		DELETE FROM module WHERE module_parent_id=#{module_parent_id}
+	</delete>
+	
+	
 	<update id="updateModule" parameterType="module">
 		UPDATE module 
 		<set>
