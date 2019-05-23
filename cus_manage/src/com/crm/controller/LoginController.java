@@ -133,7 +133,8 @@ public class LoginController {
 	public String loginValidation(HttpServletRequest request,HttpServletResponse response,User user,Integer remember,String yanzhengma) {
 		String parameter = request.getParameter("user_account"); //获取前台传的账号
 		
-		String code = (String) request.getSession().getAttribute("randomcode_key");
+		System.out.println("获取前台传的账号："+parameter);
+		String code = (String) request.getSession().getAttribute("randomcode_key"); //获取图片验证码
 		if(yanzhengma==null || yanzhengma=="" || !code.equalsIgnoreCase(yanzhengma)) {
 			request.setAttribute("key", "验证码错误!!!!!!");
 			return "login";
