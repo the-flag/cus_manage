@@ -21,6 +21,13 @@ public interface RoleMapper {
 	 * @return
 	 */
 	List<Role> selectRole();
+	
+	/**
+	 * 删除模块失败时
+	 * 根据模块id，关联中间表，查询出引用某个模块的所有角色
+	 */
+	List<Role> selectRoleByModuleId(Integer module_id);
+	
 	/**
 	 * 多条件分页查询
 	 * @param fenYe
@@ -61,6 +68,9 @@ public interface RoleMapper {
 	 * @return
 	 */
 	Integer deteleRole(Integer role_id);
+	
+	
+	
 	
 	
 }

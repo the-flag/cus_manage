@@ -21,11 +21,12 @@ $("#tree").tree({
               var partId=node.id;
                 var partName=node.text;
                 var parentName=$("#tree").tree('getParent',node.target);
-                
+               
                 if(parentName==null){
                 	parentName=0;
                 }else{
                 	parentName=$("#tree").tree('getParent',node.target).text;
+                	 module_parent_id=$("#tree").tree('getParent',node.target).parentId;
                 }
                 $("#partNameSpan").text("");
                 var url=node.url;
@@ -42,7 +43,9 @@ $("#tree").tree({
 
         }
 })
-// 加载部门下拉框
+
+var module_parent_id;
+// 加载模块下拉框
 
 $("#parentPart").combotree({
         url:'getModuleCombotree',
@@ -59,13 +62,11 @@ $("#parentPart").combotree({
             $("#parentPart").combotree('setValue',data);
         }
 })
-// 增加部门
+// 增加模块
 function addPart() {
 	
         var selectNode=$("#tree").tree("getSelected");
-        var id=parseInt(Math.random()*1000+1);
-        $("#partId").val("");
-        $("#partName").val("");
+       $("#formBox").form("clear");
         $("#parentPart").combotree('setValue',selectNode.text);
         $("#partper").val("");
         $("#module_path").val("");
@@ -75,7 +76,7 @@ function addPart() {
 
 
 }
-/*//修改部门
+/*//修改模块
 function editPart() {
         var selectNode=$("#tree").tree("getSelected");
         var id=parseInt(Math.random()*1000+1);
@@ -93,11 +94,10 @@ function editPart() {
 
 
 }*/
-// 保存部门信息
+// 保存模块信息
 function saveForm(){
 	var none=$("#tree").tree("getSelected");
 	alert(none.text);
-	alert(none.url);
 	 var isLeaf = $('#tree').tree('isLeaf',none.target);
 	 if(isLeaf){
 		 if(none.url!=null && none.url!=''){
@@ -110,19 +110,14 @@ function saveForm(){
 		 		module_id:$("#module_id").val(),
 		 		module_name:$("#partName").val(),
 		 		module_parent_id:none.id,
-		 		module_path:$("#module_path").val(),
+		 		module_path:""+$("#module_path").val(),
 		 		module_weight:$("#module_weight").val()
+		 		
 		 	},function(data){
 		 		if(data>0){
-	                var partName=$("#partName").val();
 	                var selectNode=$("#tree").tree('getSelected');
-	                $('#tree').tree('append',{
-	                        parent:selectNode.target,
-	                        data:[{
-	                                text:partName,
-	                                "iconCls":"icon-reload"
-	                        }]
-	                });
+	                $('#tree').tree('reload');
+	                
 	                $("#edit").show();
 	                $("#save").hide();
 	                $.messager.show({
@@ -134,14 +129,21 @@ function saveForm(){
 	    			$("#partNameSpan").text("模块名称已存在!!");
 	    		}
 		 	},"json")
+	  	}else{
+	  		 $.messager.show({
+                 title:'提示',
+                 msg:'请检查模块名称'
+         });
 	  	}	
 }
-// 修改部门
+// 修改模块
 function editForm(){
 	var s=$("#parentPart").combotree('getValue');
 	 if($("#formBox").form('validate')){
+		 var selectNode=$("#tree").tree("getSelected");
 		$.post("moduleValidata",{
 			module_id:$("#partId").val(),
+			module_parent_id:selectNode.parentId,
 	 		module_name:$("#partName").val()
 		},function(vali){
 			if(vali){
@@ -153,18 +155,10 @@ function editForm(){
 			 		module_weight:$("#module_weight").val()
 			 	},function(data){
 			 		if(data>0){
-			 			/* var partName=$("#partName").val();
-			             var selectNode=$("#tree").tree('getSelected');
-			             $('#tree').tree('update',{
-			                     target: selectNode.target,
-			                     data:[{
-			                             text:partName,
-			                     }]
-			             });*/
 			 			$("#tree").tree("reload");
 			             $.messager.show({
 			                     title:'提示',
-			                     msg:'部门修改成功'
+			                     msg:'模块修改成功'
 			             });
 					}
 			 	},"json")
@@ -173,25 +167,61 @@ function editForm(){
 			}
 			
 		},"json")
-	
 	 }
 }
-// 删除部门
+// 删除模块
 function delPart() {
 	
 	$.messager.confirm('确认','您确认想要删除该节点吗？',function(r){    
 	    if (r){    
+	    	
+	    	var none=$("#tree").tree("getSelected");
+	    	alert(none.text);
+	    	$.post("deleteModule",{
+	    		module_id:none.id
+	    	},function(data){
+	    		if(data>0){
+	    			$("#tree").tree("reload");
+	    			$.messager.show({
+	                     title:'提示',
+	                     msg:'模块删除成功'
+	    			});
+	    		}else{
+	    			$.post("selectRoleByModuleId",{
+	    				module_id:none.id
+	    			},function(data){
+	    				var message="";
+	    				if(data!=null){
+	    					alert("引用不为空!");
+	    					for(var i=0;i<data.length;i++){
+	    						alert(data[i].role_name);
+	    						message+=data[i].role_name+",";
+	    					}
+	    					var ts=message.substring(0,message.length-1);
+	    					$.messager.show({
+	   	                     	title:'提示',
+	   	                     	msg:'该模块被'+ts+'角色引用,不可删除!'
+	    					});
+	    					return;
+	    				}
+	    				$.messager.show({
+   	                     	title:'提示',
+   	                     	msg:'该模块删除失败!'
+    					});
+	    			},"json")
+	    			
+	    		}
+	    	},"json")
+	    	return;
+	    	
 	    	var selectNode=$("#tree").tree('getSelected');
 	        $("#tree").tree("remove",selectNode.target);
 
 	    }    
 	});  
-
 	
-        
-
 }
-// 初始化部门信息
+// 初始化模块信息
 /*function init() {
         var partRoot=$("#tree").tree('getRoot');
         var partId=partRoot.id;

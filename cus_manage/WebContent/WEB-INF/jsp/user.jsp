@@ -5,10 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link type="text/css" rel="stylesheet"
-	href="js/jquery-easyui-1.5.3/themes/default/easyui.css" />
-<link type="text/css" rel="stylesheet"
-	href="js/jquery-easyui-1.5.3/themes/icon.css" />
+<link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/default/easyui.css" />
+<link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/icon.css" />
 <link type="text/css" rel="stylesheet" href="js/css/main.css">
 <script src="js/jquery-easyui-1.5.3/jquery.min.js"></script>
 <script src="js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>

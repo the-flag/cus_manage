@@ -12,6 +12,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM role r INNER JOIN user_role ur ON r.role_id=ur.role_id WHERE ur.user_id=#{user_id}
 	</select>
 	
+	<select id="selectRoleByModuleId" parameterType="int" resultType="role">
+		SELECT r.role_id,r.role_name,r.role_desc,r.role_flag 
+		FROM role r INNER JOIN role_module rm ON r.role_id=rm.role_id 
+		WHERE rm.module_id=#{module_id}
+	</select>
+	
 	<select id="selectRolesByFenYe" parameterType="fenYe" resultType="role">
 		SELECT role_id,role_name,role_desc,role_flag FROM role
 		<where>
@@ -37,6 +43,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</select>
+	
+	
+	
 	
 	<insert id="insertRole" parameterType="role">
 		INSERT INTO role(role_name,role_desc,role_flag) 

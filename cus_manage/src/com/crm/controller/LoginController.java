@@ -31,6 +31,8 @@ import com.crm.util.MD5Utils;
 import com.crm.util.MemoryData;
 import com.crm.util.RandomValidateCode;
 import com.crm.util.TreeUtil;
+import com.crm.util.phoneValidata.HttpUtil;
+import com.crm.util.phoneValidata.IndustrySMS;
 import com.google.gson.Gson;
 
 @Controller
@@ -41,6 +43,10 @@ public class LoginController {
 	private MD5Utils md5Utils;
 	@Autowired 
 	private TreeUtil treeUtil;
+	@Autowired
+	private HttpUtil httpUtil;
+	@Autowired
+	private IndustrySMS industrySMS;
 	
 	private DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH/mm/ss");  
 	
@@ -71,6 +77,23 @@ public class LoginController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	/**
+	  * 获取手机号发送验证码
+	 * @return
+	 */
+	@RequestMapping(value="/phoneValidata",method=RequestMethod.GET)
+	
+	public void phoneValidata(String phone,HttpServletRequest request){
+		int p= (int)((Math.random()*9+1)*100000);//获取6位随机验证码
+		IndustrySMS.setTo(phone);//发送到这个手机号
+		String smsContent = "您的验证码为"+p+"，请于30分钟内正确输入，如非本人操作，请忽略此短信。";//发送的内容
+		IndustrySMS.setSmsContent(smsContent);//把发送的信息内容存到这个对象类中
+		IndustrySMS.execute();//执行发送验证码方法
+		request.getSession().setAttribute("p", p);//把验证码存入到键值并存在session中
+		System.out.println("验证码为:"+p);
 	}
 	
 	

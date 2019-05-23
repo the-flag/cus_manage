@@ -43,9 +43,9 @@ public class ModuleServiceimpl implements ModuleService {
 		return moduleMapper.deleteModule(module_id);
 	}
 	@Override
-	public Module selectModuleByModuleName(String module_name) {
+	public Module selectModuleByModuleName(Module module) {
 		// TODO Auto-generated method stub
-		return moduleMapper.selectModuleByModuleName(module_name);
+		return moduleMapper.selectModuleByModuleName(module);
 	}
 
 
