@@ -68,6 +68,10 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 			 method:'post',
 			 pagination:true,
 			 toolbar:"#searchTab",
+			/*  sortable: true , */
+			 remoteSort:false,
+		
+		/* 	 sortOrder : 'asc', //降序 */
 				 queryParams:{
 						user_id:${m.user_id}
 					}
@@ -300,15 +304,16 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 	}
 </script>
 <body>
-  <table id="managerTab" class="easyui-datagrid"    
+  <table id="managerTab" class="easyui-datagrid"  
         data-options="fitColumns:true,singleSelect:false">   
     <thead>   
-        <tr>   
-        <th data-options="field:'check',checkbox:true"></th>
-            <th data-options="field:'customer_id',width:100">No</th>
+        <tr>
+               
+            <th data-options="field:'check',checkbox:true"></th>
+            <th data-options="field:'customer_id',width:100 ,sortable:true">No</th>
             <th data-options="field:'customer_no',width:100">客户编号</th>
-            <th data-options="field:'customer_name',width:100">名字</th>
-            <th data-options="field:'customer_age',width:100">年龄</th>
+            <th data-options="field:'customer_name',width:100,sortable:true">名字</th>
+            <th data-options="field:'customer_age',width:100,sortable:true">年龄</th>
             <th data-options="field:'customer_sex',width:100,formatter:formattersex">性别</th>
             <th data-options="field:'customer_visit',width:100,formatter:formattervisit">是否访问</th>
             <th data-options="field:'customer_ingate',width:100,formatter:formatteringate">是否上门</th>
