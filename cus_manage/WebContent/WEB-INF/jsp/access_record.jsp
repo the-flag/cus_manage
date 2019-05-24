@@ -12,7 +12,49 @@
 </head>
 
    <script type="text/javascript">
-    //展示首页数据
+ //显示隐藏指定列
+   var createGridHeaderContextMenu = function(e, field) {
+       e.preventDefault();
+       var grid = $(this);/* grid本身 */
+       var headerContextMenu = this.headerContextMenu;/* grid上的列头菜单对象 */
+       if (!headerContextMenu) {
+           var tmenu = $('<div style="width:100px;"></div>').appendTo('body');
+           var fields = grid.datagrid('getColumnFields');
+           for ( var i = 0; i < fields.length; i++) {
+               var fildOption = grid.datagrid('getColumnOption', fields[i]);
+               if (!fildOption.hidden) {
+                   $('<div iconCls="icon-ok" field="' + fields[i] + '"/>').html(fildOption.title).appendTo(tmenu);
+               } else {
+                   $('<div iconCls="icon-empty" field="' + fields[i] + '"/>').html(fildOption.title).appendTo(tmenu);
+               }
+           }
+           headerContextMenu = this.headerContextMenu = tmenu.menu({
+               onClick : function(item) {
+                   var field = $(item.target).attr('field');
+                   if (item.iconCls == 'icon-ok') {
+                       grid.datagrid('hideColumn', field);
+                       $(this).menu('setIcon', {
+                           target : item.target,
+                           iconCls : 'icon-empty'
+                       });
+                   } else {
+                       grid.datagrid('showColumn', field);
+                       $(this).menu('setIcon', {
+                           target : item.target,
+                           iconCls : 'icon-ok'
+                       });
+                   }
+               }
+           });
+       }
+       headerContextMenu.menu('show', {
+           left : e.pageX,
+           top : e.pageY
+       });
+   };
+   $.fn.datagrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
+   $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
+   //展示首页数据
      $(function(){
 	   $("#managerTab").datagrid({
 		 url:'showAccess_record',
@@ -23,7 +65,7 @@
 				user_id:${m.user_id}
 			}
 	 
-	   })
+	   });
 	   
       })
    //咨询师
@@ -141,16 +183,24 @@
          <input type="text"  class= "easyui-datebox" id="maxTime1"/> 
           <br/>
           
-          <label for="name">回访情况：</label>   
-     <!--      	<select id="record_condition" name="record_condition" class="easyui-combobox">
-    		<option value=" ">--请选择--</option>
-			
-    	</select> -->
-    	
-         <input type="text" name="name" id="record_condition" />
+          <label for="name">回访情况：</label>
+         <select id="record_condition" > 
+			         <option value="">--请选择--</option>  
+			         <option value="上门">很好</option>   
+			         <option value="电话">好</option> 
+			          <option value="微信">一般</option>   
+			         <option value="qq">差</option>  
+	     </select> 
          
-          <label for="name">跟踪方式：</label>   
-         <input type="text" name="name" id="record_status" />  
+          <label for="name">回访方式：</label>   
+           <select id="record_status" > 
+			         <option value="">--请选择--</option>  
+			         <option value="上门">上门</option>   
+			         <option value="电话">电话</option> 
+			          <option value="微信">微信</option>   
+			         <option value="qq">qq</option>  
+			         </select>   
+         
          
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="searchM()" data-options="iconCls:'icon-search'">搜索</a>
 	

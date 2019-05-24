@@ -64,7 +64,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   </where>
    </select>
    
-   
    <select id="selectCounselor" parameterType="fenye" resultMap="CustomerTab">
   SELECT c.*,u.user_name FROM customer c INNER JOIN user u on c.user_id=u.user_id
   <where>
