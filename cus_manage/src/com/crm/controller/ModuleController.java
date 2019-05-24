@@ -125,9 +125,9 @@ public class ModuleController {
 	@ResponseBody
 	public Boolean moduleValidata(Module module) {
 		
-		 Module selectModuleByModuleName = moduleService.selectModuleByModuleName(module);
-		 if(selectModuleByModuleName!=null) {
-			 if(selectModuleByModuleName.getModule_id()==module.getModule_id()) {
+		 Module selectModuleByModuleName = moduleService.selectModuleByModuleName(module); //根据模块名称和父id查询出对应的的模块信息
+		 if(selectModuleByModuleName!=null) {	
+			 if(selectModuleByModuleName.getModule_id()==module.getModule_id()) { //验证查询出来的模块是不是我们要修改的模块
 				 return true;
 			 }
 			 return false;
@@ -145,8 +145,17 @@ public class ModuleController {
 	 */
 	@RequestMapping(value="/updateModule",method=RequestMethod.POST)
 	@ResponseBody
-	public Integer updateModule(Module module) {
-		
+	public Integer updateModule(Module module,Integer validata) {
+		/**
+		 * 修改节点的父节点时，
+		 * 判断父节点当前是否时叶子节点
+		 * 是的话先添加一个和自己一模一样的子节点
+		 */
+		if(validata>0) {
+			Module selectModuleByModuleId = moduleService.selectModuleByModuleId(validata);
+			selectModuleByModuleId.setModule_parent_id(selectModuleByModuleId.getModule_id());
+			moduleService.insertModule(selectModuleByModuleId);
+		}
 		return moduleService.updateModule(module);
 	}
 	/**
