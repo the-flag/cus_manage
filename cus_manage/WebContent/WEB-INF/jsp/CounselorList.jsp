@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,9 +16,50 @@
 <script type="text/javascript" src="js/area.js"></script>
 </head>
 <script type="text/javascript">
+//显示隐藏指定列
+var createGridHeaderContextMenu = function(e, field) {
+    e.preventDefault();
+    var grid = $(this);/* grid本身 */
+    var headerContextMenu = this.headerContextMenu;/* grid上的列头菜单对象 */
+    if (!headerContextMenu) {
+        var tmenu = $('<div style="width:100px;"></div>').appendTo('body');
+        var fields = grid.datagrid('getColumnFields');
+        for ( var i = 0; i < fields.length; i++) {
+            var fildOption = grid.datagrid('getColumnOption', fields[i]);
+            if (!fildOption.hidden) {
+                $('<div iconCls="icon-ok" field="' + fields[i] + '"/>').html(fildOption.title).appendTo(tmenu);
+            } else {
+                $('<div iconCls="icon-empty" field="' + fields[i] + '"/>').html(fildOption.title).appendTo(tmenu);
+            }
+        }
+        headerContextMenu = this.headerContextMenu = tmenu.menu({
+            onClick : function(item) {
+                var field = $(item.target).attr('field');
+                if (item.iconCls == 'icon-ok') {
+                    grid.datagrid('hideColumn', field);
+                    $(this).menu('setIcon', {
+                        target : item.target,
+                        iconCls : 'icon-empty'
+                    });
+                } else {
+                    grid.datagrid('showColumn', field);
+                    $(this).menu('setIcon', {
+                        target : item.target,
+                        iconCls : 'icon-ok'
+                    });
+                }
+            }
+        });
+    }
+    headerContextMenu.menu('show', {
+        left : e.pageX,
+        top : e.pageY
+    });
+};
+$.fn.datagrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
+$.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 //展示首页数据
    $(function(){
-	  shezhidongtai();
 	  into();  
    })
    function into(){
@@ -79,88 +121,8 @@
 		   user_id:${m.user_id}
 	   });  
    }
-   
-   
   
-   //这个是修改
-   function edit(index) {
-	 //获取当前行对象
-		var arr = $("#managerTab").datagrid("getData");
-		var row = arr.rows[index];
-		//填充表单
-		$("#edit-frm").form("load", row)
-		//打开弹出层
-		$("#edit-dialog").dialog("open")
-
-	}
- 	//提交修改的数据
-	function saveEdit() {
-	/* alert($("#customer_zixunremark1").val())	 */
-	 	var	 customer_dtime1 = $('#customer_dtime1').datebox('getValue');
-	 	var	 customer_onevisit_time1 = $('#customer_onevisit_time1').datebox('getValue');
-        var phone=$("#customer_phone1").val();//电话
-        var name=$("#customer_name1").val();//名字
-        var qq=$("#customer_qq1").val();
-       
-           var a=$("#s_province").val();
-			var b=$("#s_city").val();
-			var c=$("#s_county").val();
-			var d=$("#d").val();
-		
-			var Sales=a+b+c+d;//显示收货地址
-        
-        //判断名字
-        if(/^[\Α-\￥]+$/i.test(name) | /^\w+[\w\s]+\w+$/i.test(name)){
-        	//判断qq号码
-        	if(/^[1-9]\d{4,9}$/i.test(qq)){
-        //判断手机
-        if(/^1[3-8]+\d{9}$/.test(phone)){
-	 	$.post("UpdateCounselor", {
-	 		
-			customer_id : $("#customer_id1").val(),
-			customer_name :name/*  $("#customer_name1").val() */,//名字
-			customer_address :Sales /* $("#customer_address1").val() */,//地址
-			
-			customer_phone :phone,
-			customer_qq: qq,//qq
-			customer_level : $("#customer_level1").val(),//等级
-			customer_academic : $("#customer_academic1").val(),//学历
-			customer_post: $("#customer_post1").val(),//邮政编码
-			
-			customer_ingate: $("#customer_ingate1").val(),//是否上门
-		
-			customer_dmoney: $("#customer_dmoney1").val(),//订金
-		 	customer_dtime:customer_dtime1 ,    //这个是订金时间
-			customer_onevisit_time:customer_onevisit_time1 ,    //这个是首次回访时间
-			customer_zixunremark:$("#customer_zixunremark1").val()//咨询师备注 
-			
-	
-		}, function(res) {
-			if (res > 0) {
-				//修改成功
-				$("#managerTab").datagrid("reload");
-				closeDialog();
-				$.messager.alert("提示", "修改成功");
-			} else {
-				//修改失败
-				$.messager.alert("提示", "修改失败");
-			}
-		}, "json")
-		
-             }else{
-	        	$.messager.alert('提示','请输入正确的手机号');//提示请输入准确的手机号
-		}
-        }else{
-        	$.messager.alert('提示','请输入正确的qq号');//提示请输入准确的手机号
-        }
-        
-        
-        }else{
-			
-			$.messager.alert('提示','请输入正确k名字');//提示请输入正确的名字
-		}
-	}
- 
+   
    //这个是查看
 	function chaKan(index) {
 	
@@ -182,12 +144,7 @@
    
  //这个是查看的关闭
 	function closelookDialog() {
-
 		$("#look-dialog").dialog("close");
-	}
-	function closeDialog() {
-		$("#edit-dialog").dialog("close")
-		$("edit-frm").Window("clear");
 	}
 
 	//这个还是修改的关闭并且删除表中自己想修改但是没保存的数据
@@ -195,15 +152,104 @@
 		$("#edit-dialog").dialog("close")
      	$("edit-frm").Window("clear"); 
 	}
-	
+	//跟踪增加的关闭
 	function closeadd() {
 		$("#add-dialog").dialog("close")
      	$("add-frm").Window("clear");
 	}
 	
-	//下面点击保存时所执行的方法；
+	 //这个是修改
+	   function edit(index) {
+		   $.messager.confirm("确认","确认修改吗",
+					function(r){
+						if(r){
+		 //获取当前行对象
+			var arr = $("#managerTab").datagrid("getData");
+			var row = arr.rows[index];
+			//填充表单
+			$("#edit-frm").form("load", row)
+			//打开弹出层
+			$("#edit-dialog").dialog("open")
+
+		}
+		   });
+			 
+			  
+	   }
+	 	//提交修改的数据
+		function saveEdit() {
+	 		/* alert($("#customer_zixunremark1").val())	 */
+		 	var	 customer_dtime1 = $('#customer_dtime1').datebox('getValue');
+		 	var	 customer_onevisit_time1 = $('#customer_onevisit_time1').datebox('getValue');
+	        var phone=$("#customer_phone1").val();//电话
+	        var name=$("#customer_name1").val();//名字
+	        var qq=$("#customer_qq1").val();
+	       
+	           var a=$("#s_province").val();
+				var b=$("#s_city").val();
+				var c=$("#s_county").val();
+				var d=$("#d").val();
+			
+				var Sales=a+b+c+d;//显示收货地址
+	        
+	        //判断名字
+	        if(/^[\Α-\￥]+$/i.test(name) | /^\w+[\w\s]+\w+$/i.test(name)){
+	        	//判断qq号码
+	        	if(/^[1-9]\d{4,9}$/i.test(qq)){
+	        //判断手机
+	        if(/^1[3-8]+\d{9}$/.test(phone)){
+		 	$.post("UpdateCounselor", {
+		 		
+				customer_id : $("#customer_id1").val(),
+				customer_name :name/*  $("#customer_name1").val() */,//名字
+				customer_address :Sales /* $("#customer_address1").val() */,//地址
+				
+				customer_phone :phone,
+				customer_qq: qq,//qq
+				customer_level : $("#customer_level1").val(),//等级
+				customer_academic : $("#customer_academic1").val(),//学历
+				customer_post: $("#customer_post1").val(),//邮政编码
+				
+				customer_ingate: $("#customer_ingate1").val(),//是否上门
+			
+				customer_dmoney: $("#customer_dmoney1").val(),//订金
+			 	customer_dtime:customer_dtime1 ,    //这个是订金时间
+				customer_onevisit_time:customer_onevisit_time1 ,    //这个是首次回访时间
+				customer_zixunremark:$("#customer_zixunremark1").val()//咨询师备注 
+				
+		
+			}, function(res) {
+				if (res > 0) {
+					//修改成功
+					$("#managerTab").datagrid("reload");
+					closeDialog();
+					$.messager.alert("提示", "修改成功");
+				} else {
+					//修改失败
+					$.messager.alert("提示", "修改失败");
+				}
+			}, "json")
+			
+	             }else{
+		        	$.messager.alert('提示','请输入正确的手机号');//提示请输入准确的手机号
+			}
+	        }else{
+	        	$.messager.alert('提示','请输入正确的qq号');//提示请输入准确的手机号
+	        }
+	        
+	        
+	        }else{
+				
+				$.messager.alert('提示','请输入正确k名字');//提示请输入正确的名字
+			}
+		}
+
 	
+ //这个是跟踪增加
  function addgen(index){
+	  $.messager.confirm("确认","确认跟踪吗",
+	   function(r){
+	   if(r){
 	   //获取当前行对象
 		var arr = $("#managerTab").datagrid("getData");
 		var row = arr.rows[index];
@@ -211,11 +257,10 @@
 		$("#add-frm").form("load", row)
 		//打开弹出层
 		$("#add-dialog").dialog("open")
-	/*    //添加
-
-		  $("#add-dialog").window("open");  */
-	 }
-   
+          }
+       });
+     }
+	//下面点击保存时所执行的方法；
 	function saveAdd() {
 		var 	record_time = $('#add-record_time').datebox('getValue');
 		 var record_lasttime = $("#add-record_lasttime").datebox('getValue');
@@ -241,7 +286,7 @@
 				$.messager.alert("提示", "添加成功");
 
 			} else {
-				//修改失败
+				//增加失败
 				$.messager.alert("提示", "添加失败");
 			}
 		}, "json")
@@ -249,52 +294,10 @@
 	}
 	//设置动态的列
 	function shezhidongtai(){
-		var createGridHeaderContextMenu = function(e, field) {
-			e.preventDefault();
-			var grid = $(this);/* grid本身 */
-			var headerContextMenu = this.headerContextMenu;/* grid上的列头菜单对象 */
-			var okCls = 'tree-checkbox1';// 选中
-			var emptyCls = 'tree-checkbox0';// 取消
-			if (!headerContextMenu) {
-				var tmenu = $('<div style="width:100px;"></div>').appendTo('body');
-				var fields = grid.datagrid('getColumnFields');
-				for (var i = 0; i < fields.length; i++) {
-					var fildOption = grid.datagrid('getColumnOption', fields[i]);
-					if (!fildOption.hidden) {
-						$('<div iconCls="' + okCls + '" field="' + fields[i] + '"/>')
-								.html(fildOption.title).appendTo(tmenu);
-					} else {
-						$('<div iconCls="' + emptyCls + '" field="' + fields[i] + '"/>')
-								.html(fildOption.title).appendTo(tmenu);
-					}
-				}
-				headerContextMenu = this.headerContextMenu = tmenu.menu({
-					onClick : function(item) {
-						var field = $(item.target).attr('field');
-						if (item.iconCls == okCls) {
-							grid.datagrid('hideColumn', field);
-							$(this).menu('setIcon', {
-								target : item.target,
-								iconCls : emptyCls
-							});
-						} else {
-							grid.datagrid('showColumn', field);
-							$(this).menu('setIcon', {
-								target : item.target,
-								iconCls : okCls
-							});
-						}
-					}
-				});
-			}
-			headerContextMenu.menu('show', {
-				left: e.pageX,
-	            top: e.pageY
-			});
-		};
-		$.fn.datagrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
-		$.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
-	}	
+		
+		alert('请右击点击当前行');
+		
+	}
 </script>
 <body>
   <table id="managerTab" class="easyui-datagrid"    
@@ -525,18 +528,20 @@
 				<!-- 	<td><input name="customer_level" class="easyui-validatebox"
 						type="text" id="customer_level1" /></td> -->
 						<td>
+						
+				
+									
 		     	 	 <select id="customer_level1" > 
 				       
-				         <option value="1">1</option>   
-				         <option value="2">2</option>
-				         <option value="1">3</option>   
-				         <option value="2">4</option> 
-				         <option value="1">5</option>   
-				         <option value="2">6</option> 
-				         <option value="1">7</option>   
-				         <option value="2">8</option> 
-				         
-	         		</select>  
+				         <option value="1">一级</option>   
+				         <option value="2">二级</option>   
+				         <option value="3">三级</option>   
+				         <option value="4">四级</option>   
+				         <option value="5">五级</option>   
+				         <option value="6">六级</option>  
+				         <option value="7">七级</option>
+				         <option value="8">八级</option>   
+	         		</select>
 		         </td>	
 			 	</tr>
 				<tr> 
@@ -624,8 +629,7 @@
 				</tr>
 			    <tr>
 					<td><label for="name">交谈住址:</label></td>
-					
-					<td><input name="record_address"  class="easyui-validatebox"
+				     <td><input name="record_address"  class="easyui-validatebox"
 						type="text" id="add-record_address" /></td>
 				</tr>
 				 <tr>
@@ -654,8 +658,6 @@
 				</tr>
 				<tr>
 					<td><label for="name">回访方式:</label></td>
-					
-					
 				<td>
 					 <select id="add-record_status" > 
 			         <option value="">--请选择--</option>  
@@ -788,7 +790,4 @@
 		document.body.removeChild(link);
 	}
 	</script>
-	
-	
-	
 </html>
