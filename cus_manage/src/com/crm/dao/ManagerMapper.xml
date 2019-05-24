@@ -23,6 +23,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    </resultMap>
    
    
+   <resultMap type="Access_record" id="FollowTab">
+   
+   <id column="record_id" property="record_id"/>
+   <result column="record_time" property="record_time" />
+   <result column="record_content" property="record_content" />
+   <result column="record_address" property="record_address" />
+    <result column="user_id" property="user_id" />
+    <result column="customer_id" property="customer_id" />
+    <result column="record_endtime" property="record_endtime" />
+    <result column="record_condition" property="record_condition" />
+    <result column="record_lasttime" property="record_lasttime" />
+    <result column="record_status" property="record_status" />  
+    <result column="record_remark" property="record_remark" />
+    
+    
+    <result column="customer_name" property="customer.customer_name" />
+    <result column="customer_visit" property="customer.customer_visit" />
+    
+    
+    <result column="user_name" property="user.user_name" />
+    </resultMap>
+   
    <select id="selectManagerCount" parameterType="fenye" resultType="int">
     SELECT count(customer_id) FROM customer c INNER JOIN user u on c.user_id=u.user_id
      <where>
@@ -254,5 +276,55 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    
    <select id="selectUserStatus" resultType="user">
     SELECT user_status from user where user_id=#{user_id}
+   </select>
+   
+   <!--客户跟进情况  -->
+   <select id="selectAccess_recordInfo" parameterType="fenye" resultMap="FollowTab">
+    SELECT c.customer_name,u.user_name, a.*
+    from access_record a INNER JOIN customer c on a.customer_id=c.customer_id INNER JOIN  user u on c.user_id=u.user_id
+   <where>
+         <if test="cname!='' and cname!=null">
+          and c.customer_name like "%"#{cname}"%"
+       </if>
+       <if test="uteacher!='' and uteacher!=null">
+          and u.user_name=#{uteacher}
+       </if>
+       <if test="record_status!='' and record_status!=null">
+       and a.record_status=#{record_status}
+       </if>
+      
+       <if test="minTime!='' and minTime!=null">
+       and a.record_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and a.record_endtime &lt;=#{maxTime}
+       </if>
+       
+    </where>
+     limit #{page},#{row}
+   </select>
+   
+   <select id="selectCountAccess_record" parameterType="fenye" resultType="int">
+   SELECT count(a.record_id)
+   from access_record a INNER JOIN customer c on a.customer_id=c.customer_id INNER JOIN  user u on c.user_id=u.user_id
+    <where>
+         <if test="cname!='' and cname!=null">
+          and c.customer_name like "%"#{cname}"%"
+       </if>
+       <if test="uteacher!='' and uteacher!=null">
+          and u.user_name=#{uteacher}
+       </if>
+       <if test="record_status!='' and record_status!=null">
+       and a.record_status=#{record_status}
+       </if>
+      
+       <if test="minTime!='' and minTime!=null">
+       and a.record_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and a.record_endtime &lt;=#{maxTime}
+       </if>
+       
+    </where>
    </select>
 </mapper>

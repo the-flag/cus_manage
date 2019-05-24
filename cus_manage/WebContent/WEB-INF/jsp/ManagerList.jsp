@@ -63,7 +63,10 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		 url:'selectManager',
 		 method:'post',
 		 pagination:true,
-		 toolbar:"#searchTab"
+		 toolbar:"#searchTab",
+		 queryParams:{
+				user_id:${m.user_id}
+			}
 	   })
 	   
    })
@@ -213,16 +216,19 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 	    }
 	    s = s.substring(0,s.length - 1);
 	    alert(s);
-	    $.post("updateCustomerTrack",{s:s,user_id:$("#geTesgt").val()},
-	   function(r){
-	    	if(r>0){
+	    $.post("updateCustomerTrack",{s:s,user_id:$("#geTesgt").val()},function(data){
+	    	if(data>0){
 	    		$.messager.alert('提示','更换咨询师成功');
+	    		$("#managerTab").datagrid("reload");
 	    		$("#GZwin").window("close");
 	    	}else{
 	    		$.messager.alert('提示','更换咨询师失败');
 	    	}
-	    },"josn");
+	    	
+	    },"json");
   }
+	    
+	
   //修改
   function editCustomer(){
 	 
@@ -290,10 +296,49 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 	  
   }
   //测试
-  function  autoCustomer(){
-	 var  status= $("#autoCustomer").switchbutton("options").checked;
-	  alert("师傅师傅说"+status);
-  }
+
+ $(function(){
+	
+		if(0!=1){
+			$("#autoCustomer").switchbutton({
+				checked:false,
+			  onChange:function(checked){
+				  if(checked){
+					  $.post("updateSignin",{user_id:${m.user_id}},function(data){
+						  if(data>0){
+							  $.messager.alert('提示','自动分量开启');
+						  }
+					  },"json");
+				  }else{
+					  alert("自动分量关闭");
+				  }
+				  
+				  
+			  }
+			  
+		     	});
+		
+		}else{
+			$("#autoCustomer").switchbutton({
+				checked:true,
+			  onChange:function(checked){
+				  if(!checked){
+					  alert("自动分量开启");
+				  }else{
+					  alert("自动分量关闭");
+				  }
+				  
+			  }
+			  
+		     	});
+
+			
+		}
+				
+	});
+
+	 
+  
 </script>
 <body>
   <table id="managerTab" class="easyui-datagrid"    
@@ -356,7 +401,6 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="fenpeiCustomer()" data-options="iconCls:'icon-redo'">设置跟踪人员</a>
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="editCustomer()" data-options="iconCls:'icon-edit'">编辑</a>
          <a  href="javascript:void(0)"  class="easyui-switchbutton"  id="autoCustomer" data-options="onText:'Yes',offText:'No'">自动分配</a>
-          <a  href="javascript:void(0)"  class="easyui-linkbutton" onclick="autoCustomer()"  data-options="iconCls:'icon-remove'">自动分配</a>
    </form>
  </div>
  
@@ -412,7 +456,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
  <!-- 查看窗口 -->
  <div id="ChaKanWin" class="easyui-dialog" title="CustomerInfo" style="width:680px;height:400px"   
         data-options="iconCls:'icon-save',modal:true,closed:true,draggable:true">   
-         <form id="ChaFrom" class="easyuii-form">
+         <form id="ChaFrom" class="easyui-form">
            <input type="hidden" name="customer_id" id="Ucustomer_id" class="easyui-textbox"  />
           <label for="name">客户编号</label> 
           <input type="text" name="customer_no" id="Ucustomer_no"   />

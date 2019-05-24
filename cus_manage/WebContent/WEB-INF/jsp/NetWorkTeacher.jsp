@@ -239,10 +239,12 @@ function TrackSave(){
 		$.post("insertTrackInfo",{
 			       user_id:${m.user_id},
 			       customer_id:data.customer_id,
+			       record_status:$("#record_status").val(),
 			       record_time:myDate.toLocaleDateString(),
 			       record_lasttime:$("#record_lasttime").combobox('getValue'),
 			       record_condition:$("#record_condition").val(),
-			       record_remark:$("#record_remark").val()
+			       record_remark:$("#record_remark").val(),
+			       record_content:$("#record_content").val()
 			
 		          },function(data){
 		        	  if(data>0){
@@ -340,7 +342,7 @@ function formaterrCaoZuo(value,row,index){
 </script>
 <body>
   <table id="NetWorkTeacherTab" class="easyui-datagrid"    
-        data-options="fitColumns:true">   
+        data-options="fitColumns:true,singleSelect:true">   
     <thead>   
         <tr>  
             <th data-options="field:'checkbox',width:100,checkbox:true"></th>  
@@ -405,6 +407,9 @@ function formaterrCaoZuo(value,row,index){
         data-options="iconCls:'icon-save',modal:true,closed:true,draggable:true"> 
                              <!-- 下次跟踪时间 -->
             <form id="trackform" class="easyui-form">
+            <input type="text" name="name" id="record_content" />
+           <label for="name">谈论话题</label> 
+           <br/>
            <input type="text" name="name" id="record_condition" />
            <label for="name">回访情况</label> 
            <br/>

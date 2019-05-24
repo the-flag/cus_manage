@@ -86,6 +86,14 @@ public class ManagerServiceImp implements ManagerService {
 		return managerMapper.selectUserStatus(user_id);
 	}
 
+	@Override
+	public FenYe selectAccess_recordInfo(FenYe fenye) {
+		// TODO Auto-generated method stub
+		fenye.setTotal(managerMapper.selectCountAccess_record(fenye));
+		fenye.setRows(managerMapper.selectAccess_recordInfo(fenye));
+		return fenye;
+	}
+
 
 
 }

@@ -42,21 +42,34 @@ public class ManagerController {
 	 private UserCustService userCustService;
 	@RequestMapping(value="/selectManager",method=RequestMethod.POST)
 	@ResponseBody
-	public FenYe selectManager(HttpServletRequest request,Integer page,Integer rows,FenYe fenye) {
+	public FenYe selectManager(HttpSession session,HttpServletRequest request,Integer page,Integer rows,FenYe fenye) {
 			fenye.setPage((page-1)*rows);
 			fenye.setRow(rows);
 		List<User> selectUserReferTeacher = managerService.selectUserReferTeacher();
 		request.getSession().setAttribute("selectUserReferTeacher", selectUserReferTeacher);
+		User s = managerService.selectUserStatus(fenye.getUser_id());
+		System.out.println("特舒服水电费水电费"+s.getUser_status());
+		session.setAttribute("ssss", s);
+		
+	
 		return managerService.selectManager(fenye);
 	}
 	//增加客户
 	@RequestMapping(value="/insertCustomer",method=RequestMethod.POST)
 	@ResponseBody
-	public Integer insertCustomer(Customer customer){
+	public Integer insertCustomer(HttpSession session, HttpServletRequest request,Customer customer){
+		
+	/*	User attribute = (User) session.getAttribute("s");
+		System.out.println("状态值为"+attribute);
+		if(attribute.getUser_status()==1){
+			
+			
+		}*/
+		
 		List<User> selectUser = userService.selectUser();
 		 paixu(selectUser);
 		 customer.setUser_id(selectUser.get(0).getUser_id());
-		Integer insertCustomer = managerService.insertCustomer(customer);
+		 Integer insertCustomer = managerService.insertCustomer(customer);
 		return insertCustomer;
 	}
 	//查询签到or签退
@@ -93,6 +106,7 @@ public class ManagerController {
 		customerTrackParameters.setS(list);
 		customerTrackParameters.setUser_id(user_id);
 		System.out.println("输出一下"+customerTrackParameters);
+	    System.out.println(managerService.updateCustomerTrack(customerTrackParameters));
 		return managerService.updateCustomerTrack(customerTrackParameters);
 	
 	}
@@ -107,8 +121,15 @@ public class ManagerController {
 	}
 	 
 	
+	//查询客户跟进情况
+	@RequestMapping(value="/selectAccess_recordInfo",method=RequestMethod.POST)
+	@ResponseBody
+	public FenYe selectAccess_recordInfo(Integer page,Integer rows,FenYe fenye){
+		fenye.setPage((page-1)*rows);
+		fenye.setRow(rows);
+		return managerService.selectAccess_recordInfo(fenye);
 	
-	
+	}
 	
 	
     //点击tree中的客户管理时，向ManagerList.jsp页面发送请求
@@ -121,6 +142,11 @@ public class ManagerController {
 	@RequestMapping(value="/getSigninorback",method=RequestMethod.GET)
 	public String getSigninorback() {
 		return "UserSign";
+	}
+	
+	@RequestMapping(value="/getCustomerFollow",method=RequestMethod.GET)
+	public String getCustomerFollow() {
+		return "CustomerFollow";
 	}
 	public static void paixu(List<User> UserList) {
 		Collections.sort(UserList, new Comparator<User>() {

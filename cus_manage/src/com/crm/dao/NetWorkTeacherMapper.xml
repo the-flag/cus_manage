@@ -63,8 +63,8 @@ limit #{page},#{row}
 </select>
 
 <insert id="insertTrackInfo" parameterType="Access_record">
-insert into access_record(user_id,customer_id,record_condition,record_lasttime,record_status,record_remark,record_time)
-values(#{user_id},#{customer_id},#{record_condition},#{record_lasttime},#{record_status},#{record_remark},#{record_time})
+insert into access_record(user_id,customer_id,record_condition,record_lasttime,record_status,record_remark,record_time,record_content)
+values(#{user_id},#{customer_id},#{record_condition},#{record_lasttime},#{record_status},#{record_remark},#{record_time},#{record_content})
 </insert>
 
 <select id="selectDateLog" resultMap="LogTab">
