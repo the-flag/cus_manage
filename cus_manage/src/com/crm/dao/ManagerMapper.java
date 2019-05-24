@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.crm.pojo.Access_record;
 import com.crm.pojo.Customer;
 import com.crm.pojo.CustomerTrackParameters;
 import com.crm.pojo.FenYe;
@@ -37,4 +38,8 @@ public interface ManagerMapper {
 	Integer updateSignInfo(@Param("user_id")int user_id,@Param("s")String s);
 	//获取员工的状态
 	User selectUserStatus(int user_id);
+	//客户跟进情况
+	List<Access_record> selectAccess_recordInfo(FenYe fenye); 
+	
+     Integer selectCountAccess_record(FenYe fenye); 
 }

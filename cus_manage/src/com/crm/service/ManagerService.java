@@ -13,7 +13,7 @@ public interface ManagerService {
 	FenYe selectManager(FenYe fenye);
     //添加客户
 	Integer insertCustomer(Customer customer);
-	//查询员工的状态
+	//查询全部员工的状态信息
 	FenYe selectUserSigninOrback(FenYe fenye);
 	//签退
 	Integer updateSignStatus(List<String> datalist);
@@ -31,4 +31,6 @@ public interface ManagerService {
     
    //查询员工的状态
     User selectUserStatus(int user_id);
+    //查询客户跟进情况
+    FenYe selectAccess_recordInfo(FenYe fenye);
 }
