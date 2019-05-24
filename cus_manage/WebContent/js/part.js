@@ -100,13 +100,8 @@ function saveForm(){
 	alert(none.text);
 	 var isLeaf = $('#tree').tree('isLeaf',none.target);
 	 var validata=0;
-	 if(isLeaf){
+	 if(isLeaf){ //验证当前的节点是否是子节点，
 		 validata=none.id;
-		 /*if(none.url!=null && none.url!=''){
-			 
-			 $.messager.alert('提示','不能在该节点下添加!');    
-			 return ;
-		 }*/
 	 }	
 	 if($("#formBox").form('validate')){
 		 	$.post("insertModule",{
@@ -141,10 +136,17 @@ function saveForm(){
 }
 // 修改模块
 function editForm(){
-	var s=$("#parentPart").combotree('getValue');
 	 if($("#formBox").form('validate')){
-		 var selectNode=$("#tree").tree("getSelected");
-		$.post("moduleValidata",{
+		 var selectNode=$("#tree").tree("getSelected"); //获取当前点击的节点信息
+		 var s=$("#parentPart").combotree('getValue');  //获取下拉框列里面的父节点的id
+		 var node = $('#tree').tree('find', s);			//根据下拉框父节点的id定位到父节点
+		 var isLeaf = $('#tree').tree('isLeaf',node.target); //判断定位到的节点是否是叶子节点
+		 var validata=0;		//叶子节点的id
+		 if(isLeaf){
+			 validata=node.id;
+		 }	
+		 alert(node.text);
+		 $.post("moduleValidata",{ //验证模块
 			module_id:$("#partId").val(),
 			module_parent_id:selectNode.parentId,
 	 		module_name:$("#partName").val()
@@ -155,7 +157,8 @@ function editForm(){
 			 		module_name:$("#partName").val(),
 			 		module_parent_id:s,
 			 		module_path:$("#module_path").val(),
-			 		module_weight:$("#module_weight").val()
+			 		module_weight:$("#module_weight").val(),
+			 		validata:validata
 			 	},function(data){
 			 		if(data>0){
 			 			$("#tree").tree("reload");

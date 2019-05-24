@@ -28,7 +28,12 @@ public class ModuleTreeExcludeUrl {
 		json.setText(module.getModule_name());
 		json.setParentId(module.getModule_parent_id());
 		json.setWeight(module.getModule_weight());
-		if(module.getModule_parent_id()!=0) {
+		/*
+		 * 判断查找出所有的父节点，
+		 * 或者是子节点但url没有值的
+		 * 
+		 * */
+		/*if(module.getModule_parent_id()!=0) {
 			for(Module m:list) {
 				if(module.getModule_id()==m.getModule_parent_id()) {
 					return json;
@@ -39,7 +44,7 @@ public class ModuleTreeExcludeUrl {
 				}
 				return null;
 			}
-		}
+		}*/
 		return json;
 	}
 	
