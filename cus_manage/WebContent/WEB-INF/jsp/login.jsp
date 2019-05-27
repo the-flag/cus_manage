@@ -77,23 +77,27 @@ canvas {
 		  var account=$("#user_account").val();
 		  var passwordVali=pPattern.test(password);
 		  var accountVali=uPattern.test(account);
-		  
+		  var yanzhengma=$("#yanzhengma").val().trim();
 		  if(accountVali){
-			  /* if(passwordVali){
+			   if(passwordVali){
 				  return true;
 			   } else {
 				  	$("#tishi").text("密码格式错误!!!");
 			     return false;
-			   } */
+			   } 
+			   if(yanzhengma.length!=4){
+				   $("#tishi").text("验证码格式!!!");
+				     return false;
+			   }
 			   return true;
 		  }
 		  $("#tishi").text("用户名格式错误!!!");
 		 
 	}
 	function submitForm() {
-		/* if(validate()){ */
+		 if(validate()){
 		    document.getElementById("myForm").submit();
-		/* } */
+		 }
 	}
 	
 </script>
@@ -114,7 +118,7 @@ canvas {
 		</dd>
 		<dd class="val_icon">
 			<div class="checkcode">
-				<input type="text" id="J_codetext" placeholder="验证码" maxlength="4" class="login_txtbx" name="yanzhengma">
+				<input type="text" id="J_codetext" placeholder="验证码" maxlength="4" class="login_txtbx" name="yanzhengma" id="yanzhengma">
 				<!-- <canvas class="J_codeimg" id="myCanvas" onclick="createCode()">对不起，您的浏览器不支持canvas，请下载最新版浏览器!</canvas> -->
 			</div>
 			<img class="J_codeimg" src="loginCheckCode" alt="" width="98" height="36" class="passcode" style="height:43px;cursor:pointer;" onclick="this.src=this.src+'?'">
@@ -182,7 +186,7 @@ canvas {
 				$.post("phoneValidata",{
 					phone:user_phone
 				},function(datacode){
-					if(datacode=="00000"){
+					if(datacode){
 						// 消息将显示在顶部中间
 						$.messager.show({
 							title:'我的消息',

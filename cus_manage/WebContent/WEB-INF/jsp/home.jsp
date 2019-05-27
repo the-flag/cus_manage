@@ -11,22 +11,48 @@
 	<script src="js/jquery-easyui-1.5.3/jquery.min.js"></script>
 	<script src="js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
 	<script src="js/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		alert("提示");
+		alert(${m.roles[0].role_id});
+		var role_id=${m.roles[0].role_id};
+		if(role_id==3){ //是咨询师
+			//数据一
+			$("#dataCouont1").text();
+			$("#dataSpan1").text();
+			$("#dataTitle1").text("待办未处理");
+			//数据二
+			$("#dataCouont2").text();
+			$("#dataSpan2").text();
+			$("#dataTitle2").text("客户数量");
+			//数据三
+			$("#dataCouont3").text();
+			$("#dataSpan3").text();
+			$("#dataTitle3").text("新客户");
+			//数据四
+			$("#dataCouont4").text();
+			$("#dataSpan4").text();
+			$("#dataTitle4").text("当月打卡");
+		}
+	})
+			
+</script>
 </head>
 <body>
 <div class="allBox">
 <div class="homeLeft01">
     <a href="#" class="homeUpaBox">
-        <div class="aLeft"><img src="js/img/computer.png"/> </div>
+        <div class="aLeft"><img src="img/computer.png"/> </div>
         <div class="aRight">
-            <p class="fontSizeBig" style="margin-top: 10px">14<span class="fontSizeMin">个</span></p>
-            <p class="fontSizeMin">待办未处理</p>
+            <p class="fontSizeBig" style="margin-top: 10px" id="dataCouont1">14<span class="fontSizeMin" id="dataSpan1">个</span></p>
+            <p class="fontSizeMin" id="dataTitle1">待分配客户</p>
         </div>
     </a>
    <a href="#" class="homeUpaBule">
     <div class="aLeft"><img src="img/computer.png"/> </div>
     <div class="aRight">
-        <p class="fontSizeBig" style="margin-top: 10px">14<span class="fontSizeMin">元</span></p>
-        <p class="fontSizeMin">我的询价金额</p>
+        <p class="fontSizeBig" style="margin-top: 10px" id="dataCouont2">14<span class="fontSizeMin" id="dataSpan2">个</span></p>
+        <p class="fontSizeMin" id="dataTitle2">咨询师人数</p>
     </div>
     </a>
 </div>
@@ -34,31 +60,15 @@
         <a href="#" class="homeUpaBule03">
             <div class="aLeft"><img src="img/computer.png"/> </div>
             <div class="aRight">
-                <p class="fontSizeBig" style="margin-top: 10px">14<span class="fontSizeMin">个</span></p>
-                <p class="fontSizeMin">待办未处理</p>
+                <p class="fontSizeBig" style="margin-top: 10px" id="dataCouont3">14<span class="fontSizeMin" id="dataSpan3">个</span></p>
+                <p class="fontSizeMin" id="dataTitle3">客户人数</p>
             </div>
         </a>
         <a href="#" class="homeUpaBule04">
             <div class="aLeft"><img src="img/computer.png"/> </div>
             <div class="aRight">
-                <p class="fontSizeBig" style="margin-top: 10px">14<span class="fontSizeMin">元</span></p>
-                <p class="fontSizeMin">我的询价金额</p>
-            </div>
-        </a>
-    </div>
-    <div class="homeLeft01">
-        <a href="#" class="homeUpaBule01">
-            <div class="aLeft"><img src="img/computer.png"/> </div>
-            <div class="aRight">
-                <p class="fontSizeBig" style="margin-top: 10px">14<span class="fontSizeMin">个</span></p>
-                <p class="fontSizeMin">待办未处理</p>
-            </div>
-        </a>
-        <a href="#" class="homeUpaBule02">
-            <div class="aLeft"><img src="img/computer.png"/> </div>
-            <div class="aRight">
-                <p class="fontSizeBig" style="margin-top: 10px">14<span class="fontSizeMin">元</span></p>
-                <p class="fontSizeMin">我的询价金额</p>
+                <p class="fontSizeBig" style="margin-top: 10px">……<span class="fontSizeMin" id="dataSpan4"></span></p>
+                <p class="fontSizeMin" id="dataTitle4">未指定</p>
             </div>
         </a>
     </div>
@@ -96,6 +106,7 @@
     </div>
     <div class="clear"></div>
     <div class="homeLeft05">
+    	
         <h5 class="hStyle"><span>交货分析</span></h5>
         <p class="stataAny" style="height: 220px" id="chart03"></p>
     </div>
@@ -128,8 +139,54 @@
 </div>
 <script src="js/echarts/echarts-all.js"></script>
 <script src="js/home.js"></script>
+<script type="text/javascript">
+	$(function(){
+		/* 饼图一 */
+			$.post("selectCustomerByJiaotimeAndCount",{
+			},function(data){
+				 var myChart = echarts.init($("#chart03")[0]);
+				//app.title = '堆叠柱状图';
 
-
+				        option = {
+				                tooltip : {
+				                        trigger: 'axis',
+				                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+				                                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+				                        }
+				                }, 
+				                legend: {
+				                        data:['成交量']
+				                }, 
+				                grid: {
+				                        left: '3%',
+				                        right: '4%',
+				                        bottom: '3%',
+				                        containLabel: true
+				                },
+				                xAxis : [
+				                        {
+				                                type : 'category',
+				                                data : data.categories
+				                        }
+				                ],
+				                yAxis : [
+				                        {
+				                                type : 'value'
+				                        }
+				                ],
+				                series : [
+				                        {
+				                                name:'成交量',
+				                                type:'bar',
+				                                data:data.data
+				                        }
+				                ]
+				        };
+				        myChart.setOption(option);
+			},"json")        
+		
+	})
+</script>
 </body>
 </body>
 </html>

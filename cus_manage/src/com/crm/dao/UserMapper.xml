@@ -37,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id column="user_id" property="user_id"/>
 		<result column="user_account" property="user_account"/>
 		<result column="user_password" property="user_password"/>
+		<result column="user_age" property="user_age"/>
 		<result column="user_name" property="user_name"/>
 		<result column="user_sex" property="user_sex"/>
 		<result column="user_creat_time" property="user_creat_time"/>
@@ -45,6 +46,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="user_wrong_number" property="user_wrong_number"/>
 		<result column="user_email" property="user_email"/>
 		<result column="user_phone" property="user_phone"/>
+		
+		<result column="user_weight" property="user_weight"/>
+		<result column="user_login_time" property="user_login_time"/>
+		<result column="user_end_time" property="user_end_time"/>
+		<result column="user_status" property="user_status"/>
+		<result column="user_uuid" property="user_uuid"/>
 		<association property="roles" resultMap="roleMap"/>
 	</resultMap>
 	
@@ -115,18 +122,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 WHERE ur.user_id=#{user_id};
 	</select>
 	
-	<select id="selectUserByAccount" parameterType="user" resultType="user">
-		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
-		FROM `user` WHERE user_account=#{user_account} 
+	<!-- 测试 -->
+	<select id="selectUserByAccount" parameterType="user" resultMap="userMap">
+		SELECT u.user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone,
+					r.role_id,r.role_name
+		FROM `user` u INNER JOIN user_role ur ON u.user_id=ur.user_id INNER JOIN role r ON ur.role_id=r.role_id WHERE user_account=#{user_account} 
 	</select>
 	
 	<select id="selectUserByPhone" parameterType="string" resultType="user">
 		SELECT user_id,user_account 
 		FROM `user` WHERE user_phone=#{user_phone} 
 	</select>
-	<select id="selectUserByUuid" parameterType="string" resultType="user">
-		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
-		FROM `user` WHERE user_uuid=#{user_uuid} 
+	<select id="selectUserByUuid" parameterType="string" resultMap="userMap">
+		SELECT u.user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone,
+					r.role_id,r.role_name
+		FROM `user` u INNER JOIN user_role ur ON u.user_id=ur.user_id INNER JOIN role r ON ur.role_id=r.role_id  WHERE u.user_uuid=#{user_uuid}  
 	</select>
 	
 	<update id="updateUser" parameterType="user">
