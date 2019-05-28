@@ -69,7 +69,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 			 pagination:true,
 			 toolbar:"#searchTab",
 			/*  sortable: true , */
-			 remoteSort:false,
+			 remoteSort:false,//是远程排序，也就是服务器端排序
 		
 		/* 	 sortOrder : 'asc', //降序 */
 				 queryParams:{
