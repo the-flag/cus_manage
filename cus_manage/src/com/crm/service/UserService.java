@@ -103,4 +103,30 @@ public interface UserService {
 	 */
 	Integer deleteUsers(String user_ids)throws Exception;
 	
+	
+	/**
+	 * 根据角色id查询用户的数量
+	 * @param role_id
+	 * @return
+	 */
+	Integer selecctUserCountByRoleId(Integer role_id);
+	
+	/**
+	 * 查询签到人数
+	 * 判断签到时间是今天
+	 * @return
+	 */
+	Integer selectUserByUserLoginTimeAndQiandao();
+	/**
+	 * 查询迟到人数
+	 * 判断当天签到时间小于8点
+	 * @return
+	 */
+	Integer selectUserByUserLoginTimeAndChidao();
+	/**
+	 * 查询未签到人数
+	 * 判断今天没有签到时间
+	 * @return
+	 */
+	Integer selectUserByUserLoginTimeAndWeiqian();
 }

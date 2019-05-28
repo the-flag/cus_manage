@@ -71,21 +71,21 @@ canvas {
 		alert("sdfs");
 	})
 	  function validate() {
-		  var uPattern = /^[a-zA-Z0-9_-]{4,16}$/;
+		  var uPattern = /^[a-zA-Z0-9_-]{2,16}$/;
 		  var pPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/; //密码强度正则，最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符
 		  var password=$("#user_password").val();
 		  var account=$("#user_account").val();
 		  var passwordVali=pPattern.test(password);
 		  var accountVali=uPattern.test(account);
-		  var yanzhengma=$("#yanzhengma").val().trim();
+		  var yanzhengma=$("#J_codetext").val().trim();
 		  if(accountVali){
-			   if(passwordVali){
+			 if(passwordVali){
 				  return true;
 			   } else {
 				  	$("#tishi").text("密码格式错误!!!");
 			     return false;
-			   } 
-			   if(yanzhengma.length!=4){
+			   }
+			  if(yanzhengma.length!=4){
 				   $("#tishi").text("验证码格式!!!");
 				     return false;
 			   }
@@ -95,11 +95,10 @@ canvas {
 		 
 	}
 	function submitForm() {
-		 if(validate()){
+		 if(validate()){ 
 		    document.getElementById("myForm").submit();
 		 }
 	}
-	
 </script>
 </head>
 <body>
@@ -118,7 +117,7 @@ canvas {
 		</dd>
 		<dd class="val_icon">
 			<div class="checkcode">
-				<input type="text" id="J_codetext" placeholder="验证码" maxlength="4" class="login_txtbx" name="yanzhengma" id="yanzhengma">
+				<input type="text" id="J_codetext" placeholder="验证码" maxlength="4" class="login_txtbx" name="yanzhengma" >
 				<!-- <canvas class="J_codeimg" id="myCanvas" onclick="createCode()">对不起，您的浏览器不支持canvas，请下载最新版浏览器!</canvas> -->
 			</div>
 			<img class="J_codeimg" src="loginCheckCode" alt="" width="98" height="36" class="passcode" style="height:43px;cursor:pointer;" onclick="this.src=this.src+'?'">

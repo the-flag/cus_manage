@@ -49,14 +49,14 @@
 	       }
 		}
 		//修改密码，保存
+	
+		
 		function editPass(){
 			if(validate()){
-				
 				 var editOldPass=$("#editOldPass").val();
 				var user_account=$("#user_account").val();
 				  var editNewPass=$("#editNewPass").val();
 				  var editTowPass=$("#editTowPass").val(); 
-				 
 				$.post("validationPass",{
 					user_password:editOldPass,
 					user_account:user_account
@@ -154,7 +154,8 @@
 <div id="myUpdPass">
 	<form id="myUpdPassForm" class="easyui-form">
 	<input id="user_account" type="hidden" value="${m.user_account}">
- 	<p><label class="diaLable">旧密码：</label><input id="editOldPass"  class="easyui-validatebox TailInput"  data-options="required:true"><span id="editOldPassSpan"></span></p>
+	<p><label class="diaLable"></label><span style="color: red" id="tishi"></span></p>
+ 	<p><label class="diaLable">旧密码：</label><input id="editOldPass" type="password" class="easyui-validatebox TailInput"  data-options="required:true"><span id="editOldPassSpan"></span></p>
 	<p><label class="diaLable">新密码：</label><input id="editNewPass" type="password"  class="easyui-validatebox TailInput"  data-options="required:true"><span id="editNewPassSpan"></span></p>
     <p><label class="diaLable">再次确定密码：</label><input id="editTowPass"  type="password"  class="easyui-validatebox TailInput" data-options="required:true" value=""><span id="editTowPassSpan"></span></p>
     </form>

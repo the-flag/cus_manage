@@ -149,7 +149,6 @@ public class LoginController {
 			return "login";
 		}
 
-		
 		Boolean filg=md5Utils.getSaltverifyMD5(user.getUser_password(),login.getUser_password()); //如果账号正确,判断用户输入的密码是否正确
 		if(filg) {
 			if(login.getUser_is_lock()<1) { //账号密码都没有问题,进一步判断该账号是否被锁定

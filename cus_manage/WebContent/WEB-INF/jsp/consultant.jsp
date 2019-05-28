@@ -4,39 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>咨询经理-统计图管理</title>
  	<link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/default/easyui.css"/>
     <link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/icon.css"/>
     <link type="text/css" rel="stylesheet" href="js/css/main.css">
 	<script src="js/jquery-easyui-1.5.3/jquery.min.js"></script>
 	<script src="js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
 	<script src="js/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
-	<script type="text/javascript">
-	/* $(function(){
-		alert("提示");
-		alert(${m.roles[0].role_id});
-		var role_id=${m.roles[0].role_id};
-		if(role_id==3){ //是咨询师
-			//数据一
-			$("#dataCouont1").text();
-			$("#dataSpan1").text();
-			$("#dataTitle1").text("待办未处理");
-			//数据二
-			$("#dataCouont2").text();
-			$("#dataSpan2").text();
-			$("#dataTitle2").text("客户数量");
-			//数据三
-			$("#dataCouont3").text();
-			$("#dataSpan3").text();
-			$("#dataTitle3").text("新客户");
-			//数据四
-			$("#dataCouont4").text();
-			$("#dataSpan4").text();
-			$("#dataTitle4").text("当月打卡");
-		}
-	}) */
-			
-</script>
 </head>
 <body>
 <div class="allBox">
@@ -45,14 +19,14 @@
         <div class="aLeft"><img src="img/computer.png"/> </div>
         <div class="aRight">
             <p class="fontSizeBig" style="margin-top: 10px" id="dataCouont1">14<span class="fontSizeMin" id="dataSpan1">个</span></p>
-            <p class="fontSizeMin" id="dataTitle1">待分配客户</p>
+            <p class="fontSizeMin" id="dataTitle1">待办未处理</p>
         </div>
     </a>
    <a href="#" class="homeUpaBule">
     <div class="aLeft"><img src="img/computer.png"/> </div>
     <div class="aRight">
         <p class="fontSizeBig" style="margin-top: 10px" id="dataCouont2">14<span class="fontSizeMin" id="dataSpan2">个</span></p>
-        <p class="fontSizeMin" id="dataTitle2">咨询师人数</p>
+        <p class="fontSizeMin" id="dataTitle2">客户数量</p>
     </div>
     </a>
 </div>
@@ -61,14 +35,14 @@
             <div class="aLeft"><img src="img/computer.png"/> </div>
             <div class="aRight">
                 <p class="fontSizeBig" style="margin-top: 10px" id="dataCouont3">14<span class="fontSizeMin" id="dataSpan3">个</span></p>
-                <p class="fontSizeMin" id="dataTitle3">客户人数</p>
+                <p class="fontSizeMin" id="dataTitle3">新客户</p>
             </div>
         </a>
         <a href="#" class="homeUpaBule04">
             <div class="aLeft"><img src="img/computer.png"/> </div>
             <div class="aRight">
-                <p class="fontSizeBig" style="margin-top: 10px">……<span class="fontSizeMin" id="dataSpan4"></span></p>
-                <p class="fontSizeMin" id="dataTitle4">未指定</p>
+                <p class="fontSizeBig" style="margin-top: 10px">12<span class="fontSizeMin" id="dataSpan4">天</span></p>
+                <p class="fontSizeMin" id="dataTitle4">当月打卡</p>
             </div>
         </a>
     </div>
@@ -120,6 +94,14 @@
 <script src="js/echarts/echarts-all.js"></script>
 <script src="js/home.js"></script>
 <script type="text/javascript">
+
+/* 
+
+*	统计图：
+饼状：客户的信息，已放弃，已成交，正在跟踪，
+饼状：签到信息：迟到，旷工，请假，正常，当前月剩余多少天，
+条形图：同比列出最近六个月的成交数据 （个人）
+*/
 /**
  * 饼图1
  */
