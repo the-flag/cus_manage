@@ -124,6 +124,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		   maxTime:$("#maxTime").datebox('getValue'),
 		   user_id:${m.user_id}
 	   });  
+		$("#searchFRM").form("clear") ; 
    }
   
    
