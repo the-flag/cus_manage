@@ -78,9 +78,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 			 
 			 
 		   });
-	   /*
-	   $("searchTab").Window("clear");
-		$("#searchFRM").form("clear") ; */
+
 	
        }
    //咨询师
@@ -124,6 +122,11 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		   maxTime:$("#maxTime").datebox('getValue'),
 		   user_id:${m.user_id}
 	   });  
+	   
+	   
+	   /* 	   $("searchTab").Window("clear");
+	   	  */
+		$("#searchFRM").form("clear") ; 
    }
   
    
