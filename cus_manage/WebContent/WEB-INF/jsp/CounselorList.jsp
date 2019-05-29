@@ -78,7 +78,9 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 			 
 			 
 		   });
-
+	   /*
+	   $("searchTab").Window("clear");
+		$("#searchFRM").form("clear") ; */
 	
        }
    //咨询师
@@ -121,12 +123,8 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		   minTime:$("#minTime").datebox('getValue'),
 		   maxTime:$("#maxTime").datebox('getValue'),
 		   user_id:${m.user_id}
-	   });  
-	   
-	   
-	   /* 	   $("searchTab").Window("clear");
-	   	  */
-		$("#searchFRM").form("clear") ; 
+	   }); 
+	   $("#searchFRM").form("clear") ;
    }
   
    
@@ -589,7 +587,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		    <!--     </tr>
 				<tr>  -->
 					<td><label for="name">首次回访时间:</label></td>
-					<td><input name="customer_onevisit_time" data-options="required:true" class="easyui-datebox"
+					<td><input name="customer_onevisit_time" class="easyui-datebox"
 						type="text" id="customer_onevisit_time1" /></td>
 				 </tr>
 				<tr>
