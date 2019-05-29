@@ -18,12 +18,14 @@
 		$(function(){
 			
 			window.onbeforeunload = function (){ 
-				$.post("closePage",{
-					user_account:"root"
-				},function(){
-					
-				},"json")
+					$.post("closePage",{
+						user_account:"root"
+					},function(){
+						
+					},"json")
 			};
+			
+			
 			$("#homeTree").tree({    
 			    url:'showHomeTree',
 			    method:"post",
