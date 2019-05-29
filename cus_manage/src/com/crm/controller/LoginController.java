@@ -70,6 +70,7 @@ public class LoginController {
 		Map<String, String> seeesionIdMap = MemoryData.getSeeesionIdMap();
 		User user =(User) request.getSession().getAttribute("m");
 		seeesionIdMap.remove(user.getUser_account());
+		request.getSession().removeAttribute("m");
 		try {
 			response.sendRedirect("login");
 		} catch (IOException e) {
@@ -207,5 +208,29 @@ public class LoginController {
 		}
 		return "login";
 	}
+	
+	
+	
+	
+	/**
+	 * 关闭页面时调用 清空map里面的sessionId
+	 * @param user
+	 * @param request
+	 * @param response
+	 * @param remember
+	 * @return
+	 */
+	@RequestMapping(value="/closePage",method=RequestMethod.POST)
+	
+	public void closePage(String user_account,HttpServletRequest request) {
+		System.out.println("关闭页面---清空map里面的sessionId");
+		Map<String, String> seeesionIdMap = MemoryData.getSeeesionIdMap();
+		User user =(User) request.getSession().getAttribute("m");
+		seeesionIdMap.remove(user.getUser_account());
+		System.out.println("关闭页面---清空map里面的sessionId");
+	}
+	
+	
+	
 	
 }

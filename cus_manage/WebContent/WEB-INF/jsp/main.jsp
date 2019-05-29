@@ -13,8 +13,17 @@
 	<script src="js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
 	<script src="js/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
+
+		
 		$(function(){
-			alert("sdfsd");
+			
+			window.onbeforeunload = function (){ 
+				$.post("closePage",{
+					user_account:"root"
+				},function(){
+					
+				},"json")
+			};
 			$("#homeTree").tree({    
 			    url:'showHomeTree',
 			    method:"post",
@@ -25,12 +34,13 @@
 					treeNodeClick(node);
 				}
 			});  
+			
 		})
 		function treeNodeClick(node){
 			var flag = $("#con").tabs('exists', node.text);
 	       var isLeaf = $('#homeTree').tree('isLeaf',node.target); //是否是叶子节点
 	       if (isLeaf) {//只有叶子节点才会在选项卡中创建选项页（每个选项页对应1个功能）
-	    	   var con = '<iframe scrolling="no" frameborder="0"  src="'+node.url+'" style="width:100%;height:100%;">';
+	    	   var con = '<iframe scrolling="auto" frameborder="0"  src="'+node.url+'" style="width:100%;height:100%;">';
 	       		if(!flag) {
 	             	/* $('#tt').tabs('add', { //在选项卡中，创建1个选项页
 	                	title: re,   //选项卡中，选项页的标题（在同一个选项卡中，选项页需要保持一致）。
@@ -94,11 +104,35 @@
 
 	        })
 		}
+
+	/* 	
+		$(function(){
+			
+			var userAgent = navigator.userAgent;
+			var flag = userAgent.indexOf("Chrome") > -1; 
+			alert("是否是谷歌浏览器:"+flag);
+			window.onunload = function() {
+			    if(flag){
+			         console.log('关闭操作');
+			    }else {
+			         console.log('刷新操作');
+			    }
+			};
+			window.onbeforeunload = function () {
+				alert("刷新！！！！");
+				if(!flag){
+			    	console.log('关闭操作');
+			    }else{
+			        console.log('刷新操作');
+			    }
+			};
+		}) */
+		
 	</script>
 	
 	
 </head>
-<body>
+<body onbeforeunload="goodbye">
 
 <div class="easyui-layout" id="mainBox">
     <div data-options="region:'north',split:true" style="height: 80px" class="mainTop">
