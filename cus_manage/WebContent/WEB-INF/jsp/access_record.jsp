@@ -103,6 +103,7 @@
 		   user_id:${m.user_id}
 		  
 	   })
+	   $("#search123").form("clear");
 
 	   
    }
@@ -171,7 +172,7 @@
     </thead>   
 </table>  
  <div id="searchTab">
-   <form>
+ <form id="search123" class="easyui-form">
          <label for="name">名字</label>   
          <input type="text" name="name" id="cname" /> 
          <label for="name">跟踪者</label>   
