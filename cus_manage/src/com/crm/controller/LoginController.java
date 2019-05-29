@@ -156,7 +156,7 @@ public class LoginController {
 				request.setAttribute("key", "该账号已被锁定,请联系管理员!!!");
 				return "login";
 			}
-			/*if(request.getSession().getAttribute("m")==null) { //判断session是否已存在用户信息*/
+			/*if(request.getSession().getAttribute("m")==null) { *///判断session是否已存在用户信息
 			//登陆成功后,用户信息存在session中
 				request.getSession().setAttribute("m", login);//根据账号为Key存储到会话中
 				request.getSession().setAttribute("loginType", "standard");//登录方式是标准登录
@@ -227,6 +227,7 @@ public class LoginController {
 		Map<String, String> seeesionIdMap = MemoryData.getSeeesionIdMap();
 		User user =(User) request.getSession().getAttribute("m");
 		seeesionIdMap.remove(user.getUser_account());
+		request.getSession().removeAttribute("m");
 		System.out.println("关闭页面---清空map里面的sessionId");
 	}
 	
