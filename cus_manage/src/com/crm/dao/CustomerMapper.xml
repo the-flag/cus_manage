@@ -8,7 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    <select id="selectCustomerByJiaotimeAndCount" parameterType="int" resultType="barchartOne">
    	SELECT DATE_FORMAT(c.customer_jiaotime,'%y-%m') as 'yuefen' ,COUNT(1) as 'count' 
    	FROM customer c INNER JOIN `user` u ON c.user_id = u.user_id INNER JOIN user_role ur ON u.user_id = ur.user_id 
-   	WHERE ur.role_id=#{role_id} GROUP BY DATE_FORMAT(c.customer_jiaotime,'%y-%m') ORDER BY customer_jiaotime DESC LIMIT 0,6
+   	WHERE ur.role_id=#{role_id} GROUP BY DATE_FORMAT(c.customer_jiaotime,'%y-%m') ORDER BY DATE_FORMAT(c.customer_jiaotime,'%y-%m') DESC LIMIT 0,6
    </select>
    
    <select id="selectCustomerByRoleId" parameterType="int" resultType="int">
