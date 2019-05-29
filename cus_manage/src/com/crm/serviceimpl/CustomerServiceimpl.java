@@ -19,4 +19,10 @@ public class CustomerServiceimpl implements CustomerService {
 		return customerMapper.selectCustomerByJiaotimeAndCount(role_id);
 	}
 
+	@Override
+	public Integer selectCustomerByRoleId(Integer role_id) {
+		// TODO Auto-generated method stub
+		return customerMapper.selectCustomerByRoleId(role_id);
+	}
+
 }

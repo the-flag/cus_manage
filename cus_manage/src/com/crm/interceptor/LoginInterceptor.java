@@ -35,6 +35,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 				String sessionid = MemoryData.getSeeesionIdMap().get(admin.getUser_account()); //存放在map中sessionId
 				String sessionID = request.getRequestedSessionId();//sessionId
     			// 如果用户名存在
+				System.out.println(sessionid);
+				System.out.println(sessionID);
 				if(sessionid!=null) {
 	    			if (StringUtils.equals(sessionid,sessionID)) { //判断sessionID和map中的sessionId是否一致
 	    				return true;
@@ -48,7 +50,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")){
             	System.out.println("sdfdsfdsfjdsoifjosdaijfoisdjfoijsdoifjosdifiosdahfiu");
             	response.setHeader("SESSIONSTATUS", "TIMEOUT");
-            	response.setHeader("CONTEXTPATH", homeUrl+"login");
+            	response.setHeader("CONTEXTPATH", homeUrl+"/login");
                 // FORBIDDEN，forbidden。也就是禁止、403
             	response.setStatus(HttpServletResponse.SC_FORBIDDEN); 
             }else{

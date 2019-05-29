@@ -13,4 +13,11 @@ public interface CustomerService {
 	 * @return
 	 */
 	List<BarchartOne> selectCustomerByJiaotimeAndCount(Integer role_id);
+	
+	/**
+	 * 根据角色id
+	 * 查询属于咨询师的客户数量
+	 * @return
+	 */
+	Integer selectCustomerByRoleId(Integer role_id);
 }

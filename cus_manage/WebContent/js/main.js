@@ -75,47 +75,35 @@ $("#editOldPass").change(function(){
 	var editOldPass=$("#editOldPass").val();
 	var pPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/; //密码强度正则，最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符
 	if(pPattern.test(editOldPass)){
-		$("#editOldPassSpan").text("");
+		$("#tishi").text("");
 	}else{
-		 $("#editOldPassSpan").text("密码格式错误!!!");
+		$("#tishi").text("旧密码格式错误!");
 	}
 });
 $("#editNewPass").change(function(){
 	var editNewPass=$("#editNewPass").val();
 	var pPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/; //密码强度正则，最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符
 	if(pPattern.test(editNewPass)){
-		$("#editNewPassSpan").text("");
+		$("#tishi").text("");
 	}else{
-		$("#editNewPassSpan").text("密码格式错误!!!");
+		$("#tishi").text("新密码格式错误!!!");
 	}
 });
 $("#editTowPass").change(function(){
 	var editTowPass=$("#editTowPass").val();
 	var editNewPass=$("#editNewPass").val();
 	var pPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/; //密码强度正则，最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符
-	
 	if(pPattern.test(editTowPass)){
 		if(editNewPass==editTowPass){
-			$("#editTowPassSpan").text("");
+			$("#tishi").text("");
+		}else{
+			$("#tishi").text("两次输入密码不一样!");
 		}
 	}else{
-		$("#editTowPassSpan").text("密码格式错误!!!");
+		$("#tishi").text("新密码格式错误!!!");
 	}
 });
-function validate() {
-	  var editOldPass=$("#editOldPass").val();
-	  var editNewPass=$("#editNewPass").val();
-	  var editTowPass=$("#editTowPass").val();
-	  //pPattern.test(editOldPass) &&
-	  var pPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/; //密码强度正则，最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符
-	  if(pPattern.test(editNewPass) && pPattern.test(editTowPass)){
-		  if(editNewPass == editTowPass){
-			  return true;
-		  }
-	  }
-	 return false
-	 
-}
+
 
 /*function saveExit() {
         $.messager.confirm('退出确认','你是否退出系统？',function () {
@@ -152,5 +140,20 @@ $("#con").tabs({
         
 })
 
-
+	//数据验证
+		function validate() {
+		  var editOldPass=$("#editOldPass").val();
+		  var editNewPass=$("#editNewPass").val();
+		  var editTowPass=$("#editTowPass").val();
+		  //pPattern.test(editOldPass) &&
+		  var pPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/; //密码强度正则，最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符
+		  if(pPattern.test(editOldPass)){
+			  if(pPattern.test(editNewPass) && pPattern.test(editTowPass)){
+					  if(editNewPass == editTowPass){
+						  return true;
+					  }
+			  }
+				 return false
+		  }
+		}
 

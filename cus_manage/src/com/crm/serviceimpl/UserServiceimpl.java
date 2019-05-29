@@ -140,5 +140,25 @@ public class UserServiceimpl implements UserService {
 		// TODO Auto-generated method stub
 		return usermapper.selectUserByPhone(user_phone);
 	}
+	@Override
+	public Integer selecctUserCountByRoleId(Integer role_id) {
+		// TODO Auto-generated method stub
+		return usermapper.selecctUserCountByRoleId(role_id);
+	}
+	@Override
+	public Integer selectUserByUserLoginTimeAndQiandao() {
+		// TODO Auto-generated method stub
+		return usermapper.selectUserByUserLoginTimeAndQiandao();
+	}
+	@Override
+	public Integer selectUserByUserLoginTimeAndChidao() {
+		// TODO Auto-generated method stub
+		return usermapper.selectUserByUserLoginTimeAndChidao();
+	}
+	@Override
+	public Integer selectUserByUserLoginTimeAndWeiqian() {
+		// TODO Auto-generated method stub
+		return usermapper.selectUserByUserLoginTimeAndWeiqian();
+	}
 
 }

@@ -118,6 +118,7 @@ public class UserController {
 	public Boolean validationPass(User user) {
 		User selectUserByAccount = userService.selectUserByAccount(user);
 		boolean saltverifyMD5 = MD5Utils.getSaltverifyMD5(user.getUser_password(), selectUserByAccount.getUser_password());
+		System.out.println(saltverifyMD5);
 		return saltverifyMD5;
 	}
 	

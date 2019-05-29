@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,8 +13,17 @@
 	<script src="js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
 	<script src="js/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
+
+		
 		$(function(){
-			alert("sdfsd");
+			
+			window.onbeforeunload = function (){ 
+				$.post("closePage",{
+					user_account:"root"
+				},function(){
+					
+				},"json")
+			};
 			$("#homeTree").tree({    
 			    url:'showHomeTree',
 			    method:"post",
@@ -25,12 +34,13 @@
 					treeNodeClick(node);
 				}
 			});  
+			
 		})
 		function treeNodeClick(node){
 			var flag = $("#con").tabs('exists', node.text);
 	       var isLeaf = $('#homeTree').tree('isLeaf',node.target); //是否是叶子节点
 	       if (isLeaf) {//只有叶子节点才会在选项卡中创建选项页（每个选项页对应1个功能）
-	    	   var con = '<iframe scrolling="no" frameborder="0"  src="'+node.url+'" style="width:100%;height:100%;">';
+	    	   var con = '<iframe scrolling="auto" frameborder="0"  src="'+node.url+'" style="width:100%;height:100%;">';
 	       		if(!flag) {
 	             	/* $('#tt').tabs('add', { //在选项卡中，创建1个选项页
 	                	title: re,   //选项卡中，选项页的标题（在同一个选项卡中，选项页需要保持一致）。
@@ -49,14 +59,14 @@
 	       }
 		}
 		//修改密码，保存
+	
+		
 		function editPass(){
 			if(validate()){
-				
 				 var editOldPass=$("#editOldPass").val();
 				var user_account=$("#user_account").val();
 				  var editNewPass=$("#editNewPass").val();
 				  var editTowPass=$("#editTowPass").val(); 
-				 
 				$.post("validationPass",{
 					user_password:editOldPass,
 					user_account:user_account
@@ -94,6 +104,7 @@
 
 	        })
 		}
+
 		
 		
 		//签退
@@ -130,11 +141,12 @@
 			
 			
 		}
+
 	</script>
 	
 	
 </head>
-<body>
+<body onbeforeunload="goodbye">
 
 <div class="easyui-layout" id="mainBox">
     <div data-options="region:'north',split:true" style="height: 80px" class="mainTop">
@@ -191,7 +203,8 @@
 <div id="myUpdPass">
 	<form id="myUpdPassForm" class="easyui-form">
 	<input id="user_account" type="hidden" value="${m.user_account}">
- 	<p><label class="diaLable">旧密码：</label><input id="editOldPass"  class="easyui-validatebox TailInput"  data-options="required:true"><span id="editOldPassSpan"></span></p>
+	<p><label class="diaLable"></label><span style="color: red" id="tishi"></span></p>
+ 	<p><label class="diaLable">旧密码：</label><input id="editOldPass" type="password" class="easyui-validatebox TailInput"  data-options="required:true"><span id="editOldPassSpan"></span></p>
 	<p><label class="diaLable">新密码：</label><input id="editNewPass" type="password"  class="easyui-validatebox TailInput"  data-options="required:true"><span id="editNewPassSpan"></span></p>
     <p><label class="diaLable">再次确定密码：</label><input id="editTowPass"  type="password"  class="easyui-validatebox TailInput" data-options="required:true" value=""><span id="editTowPassSpan"></span></p>
     </form>

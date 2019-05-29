@@ -15,23 +15,5 @@ import com.crm.service.CustomerService;
 
 @Controller
 public class CustomerController {
-	@Autowired
-	private CustomerService customerService;
 	
-	@RequestMapping(value="/selectCustomerByJiaotimeAndCount",method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String,Object> selectCustomerByJiaotimeAndCount(){
-		Map<String,Object> map=new HashMap<>();
-		List<BarchartOne> selectCustomerByJiaotimeAndCount = customerService.selectCustomerByJiaotimeAndCount(3);
-		System.out.println("条形图数据："+selectCustomerByJiaotimeAndCount);
-		Integer[] data=new Integer[selectCustomerByJiaotimeAndCount.size()];
-		String categories[] = new String[selectCustomerByJiaotimeAndCount.size()];
-		for(int i=0;i<selectCustomerByJiaotimeAndCount.size();i++) {
-			data[i]=selectCustomerByJiaotimeAndCount.get(i).getCount();
-			categories[i]=selectCustomerByJiaotimeAndCount.get(i).getYuefen();
-		}
-		map.put("data", data);
-		map.put("categories", categories);
-		return map;
-	}
 }
