@@ -54,17 +54,16 @@ public class RememberInterceptor implements HandlerInterceptor {
 					System.out.println(c.getValue());
 					User login = userService.selectUserByUuid(c.getValue());
 					if (login != null){
-						if(!(login.getUser_is_lock()<1)) {
+						if(!(login.getUser_is_lock()<1)) { //判断账号有没有被锁定
 							System.out.println("自动登录成功!!");
 							request.getSession().setAttribute("m",login);
 							request.getSession().setAttribute("loginType","auto");//登录方式是自动登录
 							String sessionID = request.getRequestedSessionId();
 							if(!MemoryData.getSeeesionIdMap().containsKey(login.getUser_account())) {
+								System.out.println("自动登陆：添加session到map中");
 								MemoryData.getSeeesionIdMap().put(login.getUser_account(), sessionID);
 							}else if(MemoryData.getSeeesionIdMap().containsKey(login.getUser_account())&&!StringUtils.equals(sessionID, MemoryData.getSeeesionIdMap().get(login.getUser_account()))){
-								MemoryData.getSeeesionIdMap().remove(login.getUser_account());
-								MemoryData.getSeeesionIdMap().put(login.getUser_account(),
-								 sessionID);
+								return false;
 							}
 						}else {
 							System.out.println("此账号已被锁定,请联系管理员!!");

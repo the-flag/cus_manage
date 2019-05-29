@@ -3,6 +3,7 @@ package com.crm.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,10 +32,11 @@ public class LoginInterceptor implements HandlerInterceptor {
     		User admin = (User) request.getSession().getAttribute("m");
     		System.out.println(admin);
 			if (admin != null) {
-				String sessionid = MemoryData.getSeeesionIdMap().get(admin.getUser_account());
-    			// 如果用户名存在放心（即登录放行）
+				String sessionid = MemoryData.getSeeesionIdMap().get(admin.getUser_account()); //存放在map中sessionId
+				String sessionID = request.getRequestedSessionId();//sessionId
+    			// 如果用户名存在
 				if(sessionid!=null) {
-	    			if (sessionid.equals(request.getSession().getId())) {
+	    			if (StringUtils.equals(sessionid,sessionID)) { //判断sessionID和map中的sessionId是否一致
 	    				return true;
 					}
 				}

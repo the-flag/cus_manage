@@ -34,7 +34,7 @@ public class User {
     private Integer customer_num;//客户数量
     //引用角色
     private List<Role> roles;
-    
+    private Role role;
     
     
     
@@ -146,6 +146,13 @@ public class User {
 	}
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+	
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role = role;
 	}
 	@Override
 	public String toString() {

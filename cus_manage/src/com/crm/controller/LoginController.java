@@ -85,7 +85,7 @@ public class LoginController {
 	 */
 	@RequestMapping(value="/phoneValidata",method=RequestMethod.POST)
 	@ResponseBody
-	public String phoneValidata(String phone,HttpServletRequest request){
+	public Boolean phoneValidata(String phone,HttpServletRequest request){
 		int p= (int)((Math.random()*9+1)*100000);//获取6位随机验证码
 		IndustrySMS.setTo(phone);//发送到这个手机号
 		String smsContent = "【云间科技】您的验证码为"+p+"，请于30分钟内正确输入，如非本人操作，请忽略此短信。";//发送的内容
@@ -93,8 +93,10 @@ public class LoginController {
 		String execute = IndustrySMS.execute();//执行发送验证码方法
 		System.out.println(execute);
 		System.out.println("验证码:"+p);
-		request.getSession().setAttribute("phonevalidata",""+p);
-		return execute;
+		if(execute.equals("00000")) {
+			return true;
+		}
+		return false;
 		
 	}
 	
