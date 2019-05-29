@@ -72,6 +72,8 @@
    function formatteruser_name(value,row,index){
 	   return row.user.user_name;	
    }
+    
+    
   //这个是客户的名字
     function formatteruser_kehuname(value,row,index){
  	   return row.customer.customer_name;
@@ -101,7 +103,8 @@
 		   user_id:${m.user_id}
 		  
 	   })
-$("#search123").form("clear");
+	   $("#search123").form("clear");
+
 	   
    }
    
@@ -169,7 +172,7 @@ $("#search123").form("clear");
     </thead>   
 </table>  
  <div id="searchTab">
-   <form id="search123" class="easyui-form">
+ <form id="search123" class="easyui-form">
          <label for="name">名字</label>   
          <input type="text" name="name" id="cname" /> 
          <label for="name">跟踪者</label>   
