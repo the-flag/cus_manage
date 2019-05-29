@@ -92,7 +92,7 @@ function SignBack(){
         data-options="fitColumns:true">   
     <thead>   
         <tr>
-            <th data-options="field:'',width:100,checkbox:true">编号</th>
+            <th data-options="field:'',width:100,checkbox:true"></th>
             <th data-options="field:'user_id',width:100">编号</th>
             <th data-options="field:'user_name',width:100">员工名字</th>
             <th data-options="field:'user_age',width:100">年龄</th>
@@ -101,8 +101,6 @@ function SignBack(){
             <th data-options="field:'user_email',width:100">电子邮箱 </th>
             <th data-options="field:'user_phone',width:100">电话</th>
             <th data-options="field:'user_creat_time',width:100">账号创建时间</th>
-            <th data-options="field:'user_login_time',width:100">签到时间</th>
-            <th data-options="field:'user_end_time',width:100">签退时间</th>
             <th data-options="field:'user_status',width:100,formatter:formatterSign">签到状态</th>
            
            

@@ -20,13 +20,13 @@ public interface ManagerMapper {
 	Integer insertCustomer(Customer customer);
 	//查询员工信息总条数
 	Integer selectUserCount(FenYe fenye);
-	//多条件分页查询员工的签到签退状态
+	//多条件分页查询员工的信息
 	List<User> selectUserSigninOrback(FenYe fenye);
 	//签退
 	Integer  updateUserStatus(List<String> s);
 	//签到
 	Integer updateUserSignin(int id);
-	//获取所有的咨询师
+	//获取当天已签到的咨询师
 	List<User> selectUserReferTeacher();
 	//对客户进行跟踪
 	Integer  updateCustomerTrack(CustomerTrackParameters customerTrackParameters);
@@ -40,6 +40,6 @@ public interface ManagerMapper {
 	User selectUserStatus(int user_id);
 	//客户跟进情况
 	List<Access_record> selectAccess_recordInfo(FenYe fenye); 
-	
-     Integer selectCountAccess_record(FenYe fenye); 
+	//客户跟进信息的数量
+    Integer selectCountAccess_record(FenYe fenye); 
 }

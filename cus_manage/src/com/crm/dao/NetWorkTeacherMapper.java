@@ -7,6 +7,7 @@ import com.crm.pojo.Customer;
 import com.crm.pojo.FenYe;
 
 public interface NetWorkTeacherMapper {
+	//查询出该网络咨询师所属的学生信息
 	Integer  selectCustomerCount(FenYe fenye);
 	
 	List<Customer> selectCustomer(FenYe fenye);

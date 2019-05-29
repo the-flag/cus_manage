@@ -298,42 +298,52 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
   //测试
 
  $(function(){
-	
-		if(0!=1){
-			$("#autoCustomer").switchbutton({
-				checked:false,
-			  onChange:function(checked){
-				  if(checked){
-					  $.post("updateSignin",{user_id:${m.user_id}},function(data){
-						  if(data>0){
-							  $.messager.alert('提示','自动分量开启');
-						  }
-					  },"json");
-				  }else{
-					  alert("自动分量关闭");
+/* 
+	    alert("ssss"+${m.user_status});
+	    alert("名字是"+${m.user_id}); */
+	   
+	    $.post("selectUserstatus",{user_id:2},
+	    	function(data){
+	    	alert(data.user_id+"sdfsfs"+data.user_status);
+	    	if(data.user_status!=1){
+		         $("#autoCustomer").switchbutton({
+					checked:false,
+				  onChange:function(checked){
+					  if(checked){
+						  $.post("updateSignin",{user_id:${m.user_id}},function(data){
+							  if(data>0){
+								  $.messager.alert('提示','自动分量开启');
+							  }
+						  },"json");
+					  }else{
+						  alert("自动分量关闭");
+					  }
+					  
+					  
 				  }
 				  
-				  
-			  }
-			  
-		     	});
-		
-		}else{
-			$("#autoCustomer").switchbutton({
-				checked:true,
-			  onChange:function(checked){
-				  if(!checked){
-					  alert("自动分量开启");
-				  }else{
-					  alert("自动分量关闭");
-				  }
-				  
-			  }
-			  
-		     	});
-
+			     	}); 
 			
-		}
+			}else{
+				
+				$("#autoCustomer").switchbutton({
+				 checked:true,
+				  onChange:function(checked){
+					  if(!checked){
+						  alert("自动分量开启ssss");
+					  }else{
+						  alert("自动分量关闭");
+					  }
+					  
+				  }
+				  
+			     	});
+
+				
+			}
+	    	
+	           },"json");
+	
 				
 	});
 

@@ -94,6 +94,42 @@
 
 	        })
 		}
+		
+		
+		//签退
+		function Signback(){
+			
+			$.post("selectUserstatus",{user_id:${m.user_id}},function(data){
+				if(data.user_status!=1){
+					$.messager.alert('提示','不能重复签退呢！');
+				}else{
+					var myDate = new Date();
+					alert(myDate.toLocaleDateString());
+					   $.messager.confirm('确认','确认进行签退吗？',function(r){
+					    	if(r){
+					    		$.post("updateSignback",{user_id:${m.user_id},s:myDate.toLocaleDateString()},function(data){
+					            	if(data>0){
+					            		$.messager.alert("提示","签退成功！");
+					            		$("#NetWorkTeacherTab").datagrid("reload");
+					            	}else{
+					            		$.messager.alert("提示","签退失败！");
+					            	}
+					            	
+					            },"json");
+					    	}
+					    });
+					
+				}
+				
+				
+			},"json");
+				
+				    
+			
+			
+			
+			
+		}
 	</script>
 	
 	
@@ -128,6 +164,7 @@
             <div data-options="iconCls:'icon-man'"><a href="javascript:void(0)" onclick="openMes()">个人信息</a> </div>
             <div data-options="iconCls:'icon-redo'"><a href="javascript:void(0) "onclick="myUpdPass()">安全设置</a> </div>
             <div data-options="iconCls:'icon-cancel'"><a href="javascript:void(0)" onclick="saveCanle()"> 注销</a> </div>
+            <div data-options="iconCls:'icon-undo'"><a href="javascript:void(0)" onclick="Signback()">签退</a> </div>
 
         </div>
     </div>

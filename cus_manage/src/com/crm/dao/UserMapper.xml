@@ -38,7 +38,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="user_account" property="user_account"/>
 		<result column="user_password" property="user_password"/>
 		<result column="user_name" property="user_name"/>
-		<result column="user_sex" property="user_sex"/>
+		<result column="user_sex" property="user_status"/>
+		<result column="user_status" property="user_sex"/>
 		<result column="user_creat_time" property="user_creat_time"/>
 		<result column="user_login_time" property="user_login_time"/>
 		<result column="user_is_lock" property="user_is_lock"/>
@@ -55,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT u.user_id,u.user_account,u.user_password,u.user_name,u.user_sex,u.user_creat_time,u.user_is_lock,u.user_wrong_number,u.user_email,u.user_phone,u.user_weight,(SELECT COUNT(c.customer_id) 
 		FROM customer c 
 		WHERE c.user_id=u.user_id) as customer_num 
-		FROM user u INNER JOIN user_role rc on u.user_id=rc.user_id INNER JOIN role r on r.role_id=rc.role_id where r.role_id=3;
+		FROM user u INNER JOIN user_role rc on u.user_id=rc.user_id INNER JOIN role r on r.role_id=rc.role_id where r.role_id=3 and u.user_status=1;
 	</select>
 	
 	<select id="selectUserByUserStatus"  resultType="user">
@@ -63,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM user;
 	</select>
 	<select id="selectUsersByFenYe" parameterType="fenYe" resultType="user">
-		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
+		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone,user_status
 		FROM user
 		<where>
 			<if test="object !=null">
@@ -125,7 +126,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM `user` WHERE user_phone=#{user_phone} 
 	</select>
 	<select id="selectUserByUuid" parameterType="string" resultType="user">
-		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone 
+		SELECT user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone,user_status
 		FROM `user` WHERE user_uuid=#{user_uuid} 
 	</select>
 	

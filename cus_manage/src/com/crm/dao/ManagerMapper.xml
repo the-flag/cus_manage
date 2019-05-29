@@ -12,7 +12,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    <result column="customer_onevisit_time" property="customer_onevisit_time" />
    <result column="customer_visit" property="customer_visit" />
    <result column="customer_status" property="customer_status" />
-   <result column="customer_visit" property="customer_visit" />
    <result column="customer_ingate" property="customer_ingate" />
    <result column="customer_source" property="customer_source" />
    <result column="customer_create_time" property="customer_create_time" />
@@ -45,6 +44,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <result column="user_name" property="user.user_name" />
     </resultMap>
    
+   
+<resultMap type="User" id="userTorole">
+  <id column="user_id" property="user_id" />
+  <result column="user_name" property="user_name" />
+  <result column="user_sex" property="user_sex" />
+  <result column="user_creat_time" property="user_creat_time" />
+  <result column="user_creat_time" property="user_creat_time" />
+  <result column="user_phone" property="user_phone" />
+  <result column="user_weight" property="user_weight" />
+  <result column="user_status" property="user_status" />
+  <collection property="roles.role_name" column="role_name"></collection>
+</resultMap>
    <select id="selectManagerCount" parameterType="fenye" resultType="int">
     SELECT count(customer_id) FROM customer c INNER JOIN user u on c.user_id=u.user_id
      <where>
@@ -104,18 +115,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</selectKey>
    </insert>
    
-   <select id="selectUserSigninOrback" parameterType="FenYe" resultType="User">
-    SELECT * from user
+   <select id="selectUserSigninOrback" parameterType="FenYe" resultMap="userTorole">
+   
+        select u.*,r.role_name from 
+		user u INNER JOIN user_role ur on u.user_id=ur.user_id
+		INNER JOIN role r on r.role_id=ur.role_id
+		
   <where>
-         <if test="cname!='' and cname!=null">
-       and user_name like "%"#{cname}"%"
+        <if test="cname!='' and cname!=null">
+       and u.user_name like "%"#{cname}"%"
        </if>
    
-       <if test="visit>0">
-       and user_status=#{visit}
+        <if test="visit>0">
+       and u.user_status=#{visit}
        </if>
       
-       <if test="minTime!='' and minTime!=null">
+   <!--     <if test="minTime!='' and minTime!=null">
        and user_login_time &gt;=#{minTime}
        </if>
        <if test="maxTime!='' and maxTime!=null">
@@ -128,24 +143,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        </if>
        <if test="endTime!='' and endTime!=null">
        and user_end_time &lt;=#{endTime}
-       </if>
+       </if> -->
     </where>
-    ORDER BY user_id asc
+    ORDER BY u.user_id asc
     limit #{page},#{row}
    </select>
    
    <select id="selectUserCount" parameterType="FenYe" resultType="int">
-    select count(user_id) from user
+        select count(u.user_id) from 
+		user u INNER JOIN user_role ur on u.user_id=ur.user_id
+		INNER JOIN role r on r.role_id=ur.role_id
     <where>
          <if test="cname!='' and cname!=null">
-       and user_name like "%"#{cname}"%"
+       and u.user_name like "%"#{cname}"%"
        </if>
    
        <if test="visit>0">
-       and user_status=#{visit}
+       and u.user_status=#{visit}
        </if>
       
-       <if test="minTime!='' and minTime!=null">
+       <!-- <if test="minTime!='' and minTime!=null">
        and user_login_time &gt;=#{minTime}
        </if>
        <if test="maxTime!='' and maxTime!=null">
@@ -158,7 +175,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        </if>
        <if test="endTime!='' and endTime!=null">
        and user_end_time &lt;=#{endTime}
-       </if>
+       </if> -->
     </where>
    </select>
    <!-- 签退 -->
@@ -179,7 +196,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        select u.user_id,u.user_name from 
 		user u INNER JOIN user_role ur on u.user_id=ur.user_id
 		INNER JOIN role r on r.role_id=ur.role_id
-		where ur.role_id=3
+		where ur.role_id=3 and u.user_status=1
     </select>
     <!-- 对客户进行跟踪 -->
        <update id="updateCustomerTrack" parameterType="customerTrackParameters">
@@ -275,7 +292,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    <!--获取员工的状态  -->
    
    <select id="selectUserStatus" resultType="user">
-    SELECT user_status from user where user_id=#{user_id}
+    SELECT user_status,user_name,user_id from user where user_id=#{user_id}
    </select>
    
    <!--客户跟进情况  -->
