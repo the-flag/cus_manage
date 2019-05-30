@@ -94,6 +94,12 @@ public class ManagerServiceImp implements ManagerService {
 		return fenye;
 	}
 
+	@Override
+	public Integer updateweight(User user) {
+		// TODO Auto-generated method stub
+		return managerMapper.updateweight(user);
+	}
+
 
 
 }

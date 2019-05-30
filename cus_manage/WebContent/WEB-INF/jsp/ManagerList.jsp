@@ -295,12 +295,10 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 	 
 	  
   }
-  //测试
+  //开启自动分量
 
  $(function(){
-/* 
-	    alert("ssss"+${m.user_status});
-	    alert("名字是"+${m.user_id}); */
+
 	   
 	    $.post("selectUserstatus",{user_id:2},
 	    	function(data){
@@ -316,7 +314,13 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 							  }
 						  },"json");
 					  }else{
-						  alert("自动分量关闭");
+						  var myDate = new Date();
+						  $.post("updateSignback",{user_id:${m.user_id},s:myDate.toLocaleDateString()},function(data){
+							  if(data>0){
+								  $.messager.alert('提示','自动分量关闭');
+							  }
+						  },"json");
+						  
 					  }
 					  
 					  
@@ -330,9 +334,18 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 				 checked:true,
 				  onChange:function(checked){
 					  if(!checked){
-						  alert("自动分量开启ssss");
+						  var myDate = new Date();
+						  $.post("updateSignback",{user_id:${m.user_id},s:myDate.toLocaleDateString()},function(data){
+							  if(data>0){
+								  $.messager.alert('提示','自动分量关闭');
+							  }
+						  },"json");
 					  }else{
-						  alert("自动分量关闭");
+						  $.post("updateSignin",{user_id:${m.user_id}},function(data){
+							  if(data>0){
+								  $.messager.alert('提示','自动分量开启');
+							  }
+						  },"json");
 					  }
 					  
 				  }
@@ -483,7 +496,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 	         <option value="3">在职</option>
 	         <option value="4">在读</option>   
          </select>   
-          <label for="name">所属地区</label>
+           <label for="name">所属地区</label>
            <select id="Ucustomer_region" class="easyui-combobox">   
 	         <option value="">--请选择--</option>
 	         <option value="未知">未知</option>   

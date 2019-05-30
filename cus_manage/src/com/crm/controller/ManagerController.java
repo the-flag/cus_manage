@@ -125,7 +125,13 @@ public class ManagerController {
 		return managerService.selectAccess_recordInfo(fenye);
 	
 	}
-	
+	//修改員工权重
+	@RequestMapping(value="/updateweight",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer updateweight(User user){
+		
+		return managerService.updateweight(user);
+	}
 	
     //点击tree中的客户管理时，向ManagerList.jsp页面发送请求
 	@RequestMapping(value="/getManager",method=RequestMethod.GET)
