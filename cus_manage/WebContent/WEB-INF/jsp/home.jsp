@@ -224,12 +224,12 @@ $(function(){
 				var nianfen=data[data.length-1].name.substring(0,2); //年份
 				console.log("截取:"+nianfen);
 				var yuefen=data[data.length-1].name.substring(3); //月份
-				var advance=0;
-				var cycle=6;
+				var advance=0;	//如果中间缺少月份时，加1 ，这样存储到数据时不会被覆盖
+				var cycle=6; //循环次数
 				for(var i=0;i<cycle;i++){
 					console.log("循环了:"+i);
-					if(i>=data.length){
-						if(yuefen=="01"){
+					if(i>=data.length){//确定查询出来的数据循环完了
+						if(yuefen=="01"){//当查询出来的最后一个月份为一月时   年份需要减一
 							var nian=parseInt(nianfen);
 							nian-=1;
 							nianfen=nian;
@@ -240,6 +240,7 @@ $(function(){
 							yuefen=12;
 							continue;
 						}
+						//查询出来的最后月份不是一月   直接月份减一 添加
 						var yue=parseInt(yuefen);
 						yue-=1;
 						yuefen=yue;
@@ -252,14 +253,14 @@ $(function(){
 					values[i+advance]=data[i].value;
 					
 					if(i<data.length-1){
-						var up=parseInt(data[i].name.substring(3));
-						var xp=parseInt(data[i+1].name.substring(3));
+						var up=parseInt(data[i].name.substring(3)); //获取月份
+						var xp=parseInt(data[i+1].name.substring(3)); //获取下一月份
 						console.log("上个一月:"+up);
 						console.log("上个一月:"+xp);
 						var xjian=up-xp;
 						console.log("相减:"+xjian);
 						
-						if(up-xp>=2){
+						if(up-xp>=2){//判断相邻的两个月份之间是否不相连   --或者说中间缺少月份 比如 19-05,19-03 之间缺少19-04
 							var yue=parseInt(data[i].name.substring(3));
 							yue-=1;
 							var pinjie=nianfen+"-0"+yue;
