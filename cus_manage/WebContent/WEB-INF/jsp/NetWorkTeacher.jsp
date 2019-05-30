@@ -130,7 +130,7 @@ $(function(){
 		    return false;
 		  }
 		}
-		 time_range ("8:30", "9:30");
+		 time_range ("8:30", "10:30");
 	
 }); 
  //搜索

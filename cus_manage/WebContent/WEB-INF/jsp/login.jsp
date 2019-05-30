@@ -67,9 +67,7 @@ canvas {
 		 }
 		
 	})
-	$("#denglu").click(function(){
-		alert("sdfs");
-	})
+
 	  function validate() {
 		  var uPattern = /^[a-zA-Z0-9_-]{2,16}$/;
 		  var pPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/; //密码强度正则，最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符
@@ -89,6 +87,7 @@ canvas {
 				   $("#tishi").text("验证码格式!!!");
 				     return false;
 			   }
+			  $("#tishi").text("");
 			   return true;
 		  }
 		  $("#tishi").text("用户名格式错误!!!");
@@ -140,7 +139,6 @@ canvas {
 	</dl>
 	
 	
-	
 	<div id=updateBox class="easyui-dialog" style="width:500px;height:400px;" data-options="iconCls:'icon-save',resizable:true,modal:true,closed: true">
 	
 		<form id="ff" method="post">   
@@ -149,7 +147,7 @@ canvas {
 		    </div>   
 		    <div>   
 		       <input type="text"   placeholder="验证码" maxlength="6" class="login_txtbx" name="user_phone_validata" id="user_phone_validata">
-		       <span> <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="phone_validata()">获取验证码</a> </span>
+		       <span> <a id="" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="phone_validata()">获取验证码</a> </span>
 		    </div>   
 		    <div><input  type="button" value="重置密码"  class="submit_btn" onclick="ResetForm();" /></div>
 		</form>  
@@ -187,6 +185,8 @@ canvas {
 				},function(datacode){
 					if(datacode){
 						// 消息将显示在顶部中间
+						
+						
 						$.messager.show({
 							title:'我的消息',
 							msg:'验证码发送成功,请注意查收!',
