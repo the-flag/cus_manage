@@ -21,6 +21,15 @@ public interface UserService {
 	User selectUserByAccount(User user);
 	
 	/**
+	 * 判断邮箱的重复性
+	 * 
+	 * @param user_email
+	 * @return 返回值类型Integer 0=false=存在相同的 
+	 * 							 1=true=不存在
+	 */
+	Integer selectUserByUserEmail(String user_email);
+	
+	/**
 	 * 根据用户的手机号查询对应的用户信息 ==通过手机验证码重置密码
 	 * @param user
 	 * @return

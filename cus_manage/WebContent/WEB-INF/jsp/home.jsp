@@ -11,33 +11,6 @@
 	<script src="js/jquery-easyui-1.5.3/jquery.min.js"></script>
 	<script src="js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
 	<script src="js/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
-	<script type="text/javascript">
-	/* $(function(){
-		alert("提示");
-		alert(${m.roles[0].role_id});
-		var role_id=${m.roles[0].role_id};
-		if(role_id==3){ //是咨询师
-			//数据一
-			$("#dataCouont1").text();
-			$("#dataSpan1").text();
-			$("#dataTitle1").text("待办未处理");
-			//数据二
-			$("#dataCouont2").text();
-			$("#dataSpan2").text();
-			$("#dataTitle2").text("客户数量");
-			//数据三
-			$("#dataCouont3").text();
-			$("#dataSpan3").text();
-			$("#dataTitle3").text("新客户");
-			//数据四
-			$("#dataCouont4").text();
-			$("#dataSpan4").text();
-			$("#dataTitle4").text("当月打卡");
-		}
-	}) */
-
-			
-</script>
 </head>
 <body>
 <div class="allBox">
@@ -167,7 +140,6 @@ $(function(){
 $(function(){
 	$.post("selectUserByUserLoginTime",{
 	},function(data){
-		alert(data.selected["签到"]);
 	    var myChart = echarts.init($("#chart02")[0]);
 	    
 	    option = {

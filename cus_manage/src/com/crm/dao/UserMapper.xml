@@ -168,6 +168,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	</select>
 	
+	<!-- 邮箱重复性 -->
+	<select id="selectUserByUserEmail" parameterType="string" resultType="int">
+		SELECT NOT EXISTS(SELECT * FROM `user` WHERE user_email=#{user_email})
+	</select>
+	
 	<update id="updateUser" parameterType="user">
 		UPDATE user 
 		<set>
@@ -261,8 +266,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<insert id="insertUser" parameterType="user">
-		INSERT INTO `user`(user_account,user_password,user_email,user_phone)
-		select #{user_account},#{user_password},#{user_email},#{user_phone} from dual 
+		INSERT INTO `user`(user_account,user_name,user_password,user_email,user_phone)
+		select #{user_account},#{user_name},#{user_password},#{user_email},#{user_phone} from dual 
 		where not exists (select 1 from user a where a.user_account=#{user_account})
 		<selectKey resultType="int" keyProperty="user_id" order="AFTER">  
 		    select @@IDENTITY as user_id;  

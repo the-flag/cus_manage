@@ -70,6 +70,7 @@ public class UserController {
     	System.out.println("跳转页面!!!");
     	System.out.println("跳转页面!!!");
     	System.out.println("跳转页面!!!");
+    	
         
     }
 	
@@ -105,6 +106,21 @@ public class UserController {
 	}
 	
 	/**
+	 * 验证邮箱重复性
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping("/selectUserByEmail")
+	@ResponseBody
+	public Boolean selectUserByEmail(String user_email) {
+		Integer selectUserByUserEmail = userService.selectUserByUserEmail(user_email);
+		if(selectUserByUserEmail==1) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * 修改密码时验证
 	 * @param user
 	 * @return
@@ -127,9 +143,12 @@ public class UserController {
 	@RequestMapping("/insertUserAndRole")
 	@ResponseBody
 	public Integer insertUserAndRole(User user,String xsry) {
-		System.out.println(xsry);
+		
 		user.setUser_password(md5Utils.getSaltMD5(user.getUser_password()));
-		String substring = xsry.substring(1, xsry.length());
+		String substring=null;
+		if(xsry!=null) {
+			substring = xsry;
+		}
 		Integer insertUserAndRole = userService.insertUserAndRole(user, substring);
 		return insertUserAndRole;
 	}

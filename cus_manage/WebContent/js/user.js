@@ -252,18 +252,7 @@ obj={
                         user_is_lock:$("#user_is_lock").val()
                 })
         },
-        // 添加
-        addBox:function () {
-                $("#addBox").dialog({
-                        closed: false
-
-                })
-                $("#addForm").form('clear');
-                $("#can").hide();
-                $("#res").show();
-
-
-        },
+        
         //角色编辑
         juese:function(index){
         	var data=$("#table").datagrid("getData");
@@ -494,12 +483,9 @@ obj={
         	});  
         },
         // 提交表单
+        
         sum:function () {
-        		var user_account=$("#adduser_account").val();
-        		$.post("validationAccount",{
-        			user_account:user_account
-        		},function(validation){
-        			if(validation){
+        			//调用验证函数--
     	                $('#addForm').form('submit', {
     	                            url:'insertUserAndRole',
     	                            method:"post",
@@ -507,10 +493,9 @@ obj={
     	                        var lag= $(this).form('validate');
     	                           if(lag==true){
     	                        	   
-    	                           }
+    	                        }
     	                },
     	                success: function(data){
-    	                	alert();
     	                	if(data>0){
     	                		$("#addBox").dialog("close");
     	                		obj.find();
@@ -519,11 +504,7 @@ obj={
     	                }
     	                
     	                });
-            		}else{
-            			$("#adduser_accountspan").text("账号已存在!");
-            		}     
-        			
-        		},"json")
+            	
         		
         },
         // 提交表单
@@ -711,4 +692,8 @@ $("#editRoleBox").dialog({
         modal:true,
         shadow:true
 })
+
+
+
+
 

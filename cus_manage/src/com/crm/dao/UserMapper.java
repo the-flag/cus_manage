@@ -21,6 +21,15 @@ public interface UserMapper {
 	List<User> selectUserByUserStatus();
 	
 	/**
+	 * 判断邮箱的重复性
+	 * 
+	 * @param user_email
+	 * @return 返回值类型Integer 0=false=存在相同的 
+	 * 							 1=true=不存在
+	 */
+	Integer selectUserByUserEmail(String user_email);
+	
+	/**
 	 * 根据角色id查询用户的数量
 	 * @param role_id
 	 * @return

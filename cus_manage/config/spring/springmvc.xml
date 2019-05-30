@@ -19,10 +19,11 @@
 	<mvc:annotation-driven />
 	<mvc:resources location="/js/" mapping="/js/**"/>
 	<mvc:resources location="/img/" mapping="/img/**"/>
-	<mvc:resources mapping="/static/**" location="/static/"/>
+	<mvc:resources mapping="/static/**" location="/static/**"/>
     <mvc:resources location="/" mapping="/**/*.html"/>
     <mvc:resources location="/" mapping="/**/*.js"/>
     <mvc:resources location="/" mapping="/**/*.css"/>
+	
 	<!-- 配置视图标准 -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -40,7 +41,8 @@
             <mvc:exclude-mapping path="/phoneValidata"/> <!-- 手机验证  -->
             <mvc:exclude-mapping path="/updatePasswordByUserPhone"/> <!-- 手机验证  -->
              <mvc:exclude-mapping path="/selectUserByPhone"/> <!-- 手机验证  -->
-            <mvc:exclude-mapping path="/js/**"/>	
+            <mvc:exclude-mapping path="/js/**"/>
+            <mvc:exclude-mapping path="/static/**"/>	
             <mvc:exclude-mapping path="/img/**"/>
             <bean class="com.crm.interceptor.RememberInterceptor"/>
         </mvc:interceptor>
@@ -52,6 +54,7 @@
               <mvc:exclude-mapping path="/updatePasswordByUserPhone"/> <!-- 手机验证  -->
               <mvc:exclude-mapping path="/selectUserByPhone"/> <!-- 手机验证  -->
             <mvc:exclude-mapping path="/js/**"/>
+             <mvc:exclude-mapping path="/static/**"/>	
             <mvc:exclude-mapping path="/img/**"/>
             <bean class="com.crm.interceptor.LoginInterceptor"/>
         </mvc:interceptor>

@@ -32,10 +32,6 @@ public class UserServiceimpl implements UserService {
 	public User selectUserByAccount(User user) {
 		// TODO Auto-generated method stub
 		User selectUserByAccount = usermapper.selectUserByAccount(user);
-		System.out.println("dao:"+selectUserByAccount);
-		System.out.println("dao:"+selectUserByAccount);
-		System.out.println("dao:"+selectUserByAccount);
-		System.out.println("dao:"+selectUserByAccount);
 		return usermapper.selectUserByAccount(user);
 	}
 	@Override
@@ -72,25 +68,26 @@ public class UserServiceimpl implements UserService {
 		Integer insertUser = usermapper.insertUser(user);
 		if(insertUser>0) {
 			userRole.setUser_id(user.getUser_id());
-			
-			String[] split = roleids.split(",");
-			List<UserRole> list=new ArrayList<UserRole>();
-			for(String s:split) {
-				if(s!=null && !"".equals(s)) {
-					UserRole role=new UserRole();
-					role.setUser_id(user.getUser_id());
-					role.setRole_id(Integer.parseInt(s));
-					System.out.println("ssssssss"+role);
-					list.add(role);
+			if(roleids!=null) {
+				String[] split = roleids.split(",");
+				List<UserRole> list=new ArrayList<UserRole>();
+				for(String s:split) {
+					if(s!=null && !"".equals(s)) {
+						UserRole role=new UserRole();
+						role.setUser_id(user.getUser_id());
+						role.setRole_id(Integer.parseInt(s));
+						System.out.println("ssssssss"+role);
+						list.add(role);
+					}
 				}
-			}
-			try {
-				if(!(userRoleService.insertUserRoles(list)>0)) {
-					return 0;
+				try {
+					if(!(userRoleService.insertUserRoles(list)>0)) {
+						return 0;
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 		return 1;
@@ -159,6 +156,11 @@ public class UserServiceimpl implements UserService {
 	public Integer selectUserByUserLoginTimeAndWeiqian() {
 		// TODO Auto-generated method stub
 		return usermapper.selectUserByUserLoginTimeAndWeiqian();
+	}
+	@Override
+	public Integer selectUserByUserEmail(String user_email) {
+		// TODO Auto-generated method stub
+		return usermapper.selectUserByUserEmail(user_email);
 	}
 
 }
