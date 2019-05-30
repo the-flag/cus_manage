@@ -67,6 +67,7 @@ public class ChatServer {
      */
     @OnMessage
     public void onMessage(String _message) {
+    	System.out.println();
         JSONObject chat = JSON.parseObject(_message);
         JSONObject message = JSON.parseObject(chat.get("message").toString());
         if(message.get("to") == null || message.get("to").equals("")){      //如果to为空,则广播;如果不为空,则对指定的用户发送消息

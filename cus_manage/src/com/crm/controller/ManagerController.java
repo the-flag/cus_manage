@@ -62,8 +62,19 @@ public class ManagerController {
 		User UserStatus = managerService.selectUserStatus(2);
 		if(UserStatus.getUser_status()==1){
 		List<User> selectUser = userService.selectUser();
-		 paixu(selectUser);
-		 customer.setUser_id(selectUser.get(0).getUser_id());
+			if(selectUser!=null) {
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println(selectUser.get(0));
+			 paixu(selectUser);
+			 customer.setUser_id(selectUser.get(0).getUser_id());
+			}
 		}
 		 Integer insertCustomer = managerService.insertCustomer(customer);
 		return insertCustomer;

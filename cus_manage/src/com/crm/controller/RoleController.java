@@ -71,26 +71,41 @@ public class RoleController {
 	@RequestMapping(value="/insertRole",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer insertRole(Role role,String module_ids) {
-		String substring = module_ids.substring(1, module_ids.length());
-		try {
-			return roleService.insertRole(role, substring);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String substring=null;
+		if(module_ids.length()>1) {
+			System.out.println("长度大于1");
+			System.out.println("长度大于1");
+			System.out.println("长度大于1");
+			System.out.println("长度大于1");
+			System.out.println("长度大于1");
+			System.out.println("长度大于1");
+			substring = module_ids.substring(1, module_ids.length()-1);
 		}
+		if(substring==null) {return 0;}
+			try {
+				return roleService.insertRole(role, substring);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 		return 0;
 	}
 	
 	@RequestMapping(value="/updateRoleAndRoleModule",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer updateRoleAndRoleModule(Role role,String module_ids) {
-		String substring = module_ids.substring(1, module_ids.length());
-		try {
-			return roleService.updateRole(role,module_ids);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String substring=null;
+		if(module_ids.length()>1) {
+			substring = module_ids.substring(1, module_ids.length()-1);
 		}
+		if(substring==null) {return 0;}
+			try {
+				return roleService.updateRole(role,module_ids);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		return 0;
 	}
 	
