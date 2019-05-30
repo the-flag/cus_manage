@@ -124,9 +124,62 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		   maxTime:$("#maxTime").datebox('getValue'),
 		   user_id:${m.user_id}
 	   });  
+		$("#searchFRM").form("clear") ; 
    }
-  
-   
+  //签到
+   $(function(){
+		 var time_range = function (beginTime, endTime) {
+			  var strb = beginTime.split (":");
+			  if (strb.length != 2) {
+			    return false;
+			  }
+			 
+			  var stre = endTime.split (":");
+			  if (stre.length != 2) {
+			    return false;
+			  }
+			 
+			  var b = new Date ();
+			  var e = new Date ();
+			  var n = new Date ();
+			 
+			  b.setHours (strb[0]);
+			  b.setMinutes (strb[1]);
+			  e.setHours (stre[0]);
+			  e.setMinutes (stre[1]);
+			 
+			  if (n.getTime () - b.getTime () > 0 && n.getTime () - e.getTime () < 0) {
+				  
+				  
+					$.post("selectUserstatus",{user_id:${m.user_id}},function(data){
+						alert("员工状态"+data.user_status);
+						if(data.user_status!=1){
+							$.messager.confirm('提示','今天还没有签到呢！',function(r){
+								if(r){
+
+									$.post("updateSignin",{user_id:${m.user_id}},function(data){
+										if(data>0){
+											$.messager.alert('提示','签到成功');
+										}else{
+											$.messager.alert('提示','签到失败');
+										}
+										
+									},"json");
+								
+								}
+							});
+						}
+						
+						
+					},"json");
+			  } else {
+			    alert ("当前时间是：" + n.getHours () + ":" + n.getMinutes () + "，上班迟到！！！！");
+			    return false;
+			  }
+			}
+			 time_range ("8:30", "9:30");
+		
+	}); 
    //这个是查看
 	function chaKan(index) {
 	

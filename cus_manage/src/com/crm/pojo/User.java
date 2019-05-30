@@ -38,6 +38,7 @@ public class User {
     
     
     
+    
 	public Integer getCustomer_num() {
 		return customer_num;
 	}

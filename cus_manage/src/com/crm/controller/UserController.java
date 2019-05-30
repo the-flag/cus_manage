@@ -1,9 +1,12 @@
 package com.crm.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,6 +58,24 @@ public class UserController {
 		return "user";
 	}
 	
+	
+	  /**
+     * 聊天主页
+     */
+    @RequestMapping(value = "chat")
+    public void getIndex(HttpServletRequest request,HttpServletResponse response){
+      /*  ModelAndView view = new ModelAndView("view/index.jsp");
+        return view;*/
+        try {
+			request.getRequestDispatcher("view/index.jsp").forward(request, response);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 	
 	/**
 	 * 验证账号是否已存在

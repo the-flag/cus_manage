@@ -1,4 +1,4 @@
-package com.crm.controller;
+ package com.crm.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,10 +47,10 @@ public class ManagerController {
 			fenye.setRow(rows);
 		List<User> selectUserReferTeacher = managerService.selectUserReferTeacher();
 		request.getSession().setAttribute("selectUserReferTeacher", selectUserReferTeacher);
-		User s = managerService.selectUserStatus(fenye.getUser_id());
-		System.out.println("特舒服水电费水电费"+s.getUser_status());
+	/*	User s = managerService.selectUserStatus(fenye.getUser_id());
+		System.out.println("状态"+s.getUser_status());
 		session.setAttribute("ssss", s);
-		
+		*/
 	
 		return managerService.selectManager(fenye);
 	}
@@ -59,16 +59,12 @@ public class ManagerController {
 	@ResponseBody
 	public Integer insertCustomer(HttpSession session, HttpServletRequest request,Customer customer){
 		
-	/*	User attribute = (User) session.getAttribute("s");
-		System.out.println("状态值为"+attribute);
-		if(attribute.getUser_status()==1){
-			
-			
-		}*/
-		
+		User UserStatus = managerService.selectUserStatus(2);
+		if(UserStatus.getUser_status()==1){
 		List<User> selectUser = userService.selectUser();
 		 paixu(selectUser);
 		 customer.setUser_id(selectUser.get(0).getUser_id());
+		}
 		 Integer insertCustomer = managerService.insertCustomer(customer);
 		return insertCustomer;
 	}
@@ -90,7 +86,6 @@ public class ManagerController {
 	public Integer updateSignstatus(String s){
 		String[] split = s.split(",");
 		List<String> list=Arrays.asList(split);
-		System.out.println("遭雷劈的"+s);
 	    
 		return managerService.updateSignStatus(list);
 	
@@ -148,22 +143,31 @@ public class ManagerController {
 	public String getCustomerFollow() {
 		return "CustomerFollow";
 	}
+	/**
+	 * 聊天主页
+	 * @param UserList
+	 */
+	/*
+	@RequestMapping(value="/getMessage",method=RequestMethod.GET)
+	public String getMessage() {
+		return "WebChat.jsp";
+	}*/
 	public static void paixu(List<User> UserList) {
 		Collections.sort(UserList, new Comparator<User>() {
 			@Override
 			public int compare(User o1, User o2) {
 				if(o1!=null && o2!=null) {
 					if(o1.getCustomer_num()>o2.getCustomer_num()){
-		                return 1;
+		                return 1;//当前对象的值 > 比较对象的值 ， 位置排在后
 		            }else if(o1.getCustomer_num()<o2.getCustomer_num()){
-		                return -1;
+		                return -1;//当前对象的值 < 比较对象的值 ， 位置排在前
 		            }else if(o1.getCustomer_num()==o2.getCustomer_num()) {
 		            	if(o1.getUser_weight()>o2.getUser_weight()) {
-		            		return -1;
+		            		return -1;//当前对象的值 < 比较对象的值 ， 位置排在前
 		            	}
 		            }
 				}
-	            return 0;
+	            return 0;//当前对象的值 = 比较对象的值 ， 位置不变
 			}
 		});
 	}

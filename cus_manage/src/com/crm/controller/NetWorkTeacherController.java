@@ -76,7 +76,6 @@ public class NetWorkTeacherController {
 	@RequestMapping(value="/selectUserstatus",method=RequestMethod.POST)
 	@ResponseBody
 	public User selectUserstatus(int user_id) {
-	
 		return managerService.selectUserStatus(user_id);
 				
 	}
