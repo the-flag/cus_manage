@@ -62,19 +62,15 @@ public class UserController {
 	  /**
      * 聊天主页
      */
-    @RequestMapping(value = "chat")
-    public void getIndex(HttpServletRequest request,HttpServletResponse response){
+    @RequestMapping(value = "/chat",method=RequestMethod.GET)
+    public void getchat(HttpServletRequest request,HttpServletResponse response){
       /*  ModelAndView view = new ModelAndView("view/index.jsp");
         return view;*/
-        try {
-			request.getRequestDispatcher("view/index.jsp").forward(request, response);
-		} catch (ServletException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	System.out.println("跳转页面!!!");
+    	System.out.println("跳转页面!!!");
+    	System.out.println("跳转页面!!!");
+    	System.out.println("跳转页面!!!");
+        
     }
 	
 	/**
@@ -192,9 +188,10 @@ public class UserController {
 	@ResponseBody
 	public Integer updatePasswordByUserPhone(String user_phone,String validata,HttpServletRequest request) {
 		String attribute =(String) request.getSession().getAttribute("phonevalidata");
+		System.out.println("验证码:"+validata);
 		System.out.println("验证码:"+attribute);
 		if(attribute!=null) {
-			if(attribute.trim().equals(validata)) {
+			if(attribute.equals(validata.trim())) {
 				return userService.updatePasswordByUserPhone(user_phone);
 			}
 		}

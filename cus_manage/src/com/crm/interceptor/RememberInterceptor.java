@@ -61,8 +61,11 @@ public class RememberInterceptor implements HandlerInterceptor {
 							String sessionID = request.getRequestedSessionId();
 							if(!MemoryData.getSeeesionIdMap().containsKey(login.getUser_account())) {
 								System.out.println("自动登陆：添加session到map中");
+								System.out.println(sessionID);
 								MemoryData.getSeeesionIdMap().put(login.getUser_account(), sessionID);
 							}else if(MemoryData.getSeeesionIdMap().containsKey(login.getUser_account())&&!StringUtils.equals(sessionID, MemoryData.getSeeesionIdMap().get(login.getUser_account()))){
+								request.setAttribute("key", "该"+login.getUser_account()+"账号以在其他设备登陆!!");
+								request.getRequestDispatcher("login").forward(request, response);;
 								return false;
 							}
 						}else {

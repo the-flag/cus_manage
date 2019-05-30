@@ -24,6 +24,8 @@
             <div class="am-form-group am-form">
                 <textarea class="" id="message" name="message" rows="5"  placeholder="这里输入你想发送的信息..."></textarea>
             </div>
+            <!-- 发送者 -->
+            <input type="hidden" value="${m.user_account}" id="fasongze">
             <!-- 接收者 -->
             <div class="" style="float: left">
                 <p class="am-kai">发送给 : <span id="sendto">全体成员</span><button class="am-btn am-btn-xs am-btn-danger" onclick="$('#sendto').text('全体成员')">复位</button></p>
@@ -179,6 +181,7 @@
         }
         var message = $("#message").val();
         var to = $("#sendto").text() == "全体成员"? "": $("#sendto").text();
+        alert("发送:"+to);
         if(message == null || message == ""){
             layer.msg("请不要惜字如金!", { offset: 0, shift: 6 });
             return;
@@ -187,7 +190,7 @@
         ws.send(JSON.stringify({
             message : {
                 content : message,
-                from : '${m.user_id}',
+                from : $("#fasongze").val(),
                 to : to,      //接收人,如果没有则置空,如果有多个接收人则用,分隔
                 time : getDateFull()
             },

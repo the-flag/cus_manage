@@ -42,4 +42,6 @@ public interface ManagerMapper {
 	List<Access_record> selectAccess_recordInfo(FenYe fenye); 
 	//客户跟进信息的数量
     Integer selectCountAccess_record(FenYe fenye); 
+    //修改员工权重
+    Integer updateweight(User user);
 }

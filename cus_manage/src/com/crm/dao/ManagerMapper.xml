@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   <result column="user_phone" property="user_phone" />
   <result column="user_weight" property="user_weight" />
   <result column="user_status" property="user_status" />
-  <collection property="roles.role_name" column="role_name"></collection>
+  <result column="role_name" property="role.role_name" />
 </resultMap>
    <select id="selectManagerCount" parameterType="fenye" resultType="int">
     SELECT count(customer_id) FROM customer c INNER JOIN user u on c.user_id=u.user_id
@@ -344,4 +344,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        
     </where>
    </select>
+<!--修改员工权重  -->
+ <update id="updateweight" parameterType="int">
+  update user 
+  set user_weight=#{user_weight}
+  where user_id=#{user_id}
+ </update>
 </mapper>

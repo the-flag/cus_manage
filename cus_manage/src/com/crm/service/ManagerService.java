@@ -33,4 +33,6 @@ public interface ManagerService {
     User selectUserStatus(int user_id);
     //查询客户跟进情况
     FenYe selectAccess_recordInfo(FenYe fenye);
+    //修改员工权重
+    Integer updateweight(User user); 
 }

@@ -62,8 +62,19 @@ public class ManagerController {
 		User UserStatus = managerService.selectUserStatus(2);
 		if(UserStatus.getUser_status()==1){
 		List<User> selectUser = userService.selectUser();
-		 paixu(selectUser);
-		 customer.setUser_id(selectUser.get(0).getUser_id());
+			if(selectUser!=null) {
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println("输出!!!!");
+				System.out.println(selectUser.get(0));
+			 paixu(selectUser);
+			 customer.setUser_id(selectUser.get(0).getUser_id());
+			}
 		}
 		 Integer insertCustomer = managerService.insertCustomer(customer);
 		return insertCustomer;
@@ -125,7 +136,13 @@ public class ManagerController {
 		return managerService.selectAccess_recordInfo(fenye);
 	
 	}
-	
+	//修改員工权重
+	@RequestMapping(value="/updateweight",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer updateweight(User user){
+		
+		return managerService.updateweight(user);
+	}
 	
     //点击tree中的客户管理时，向ManagerList.jsp页面发送请求
 	@RequestMapping(value="/getManager",method=RequestMethod.GET)
