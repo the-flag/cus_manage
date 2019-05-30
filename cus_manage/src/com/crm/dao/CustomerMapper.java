@@ -1,6 +1,7 @@
 package com.crm.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.crm.pojo.BarchartOne;
 
@@ -12,7 +13,7 @@ public interface CustomerMapper {
 	 * @param role_id 角色id 咨询师id为 3
 	 * @return
 	 */
-	List<BarchartOne> selectCustomerByJiaotimeAndCount(Integer role_id);
+	List<Map<String,Object>> selectCustomerByJiaotimeAndCount(Integer role_id);
 	
 	/**
 	 * 根据角色id

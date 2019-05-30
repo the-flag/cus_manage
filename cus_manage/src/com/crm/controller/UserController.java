@@ -66,12 +66,16 @@ public class UserController {
     public void getchat(HttpServletRequest request,HttpServletResponse response){
       /*  ModelAndView view = new ModelAndView("view/index.jsp");
         return view;*/
-    	System.out.println("跳转页面!!!");
-    	System.out.println("跳转页面!!!");
-    	System.out.println("跳转页面!!!");
-    	System.out.println("跳转页面!!!");
+    	try {
+			request.getRequestDispatcher("view/index.jsp").forward(request, response);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
-        
     }
 	
 	/**

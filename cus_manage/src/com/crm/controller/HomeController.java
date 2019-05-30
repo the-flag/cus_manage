@@ -2,6 +2,7 @@ package com.crm.controller;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,10 +75,11 @@ public class HomeController {
 	
 	@RequestMapping(value="/selectCustomerByJiaotimeAndCount",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> selectCustomerByJiaotimeAndCount(){
+	public List<Map<String, Object>> selectCustomerByJiaotimeAndCount(){
 		Map<String,Object> map=new HashMap<>();
-		List<BarchartOne> selectCustomerByJiaotimeAndCount = customerService.selectCustomerByJiaotimeAndCount(3);
-		System.out.println("条形图数据："+selectCustomerByJiaotimeAndCount);
+		List<Map<String, Object>> selectCustomerByJiaotimeAndCount = customerService.selectCustomerByJiaotimeAndCount(3);
+		
+		/*System.out.println("条形图数据："+selectCustomerByJiaotimeAndCount);
 		Integer[] data=new Integer[selectCustomerByJiaotimeAndCount.size()];
 		String categories[] = new String[selectCustomerByJiaotimeAndCount.size()];
 		for(int i=0;i<selectCustomerByJiaotimeAndCount.size();i++) {
@@ -85,8 +87,10 @@ public class HomeController {
 			categories[i]=selectCustomerByJiaotimeAndCount.get(i).getYuefen();
 		}
 		map.put("data", data);
-		map.put("categories", categories);
-		return map;
+		*/
+		
+		/*map.put("categories", categories);*/
+		return selectCustomerByJiaotimeAndCount;
 	}
 	
 	

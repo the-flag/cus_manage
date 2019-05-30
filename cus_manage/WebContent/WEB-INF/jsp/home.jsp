@@ -217,6 +217,62 @@ $(function(){
 		/* 条形图 */
 			$.post("selectCustomerByJiaotimeAndCount",{
 			},function(data){
+				console.log(data[0].value);
+				console.log(data[0].name);
+				var name=[];  
+				var values=[];
+				var nianfen=data[data.length-1].name.substring(0,2); //年份
+				console.log("截取:"+nianfen);
+				var yuefen=data[data.length-1].name.substring(3); //月份
+				var advance=0;
+				var cycle=6;
+				for(var i=0;i<cycle;i++){
+					console.log("循环了:"+i);
+					if(i>=data.length){
+						if(yuefen=="01"){
+							var nian=parseInt(nianfen);
+							nian-=1;
+							nianfen=nian;
+							var pinjie=nian+"-12";
+							console.log("转换:"+pinjie);
+							name[i+advance]=pinjie;
+							values[i+advance]=0;
+							yuefen=12;
+							continue;
+						}
+						var yue=parseInt(yuefen);
+						yue-=1;
+						yuefen=yue;
+						var pinjie=nianfen+"-"+yue;
+						name[i+advance]=pinjie;
+						values[i+advance]=0;
+						continue;
+					}
+					name[i+advance]=data[i].name;
+					values[i+advance]=data[i].value;
+					
+					if(i<data.length-1){
+						var up=parseInt(data[i].name.substring(3));
+						var xp=parseInt(data[i+1].name.substring(3));
+						console.log("上个一月:"+up);
+						console.log("上个一月:"+xp);
+						var xjian=up-xp;
+						console.log("相减:"+xjian);
+						
+						if(up-xp>=2){
+							var yue=parseInt(data[i].name.substring(3));
+							yue-=1;
+							var pinjie=nianfen+"-0"+yue;
+							console.log("提示:"+pinjie);
+							name[i+1]=pinjie;
+							values[i+1]=0;
+							advance+=1;
+							cycle-=1;
+							continue;
+						}
+					}
+					
+				}
 				 var myChart = echarts.init($("#chart03")[0]);
 				//app.title = '堆叠柱状图';
 
@@ -239,7 +295,7 @@ $(function(){
 				                xAxis : [
 				                        {
 				                                type : 'category',
-				                                data : data.categories
+				                                data:name
 				                        }
 				                ],
 				                yAxis : [
@@ -251,7 +307,7 @@ $(function(){
 				                        {
 				                                name:'近六月个成交量',
 				                                type:'bar',
-				                                data:data.data
+				                                data:values
 				                        }
 				                ]
 				        };
