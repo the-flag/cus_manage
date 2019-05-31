@@ -20,6 +20,15 @@ public interface UserService {
 	 */
 	User selectUserByAccount(User user);
 	
+	
+	/**
+	 * 根据用户的账户、邮箱、手机，三种方式中的一种查询对应的用户信息 ==登陆
+	 * @param user
+	 * @return
+	 */
+	
+	User selectUserByAccountOrEmailOrPhone(User user);
+	
 	/**
 	 * 判断邮箱的重复性
 	 * 

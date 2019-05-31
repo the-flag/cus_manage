@@ -273,11 +273,9 @@
 					class="formSpan">*</span>
 			</div>
 			<div class="forSubmint">
-				<a href="#" class="easyui-linkbutton" iconCls="icon-ok"
-					onclick="obj.updatesum()">提交</a> <a href="#" class="easyui-linkbutton"
-					id="res" iconCls="icon-redo" onclick="obj.res()">重置</a> <a
-					href="#" class="easyui-linkbutton" id="can" iconCls="icon-cancel"
-					onclick="obj.can()">取消</a>
+				<a href="#" class="easyui-linkbutton" iconCls="icon-ok" id="updatesum">提交</a>
+				<a href="#" class="easyui-linkbutton" id="updatares" iconCls="icon-redo">重置</a>
+				<a href="#" class="easyui-linkbutton" id="can" iconCls="icon-cancel" onclick="obj.can()">取消</a>
 			</div>
 
 		</form>

@@ -82,6 +82,14 @@ $(function () {
 
                         },
                         {
+                            field:'user_account',
+                            title:'账号',
+                            width:100,
+                            align:'center',
+                            hidden:true
+
+                        },
+                        {
                                 field:'user_name',
                                 title:'用户名',
                                 width:80,
@@ -264,20 +272,27 @@ obj={
         	 * 添加方法
         	 */
         	$("#addUserRole").click(function(){
-        		alert("添加！！");
             	var data=$("#AllRole").datagrid("getSelected");
-            	$.post("addUserRole",{
-            		user_id:row.user_id,
-            		role_id:data.role_id
-            	},function(data){
-            		if(data>0){
-            			$.messager.alert('提示','添加成功!'); 
-            			obj.refreshRole();
+            	//添加角色时 验证该用户是否是管理员
+            	$.post("verifyAdministrator",{
+            		user_account:row.user_account
+            	},function(vali){
+            		if(vali){
+		            	$.post("addUserRole",{
+		            		user_id:row.user_id,
+		            		role_id:data.role_id
+		            	},function(data){
+		            		if(data>0){
+		            			$.messager.alert('提示','添加成功!'); 
+		            			obj.refreshRole();
+		            		}else{
+		            			$.messager.alert('提示','添加失败!');    
+		            		}
+		            	},"json")
             		}else{
-            			$.messager.alert('提示','添加失败!');    
-            		}
+            			$.messager.alert('提示','没有该权限!');    
+            		}            
             	},"json")
-        		
         		
         	})
         	/**
@@ -285,16 +300,25 @@ obj={
         	 */
         	$("#delUserRole").click(function(){
             	var data=$("#UserRole").datagrid("getSelected");
-            	$.post("delUserRole",{
-            		user_id:row.user_id,
-            		role_id:data.role_id
-            	},function(data){
-            		if(data>0){
-            			$.messager.alert('提示','删除成功!'); 
-            			obj.refreshRole();
+            	//删除角色时 验证该用户是否是管理员
+            	$.post("verifyAdministrator",{
+            		user_account:row.user_account
+            	},function(vali){
+            		if(vali){
+		            	$.post("delUserRole",{
+		            		user_id:row.user_id,
+		            		role_id:data.role_id
+		            	},function(data){
+		            		if(data>0){
+		            			$.messager.alert('提示','删除成功!'); 
+		            			obj.refreshRole();
+		            		}else{
+		            			$.messager.alert('提示','删除失败!');    
+		            		}
+		            	},"json")
             		}else{
-            			$.messager.alert('提示','删除失败!');    
-            		}
+            			$.messager.alert('提示','没有该权限!');    
+            		}            
             	},"json")
         		
         		
@@ -410,36 +434,44 @@ obj={
                var data=$("#table").datagrid("getData");
                 var row=data.rows[id];
                 $("#updateForm").form('load',row);
-               /* $.ajax({
-                        url:'js/json/user.json',
-                        type:'get',
-                        dataType:'json',
-                        success:function (rows) {
-                                var data=rows.rows;
-                                if(data){
-                                        $.each(data,function (index) {
-                                               ID=data[index].id;
-                                              if(id==ID){
-                                                      $("#no").val(ID);
-                                                      $("#name").val(data[index].name);
-                                                      $("#pass").val(data[index].pass);
-                                                      $('#time').datebox('setValue', data[index].time);
-                                                      $('#part01').combotree('setValue', data[index].part);
-                                                      $('#role').combobox('setValue', data[index].title);
-
-                                              }
-
-                                        })
-
-
-
-
-                                }
-                                else{
-                                        return false;
-                                }
-                        }
-                })*/
+                
+                //验证修改的用户是否是管理员
+                $("#updatesum").click(function(){
+                	$.post("verifyAdministrator",{
+                		user_account:row.user_account
+                	},function(vali){
+                		if(vali){
+                				//提交保存
+            	                $('#updateForm').form('submit', {
+            	                            url:'updateUserByAccount',
+            	                            method:"post",
+            	                    onSubmit: function(){
+            	                        var lag= $(this).form('validate');
+            	                           if(lag==true){
+            	                        	   
+            	                           }
+            	                },
+            	                success: function(data){
+            	                	if(data>0){
+            	                		$("#updateBox").dialog("close");
+            	                		obj.find();
+            	                        $.messager.progress('close');
+            	                	}
+            	                }
+            	                
+            	                });
+                		}else{
+                			$.messager.alert('提示','没有该权限!');    
+                		}            
+                	},"json")
+                })
+                
+               //重置表单
+                
+                $("#updatares").click(function(){
+                	$("#updateForm").form('load',row);
+                })
+                
 
         },
         //解锁
@@ -509,32 +541,11 @@ obj={
         },
         // 提交表单
         updatesum:function () {
-    	                $('#updateForm').form('submit', {
-    	                            url:'updateUserByAccount',
-    	                            method:"post",
-    	                    onSubmit: function(){
-    	                        var lag= $(this).form('validate');
-    	                           if(lag==true){
-    	                        	   
-    	                           }
-    	                },
-    	                success: function(data){
-    	                	alert("wwef");
-    	                	alert();
-    	                	if(data>0){
-    	                		$("#updateBox").dialog("close");
-    	                		obj.find();
-    	                        $.messager.progress('close');
-    	                	}
-    	                }
-    	                
-    	                });
-        		
+        	
         },
         // 重置表单
         res:function () {
                 $("#addForm").form('reset');
-                $("#updateForm").form('reset');
 
         },
         // 取消表单
@@ -567,7 +578,7 @@ obj={
                                               success:function (data) {
                                                       if(data){
                                                               $("#table").datagrid('loaded');
-                                                              $("#table").datagrid('load');
+                                                              $("#table").datagrid('reload');
                                                               $("#table").datagrid('unselectAll');
                                                               $.messager.show({
                                                                       title:'提示',
@@ -601,18 +612,27 @@ obj={
         	    if (r){    
         	    	var data=$("#table").datagrid("getData");
                 	var row=data.rows[index];
-                	
                 	if(row!=null){
-		            	$.post("updatePasswordByUserId",{
-		            		user_id:row.user_id
-		            	},function(data){
-		            		if(data>0){
-		            			$.messager.alert('提示','重置成功!');    
-		            		}else{
-		            			$.messager.alert('提示','重置失败!');    
-		            		}
-		            	},"json")   
-                	}
+	                	$.post("verifyAdministrator",{
+	                		user_account:row.user_account
+	                	},function(vali){
+	                		if(vali){
+	    			            	$.post("updatePasswordByUserId",{
+	    			            		user_id:row.user_id
+	    			            	},function(data){
+	    			            		if(data>0){
+	    			            			obj.find();
+	    			            			$.messager.alert('提示','重置成功!'); 
+	    			            		}else{
+	    			            			$.messager.alert('提示','重置失败!');    
+	    			            		}
+	    			            	},"json")   
+	                    	}else{
+	                    		$.messager.alert('提示','没有该权限!');    
+	                    	}
+	                	},"json")
+        	    	}
+                	
         	    }    
         	});  
 

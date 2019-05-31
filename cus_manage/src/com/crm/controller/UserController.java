@@ -124,6 +124,22 @@ public class UserController {
 		return false;
 	}
 	
+	
+	/**
+	 * 验证用户是否时管理员 -- 再操作用户时  删除用户  修改用户角色  重置密码  修改用户信息
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping("/verifyAdministrator")
+	@ResponseBody
+	public Boolean verifyAdministrator(HttpServletRequest request,User user) {
+		User selectUserByAccount = userService.selectUserByAccount(user);
+		if(selectUserByAccount!=null && selectUserByAccount.getRoles().get(0).getRole_id()!=1) {
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * 修改密码时验证
 	 * @param user

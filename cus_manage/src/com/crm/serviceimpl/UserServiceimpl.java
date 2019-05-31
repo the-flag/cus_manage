@@ -162,5 +162,10 @@ public class UserServiceimpl implements UserService {
 		// TODO Auto-generated method stub
 		return usermapper.selectUserByUserEmail(user_email);
 	}
+	@Override
+	public User selectUserByAccountOrEmailOrPhone(User user) {
+		// TODO Auto-generated method stub
+		return usermapper.selectUserByAccountOrEmailOrPhone(user);
+	}
 
 }
