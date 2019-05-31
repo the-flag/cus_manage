@@ -275,7 +275,8 @@ obj={
             	var data=$("#AllRole").datagrid("getSelected");
             	//添加角色时 验证该用户是否是管理员
             	$.post("verifyAdministrator",{
-            		user_account:row.user_account
+            		user_account:row.user_account,
+            		cheshi:"1"
             	},function(vali){
             		if(vali){
 		            	$.post("addUserRole",{
@@ -302,7 +303,8 @@ obj={
             	var data=$("#UserRole").datagrid("getSelected");
             	//删除角色时 验证该用户是否是管理员
             	$.post("verifyAdministrator",{
-            		user_account:row.user_account
+            		user_account:row.user_account,
+            		cheshi:"1"
             	},function(vali){
             		if(vali){
 		            	$.post("delUserRole",{
@@ -382,7 +384,7 @@ obj={
                     sortOrder:'asc',
                     toolbar: '',
                     queryParams:{
-                    	user_id:row.user_id
+                    	user_id:row.user_id,
                     },
                     columns:[[
                             {
@@ -438,7 +440,8 @@ obj={
                 //验证修改的用户是否是管理员
                 $("#updatesum").click(function(){
                 	$.post("verifyAdministrator",{
-                		user_account:row.user_account
+                		user_account:row.user_account,
+                		cheshi:"1"
                 	},function(vali){
                 		if(vali){
                 				//提交保存
@@ -626,7 +629,8 @@ obj={
                 	var row=data.rows[index];
                 	if(row!=null){
 	                	$.post("verifyAdministrator",{
-	                		user_account:row.user_account
+	                		user_account:row.user_account,
+	                		cheshi:"1"
 	                	},function(vali){
 	                		if(vali){
 	    			            	$.post("updatePasswordByUserId",{

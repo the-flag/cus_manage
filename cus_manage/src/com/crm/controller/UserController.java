@@ -133,8 +133,7 @@ public class UserController {
 	@RequestMapping("/verifyAdministrator")
 	@ResponseBody
 	public Boolean verifyAdministrator(HttpServletRequest request,User user,String cheshi) {
-		System.out.println(cheshi.toString());
-		if(cheshi!=null) {
+		if(cheshi!=null && !"1".equals(cheshi)) {
 			System.out.println("进入测试！！");
 			String[] split = cheshi.split(",");
 			for(String s:split) {
