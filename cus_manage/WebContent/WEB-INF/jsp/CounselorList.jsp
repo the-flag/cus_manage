@@ -156,7 +156,6 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 						if(data.user_status!=1){
 							$.messager.confirm('提示','今天还没有签到呢！',function(r){
 								if(r){
-
 									$.post("updateSignin",{user_id:${m.user_id}},function(data){
 										if(data>0){
 											$.messager.alert('提示','签到成功');
@@ -190,7 +189,6 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		$("#look-frm").form("load", row)
 		//打开弹出层
 		$("#look-dialog").dialog("open")
-
 	}
   //进入日志
   function suoyougen(){
@@ -203,7 +201,6 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 	function closelookDialog() {
 		$("#look-dialog").dialog("close");
 	}
-
 	//这个还是修改的关闭并且删除表中自己想修改但是没保存的数据
 	function closeDialog() {
 		$("#edit-dialog").dialog("close")
@@ -227,7 +224,6 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 			$("#edit-frm").form("load", row)
 			//打开弹出层
 			$("#edit-dialog").dialog("open")
-
 		}
 		   });
 			 
@@ -249,6 +245,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 			
 				var Sales=a+b+c+d;//显示收货地址
 	        
+				if(customer_onevisit_time1<customer_dtime1){
 	        //判断名字
 	        if(/^[\Α-\￥]+$/i.test(name) | /^\w+[\w\s]+\w+$/i.test(name)){
 	        	//判断qq号码
@@ -298,9 +295,12 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 	        }else{
 				
 				$.messager.alert('提示','请输入正确k名字');//提示请输入正确的名字
-			}
+			}}
+				else{
+					
+					$.messager.alert('提示','首次访问时间要小于定金时间');//
+				}
 		}
-
 	
  //这个是跟踪增加
  function addgen(index){
@@ -319,10 +319,13 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
      }
 	//下面点击保存时所执行的方法；
 	function saveAdd() {
-		var 	record_time = $('#add-record_time').datebox('getValue');
+		var record_time = $('#add-record_time').datebox('getValue');
 		 var record_lasttime = $("#add-record_lasttime").datebox('getValue');
 		var	 record_endtime = $('#add-record_endtime').datebox('getValue');
-	    $.post("insert", {
+		var record_a= new Date(($('#add-record_time').datebox('getValue')).replace(/-/g,"/"));
+		var record_b=new Date(($("#add-record_lasttime").datebox('getValue')).replace(/-/g,"/"));
+		if(record_b>record_a){
+			$.post("insert", {
 		    	record_time:record_time,
 		
 		    record_content : $("#add-record_content").val(),//内容
@@ -341,13 +344,15 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 				$("#managerTab").datagrid("reload");
 				$("#add-dialog").dialog("close")
 				$.messager.alert("提示", "添加成功");
-
 			} else {
 				//增加失败
 				$.messager.alert("提示", "添加失败");
 			}
 		}, "json")
-
+		}else{
+			$.messager.alert('提示','请合理规划下次跟踪的时间');
+		}
+	    
 	}
 	//设置动态的列
 	function shezhidongtai(){
@@ -544,11 +549,11 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		<form id="edit-frm" class="easyui-form">
 			<table cellpadding="5">
 				 <tr>
-				    <td><label for="name">id:</label></td>
-					<td><input disabled="disabled" name="customer_id"
+				 <!--    <td><label for="name">id:</label></td> -->
+					<td><input style="display:none" name="customer_id"
 						class="easyui-validatebox"  type="text" id="customer_id1" /></td>
-			<!-- 	</tr>
-				<tr> -->
+			<!-- 	</tr>-->
+				<tr> 
 					<td><label for="name">名字:</label></td>
 					<td><input name="customer_name" data-options="required:true" class="easyui-validatebox" type="text"
 						id="customer_name1" /></td>
@@ -738,15 +743,15 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 					<td><input name="record_remark" class="easyui-validatebox"
 						type="text" id="add-record_remark" /></td>
 				</tr>
-				<tr>
-					<td><label for="name">咨询师id:</label></td>
-					<td><input disabled="disabled" name="user_id" class="easyui-validatebox"
+			 	<tr>
+					<!-- <td><label for="name">咨询师id:</label></td> -->
+					<td><input style="display:none" name="user_id" class="easyui-validatebox"
 						type="text" id="add-user_id" /></td>
 				</tr>
 				
 				
-				<tr><td><label for="name">id:</label></td>
-					<td><input disabled="disabled" name="customer_id"
+				<tr><!-- <td><label for="name">id:</label></td> -->
+					<td><input style="display:none" name="customer_id"
 						class="easyui-validatebox" type="text" id="add-customer_id" /></td>
 				</tr>
 			</table>
@@ -759,7 +764,6 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		var data = JSON.stringify($('#managerTab').datagrid('getData').rows);
 		if (data == '')
 			return;
-
 		JSONToCSVConvertor(data, "数据信息", true);
 	}); */
 	   
@@ -771,77 +775,58 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		var data = JSON.stringify(rows);
 		if (data == '')
 			return;
-
 		JSONToCSVConvertor(data, "数据信息", true);
 	});
-
-
 	function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
 		//如果jsondata不是对象，那么json.parse将分析对象中的json字符串。
 		var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
 		var CSV = '';
-
 		//在第一行拼接标题
 		CSV += ReportTitle + '\r\n\n';
-
 		//产生数据标头
 		if (ShowLabel) {
 			var row = "";
 			//此循环将从数组的第一个索引中提取标签
 			for ( var index in arrData[0]) {
-
 				//现在将每个值转换为字符串和逗号分隔
 				row += index + ',';
 			}
-
 			row = row.slice(0, -1);
-
 			//添加带换行符的标签行
 			CSV += row + '\r\n';
 		}
-
 		//第一个循环是提取每一行
 		for (var i = 0; i < arrData.length; i++) {
 			var row = "";
-
 			//2nd loop will extract each column and convert it in string comma-seprated
 			for ( var index in arrData[i]) {
 				row += '"' + arrData[i][index] + '",';
 			}
-
 			row.slice(0, row.length - 1);
-
 			//add a line break after each row
 			CSV += row + '\r\n';
 		}
-
 		if (CSV == '') {
 			alert("Invalid data");
 			return;
 		}
-
 		//Generate a file name
 		var fileName = "我的学生_";
 		//this will remove the blank-spaces from the title and replace it with an underscore
 		fileName += ReportTitle.replace(/ /g, "_");
-
 		//Initialize file format you want csv or xls
 		//var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
 		var uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURI(CSV);
-
 		// Now the little tricky part.
 		// you can use either>> window.open(uri);
 		// but this will not work in some browsers
 		// or you will not get the correct file extension    
-
 		//this trick will generate a temp <a /> tag
 		var link = document.createElement("a");
 		link.href = uri;
-
 		//set the visibility hidden so it will not effect on your web-layout
 		link.style = "visibility:hidden";
 		link.download = fileName + ".csv";
-
 		//this part will append the anchor tag and remove it after automatic click
 		document.body.appendChild(link);
 		link.click();
