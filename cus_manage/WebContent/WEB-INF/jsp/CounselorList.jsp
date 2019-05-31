@@ -319,10 +319,13 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
      }
 	//下面点击保存时所执行的方法；
 	function saveAdd() {
-		var 	record_time = $('#add-record_time').datebox('getValue');
+		var record_time = $('#add-record_time').datebox('getValue');
 		 var record_lasttime = $("#add-record_lasttime").datebox('getValue');
 		var	 record_endtime = $('#add-record_endtime').datebox('getValue');
-	    $.post("insert", {
+		var record_a= new Date(($('#add-record_time').datebox('getValue')).replace(/-/g,"/"));
+		var record_b=new Date(($("#add-record_lasttime").datebox('getValue')).replace(/-/g,"/"));
+		if(record_b>record_a){
+			$.post("insert", {
 		    	record_time:record_time,
 		
 		    record_content : $("#add-record_content").val(),//内容
@@ -348,6 +351,10 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 			}
 		}, "json")
 
+		}else{
+			$.messager.alert('提示','请合理规划下次跟踪的时间');
+		}
+	    
 	}
 	//设置动态的列
 	function shezhidongtai(){
@@ -544,8 +551,8 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		<form id="edit-frm" class="easyui-form">
 			<table cellpadding="5">
 				 <tr>
-				    <td><label for="name">id:</label></td>
-					<td><input disabled="disabled" name="customer_id"
+				 <!--    <td><label for="name">id:</label></td> -->
+					<td><input style="display:none" name="customer_id"
 						class="easyui-validatebox"  type="text" id="customer_id1" /></td>
 			<!-- 	</tr>
 				<tr> -->
@@ -738,15 +745,15 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 					<td><input name="record_remark" class="easyui-validatebox"
 						type="text" id="add-record_remark" /></td>
 				</tr>
-				<tr>
-					<td><label for="name">咨询师id:</label></td>
-					<td><input disabled="disabled" name="user_id" class="easyui-validatebox"
+			 	<tr>
+					<!-- <td><label for="name">咨询师id:</label></td> -->
+					<td><input style="display:none" name="user_id" class="easyui-validatebox"
 						type="text" id="add-user_id" /></td>
 				</tr>
 				
 				
-				<tr><td><label for="name">id:</label></td>
-					<td><input disabled="disabled" name="customer_id"
+				<tr><!-- <td><label for="name">id:</label></td> -->
+					<td><input style="display:none" name="customer_id"
 						class="easyui-validatebox" type="text" id="add-customer_id" /></td>
 				</tr>
 			</table>

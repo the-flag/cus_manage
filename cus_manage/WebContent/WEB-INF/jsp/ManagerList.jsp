@@ -13,10 +13,10 @@
 </head>
 <script type="text/javascript">
 //显示隐藏指定列
-var createGridHeaderContextMenu = function(e, field) {
+/* var createGridHeaderContextMenu = function(e, field) {
     e.preventDefault();
-    var grid = $(this);/* grid本身 */
-    var headerContextMenu = this.headerContextMenu;/* grid上的列头菜单对象 */
+    var grid = $(this);
+    var headerContextMenu = this.headerContextMenu;
     if (!headerContextMenu) {
         var tmenu = $('<div style="width:100px;"></div>').appendTo('body');
         var fields = grid.datagrid('getColumnFields');
@@ -53,7 +53,7 @@ var createGridHeaderContextMenu = function(e, field) {
     });
 };
 $.fn.datagrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
-$.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
+$.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu; */
  
 
 
@@ -78,11 +78,11 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
    }
    
    //网络咨询师
-   function formatteruser_nameW(value,row,index){
+  /*  function formatteruser_nameW(value,row,index){
 	if(row.userw_id==row.user_id){
        return row.user.user_name;
 	}
-   }
+   } */
    //格式化性别
    function formattersex(value,row,index){
 	   return row.customer_sex==1?'男':'女';
@@ -126,10 +126,10 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
    }
   
    function testcolumn(){
-	/*    var row = $('#datagrid').datagrid('getData').rows[index]; */
-	   
+
+	    $("[name='sname']").attr("checked",'true');//全选 
 	   $("#Addcolumn").window("open"); 
-	 
+	  
 
    }
    //显示指定列
@@ -142,8 +142,6 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		    //得到选中的checkbox值序列 
 		    s = s.substring(0,s.length - 1);
 		   data=s.split(",");
-		   alert("111"+data[0]);
-		   alert("111"+data[1])
 		   for(var i=0;i<data.length;i++){
 			   $('#managerTab').datagrid('showColumn', data[i]);
 			   
@@ -388,7 +386,6 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
             <th data-options="field:'customer_ingate',width:30,formatter:formatteringate">是否上门</th>
             <th data-options="field:'customer_create_time',width:100">创建时间</th>
             <th data-options="field:'customer_source',width:50">来源渠道</th>
-             <th data-options="field:'user.user_nameW',width:100,formatter:formatteruser_nameW">网络咨询师</th>
             <th data-options="field:'user.user_nameZ',width:100,formatter:formatteruser_nameZ">咨询师</th>
             <th data-options="field:'caozuo',width:100,formatter:formatterusercaozuo">操作</th>
             
@@ -428,45 +425,82 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
  </div>
  
 
- <div id="Addcolumn" class="easyui-dialog" title="Add Customer" style="width:200px;height:400px"   
+ <div id="Addcolumn" class="easyui-dialog" title="Add Customer" style="width:300px;height:400px"   
         data-options="iconCls:'icon-save',modal:true,closed:true,draggable:true">
    
    <input type="checkbox" name="sname" value="customer_id" />
     <label for="name">No</label>
-   <br/>
+   
    
    <input type="checkbox" name="sname" value="customer_no" />
    <label for="name">客户编号</label> 
-   <br/>
+   
     
    <input type="checkbox" name="sname" value="customer_name" />
-   <label for="name">名字</label>
-   <br/>
+   <label for="name">名字</label><br/>
+   
 
    <input type="checkbox" name="sname" value="customer_age" />
    <label for="name">年龄</label> 
-   <br/>
+   
   
    <input type="checkbox" name="sname" value="customer_sex" />
   <label for="name">性别</label>   
-   <br/>
+ 
  
    <input type="checkbox" name="sname" value="customer_visit" />
-    <label for="name">是否访问</label> 
-   <br/>
+    <label for="name">是否访问</label><br/>
+    
+    
+   <input type="checkbox" name="sname" value="customer_academic" />
+    <label for="name">学历</label> 
+    
+     
+   <input type="checkbox" name="sname" value="customer_region" />
+    <label for="name">所属地区</label> 
+    
+    
+     <input type="checkbox" name="sname" value="customer_level" />
+    <label for="name">客户等级</label><br/>
+    
+    
+    <input type="checkbox" name="sname" value="customer_address" />
+    <label for="name">地址</label> 
+    
+      <input type="checkbox" name="sname" value="customer_post" />
+    <label for="name">邮政编码</label> 
+  
+  
+     <input type="checkbox" name="sname" value="customer_status" />
+    <label for="name">客户状态</label><br/>
+    
+    
+     <input type="checkbox" name="sname" value="customer_qq" />
+    <label for="name">QQ</label> 
+    
+    <input type="checkbox" name="sname" value="customer_course" />
+    <label for="name">课程方向</label> 
+  
+   
+    <input type="checkbox" name="sname" value="customer_onevisit_time" />
+    <label for="name">首次回访时间</label><br/>
+    
+    
+    <input type="checkbox" name="sname" value="customer_ingate_time" />
+    <label for="name">上门时间</label> 
    
    <input type="checkbox" name="sname" value="customer_ingate" />
    <label for="name">是否上门</label>  
-   <br/>
+   
    
    <input type="checkbox" name="sname" value="customer_source" />
-   <label for="name">来源渠道</label>   
-   <br/>
+   <label for="name">来源渠道</label><br/>   
+   
     
     <input type="checkbox" name="sname" value="customer_create_time" />
     <label for="name">创建时间</label>  
-    <br/>
-   
+
+    
    <input type="checkbox" name="sname" value="user.user_name" />
    <label for="name">咨询师</label> 
    <br/>
@@ -595,18 +629,18 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
            <label for="name">上门时间</label>   
           <input type="text" name="customer_ingate_time" id="Ucustomer_ingate_time"   />
           <label for="name">定金金额</label>   
-          <input type="text" name="customer_dmoney" id="Ucustomer_dmoney"  />
-          <label for="name">定金时间</label>   
-          <input type="text" name="customer_dtime" id="Ucustomer_dtime"  />
+          <input type="text" name="customer_dmoney" id="Ucustomer_dmoney"  /><br/> 
+          <label for="name">定金时间</label> 
+          <input type="text" name="customer_dtime" id="Ucustomer_dtime"  /> 
           <label for="name">是否缴费</label> 
              <select id="Ucustomer_jiaofei" class="easyui-combobox">   
 	         <option value="">--请选择--</option>
 	         <option value="1">是</option>   
 	         <option value="2">否</option>
              </select>      
-          <br/>
+         
           <label for="name">缴费时间</label>   
-          <input type="text" name="customer_jiaotime" id="Ucustomer_jiaotime"   />
+          <input type="text" name="customer_jiaotime" id="Ucustomer_jiaotime"   /><br/>
           <label for="name">缴费金额</label>   
           <input type="text" name="customer_jiaomoney" id="Ucustomer_jiaomoney" />
           <label for="name">是否退费</label>
@@ -616,17 +650,17 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 	         <option value="2">否</option>
              </select>        
           <label for="name">退费原因</label>   
-          <input type="text" name="customer_tuicause" id="Ucustomer_tuicause"  />
+          <input type="text" name="customer_tuicause" id="Ucustomer_tuicause"  /><br/>
           <label for="name">是否进班</label> 
           <select id="Ucustomer_isjinban" class="easyui-combobox">   
 	         <option value="">--请选择--</option>
 	         <option value="1">是</option>   
 	         <option value="2">否</option>
-             </select>      
+             </select>    
             <label for="name">进班时间</label>   
-          <input type="text" name="customer_jinbantime" id="Ucustomer_jinbantime"  /><br/>
+          <input type="text" name="customer_jinbantime" id="Ucustomer_jinbantime"  />
             <label for="name">进班备注</label>   
-          <input type="text" name="customer_jinbanremark" id="Ucustomer_jinbanremark"   />
+          <input type="text" name="customer_jinbanremark" id="Ucustomer_jinbanremark"   /><br/>
             <label for="name">咨询师备注</label>   
           <input type="text" name="customer_zixunremark" id="Ucustomer_zixunremark"   /> 
           <center>

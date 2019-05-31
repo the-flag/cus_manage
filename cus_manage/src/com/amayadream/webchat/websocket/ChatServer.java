@@ -114,6 +114,9 @@ public class ChatServer {
      */
     public void singleSend(String message, Session session){
         try {
+        	if(session==null) {
+        		System.out.println("他丫的，他下班了");
+        	}
             session.getBasicRemote().sendText(message);
         } catch (IOException e) {
             e.printStackTrace();

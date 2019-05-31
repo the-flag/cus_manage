@@ -70,6 +70,15 @@ public class UserController {
     	System.out.println("跳转页面!!!");
     	System.out.println("跳转页面!!!");
     	System.out.println("跳转页面!!!");
+    	try {
+			request.getRequestDispatcher("view/index.jsp").forward(request, response);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
     }
 	

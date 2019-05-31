@@ -160,15 +160,7 @@ public class ManagerController {
 	public String getCustomerFollow() {
 		return "CustomerFollow";
 	}
-	/**
-	 * 聊天主页
-	 * @param UserList
-	 */
-	/*
-	@RequestMapping(value="/getMessage",method=RequestMethod.GET)
-	public String getMessage() {
-		return "WebChat.jsp";
-	}*/
+	
 	public static void paixu(List<User> UserList) {
 		Collections.sort(UserList, new Comparator<User>() {
 			@Override

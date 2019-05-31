@@ -262,7 +262,7 @@ function TrackSave(){
 	var data=$("#NetWorkTeacherTab").datagrid("getSelected");
 	var myDate = new Date();//回访时间（当前时间）
 	var record_lasttime = new Date(($("#record_lasttime").combobox('getValue')).replace(/-/g,"/"));//下次跟踪时间
-	var record_time=new Date((myDate.toLocaleDateString()).replace(/-/g,"/"));;
+	var record_time=new Date((myDate.toLocaleDateString()).replace(/-/g,"/"));
 	alert(record_lasttime);
 	if(record_lasttime>record_time){
 		alert("成功");
@@ -369,6 +369,20 @@ function formatterName(value,row,index){
 function formaterrCaoZuo(value,row,index){
 	return "<a href='javascript:void(0)' onclick='chakanlog("+index+")'>查看</a>";
 }
+
+//添加时验证输入的年龄
+function testage(num)
+    {
+ var reg = /^((?!0)\d{1,2}|100)$/;
+ if(!num.match(reg)){
+  return false;
+ }else{
+  return true;
+ }
+    }
+    
+
+
 </script>
 <body>
   <table id="NetWorkTeacherTab" class="easyui-datagrid"    
@@ -471,7 +485,7 @@ function formaterrCaoZuo(value,row,index){
           <input type="text" name="name" id="customer_name" />
           <br/>
           <label for="name">客户年龄</label>
-          <input type="text" name="name" id="customer_age" />
+          <input type="text" name="name"  onkeyup="value=testage(value)?value:''" id="customer_age" />
           <br/>
            <label for="name">客户状态</label>
             <select id="customer_status">   
@@ -505,13 +519,32 @@ function formaterrCaoZuo(value,row,index){
               
           <br/>
            <label for="name">邮政编码</label> 
-          <input type="text" name="name" id="customer_post" />        
+            <select id="customer_post" class="easyui-combobox">   
+	         <option value="">--请选择--</option>
+	         <option value="未知">未知</option>   
+	         <option value="其它">其它</option>
+	         <option value="450000">郑州</option>
+	         <option value="454000">开封</option>   
+	         <option value="412000">洛阳</option>   
+	         <option value="435000">南阳</option>
+	         <option value="478000">漯河</option>
+	         <option value="498000">三门峡</option>   
+	         <option value="487000">平顶山</option>   
+	         <option value="435000">周口</option>
+	         <option value="465000">驻马店</option>
+	         <option value="487000">新乡</option> 
+	          <option value="496000">鹤壁</option>
+	         <option value="480000">濮阳</option> 
+	          <option value="456000">安阳</option>
+	         <option value="464000">信阳</option>   
+         </select>         
+                
           <br/>
            <label for="name">客户地址</label>     
           <input type="text" name="name" id="customer_address" />   
           <br/>
             <label for="name">客户电话</label> 
-          <input type="text" name="name" id="customer_phone" />     
+          <input type="text" name="name"   id="customer_phone" />     
           <br/>
           <label for="name">客户QQ</label>     
           <input type="text" name="name" id="customer_qq" />     
@@ -572,15 +605,7 @@ function formaterrCaoZuo(value,row,index){
     <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="resetForm()" data-options="iconCls:'icon-remoce'">重置</a>  
    </center>
           
-          <!-- 
-           <label for="name">是否访问</label>   
-          <input type="text" name="name" id="customer_visit" /><br/>
-           <label for="name">是否上门</label>   
-          <input type="text" name="name" id="customer_ingate" /><br/>
-           <label for="name">首次回访时间</label>   
-          <input type="text" name="name" id="customer_onevisit_time" /><br/>
-           <label for="name">上门时间</label>   
-          <input type="text" name="name" id="customer_ingate_time" /><br/> -->
+         
 </div>  
  
  
