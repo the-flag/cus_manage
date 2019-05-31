@@ -87,6 +87,14 @@ public interface UserMapper {
 	User selectUserByAccount(User user);
 	
 	/**
+	 * 根据用户的账户、邮箱、手机，三种方式中的一种查询对应的用户信息 ==登陆
+	 * @param user
+	 * @return
+	 */
+	
+	User selectUserByAccountOrEmailOrPhone(User user);
+	
+	/**
 	 * 根据用户的手机号查询对应的用户信息 ==通过手机验证码重置密码
 	 * @param user
 	 * @return

@@ -69,14 +69,27 @@ canvas {
 	})
 
 	  function validate() {
-		  var uPattern = /^[a-zA-Z0-9_-]{2,16}$/;
+		  var uPattern = /^[a-zA-Z0-9_-]{2,10}$/; //账号正则
+		  var regex = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g; //邮箱正则
+		  var reg = /^1[3|4|5|7|8]\d{9}$/; //手机号验证
+		  
 		  var pPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/; //密码强度正则，最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符
 		  var password=$("#user_password").val();
 		  var account=$("#user_account").val();
 		  var passwordVali=pPattern.test(password);
-		  var accountVali=uPattern.test(account);
 		  var yanzhengma=$("#J_codetext").val().trim();
-		  if(accountVali){
+		  
+		  var accountVali=uPattern.test(account);//登陆方式是否是账号
+		  var emailVali=regex.test(account);//登陆方式是否是邮箱
+		  var phoneVali=reg.test(account);//登陆方式是否是手机号
+		 if(accountVali){
+			 $("#onway").val("a");
+		 }else if(emailVali){
+			 $("#onway").val("e");
+		 }else if(phoneVali){
+			 $("#onway").val("p");
+		 }
+		  if(accountVali || emailVali || phoneVali){
 			 if(passwordVali){
 				  return true;
 			   } else {
@@ -109,7 +122,8 @@ canvas {
 		</dt>
 		<form id="myForm" action="loginValidation" method="POST">
 		<dd class="user_icon">
-			<input type="text" placeholder="账号" class="login_txtbx" name="user_account" id="user_account"/>
+			<input type="text" placeholder="账号/邮箱/手机号" class="login_txtbx" name="user_account" id="user_account"/>
+			<input type="hidden" class="login_txtbx" name="onway" id="onway"/>
 		</dd>
 		<dd class="pwd_icon">
 			<input type="password" placeholder="密码" class="login_txtbx" name="user_password" id="user_password" />

@@ -124,6 +124,43 @@ public class UserController {
 		return false;
 	}
 	
+	
+	/**
+	 * 验证用户是否时管理员 -- 再操作用户时  删除用户  修改用户角色  重置密码  修改用户信息
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping("/verifyAdministrator")
+	@ResponseBody
+	public Boolean verifyAdministrator(HttpServletRequest request,User user,String cheshi) {
+		System.out.println(cheshi.toString());
+		if(cheshi!=null) {
+			System.out.println("进入测试！！");
+			String[] split = cheshi.split(",");
+			for(String s:split) {
+				System.out.println(s);
+				System.out.println(s);
+				System.out.println(s);
+				user=new User();
+				user.setUser_account(s);
+				User selectUserByAccount = userService.selectUserByAccount(user);
+				if(selectUserByAccount!=null && selectUserByAccount.getRoles().get(0).getRole_id()==1) {
+					System.out.println("没有该权限!!!");
+					System.out.println("没有该权限!!!");
+					System.out.println("没有该权限!!!");
+					System.out.println("没有该权限!!!");
+					return false;
+				}
+			}
+			return true;
+		}
+		User selectUserByAccount = userService.selectUserByAccount(user);
+		if(selectUserByAccount!=null && selectUserByAccount.getRoles().get(0).getRole_id()!=1) {
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * 修改密码时验证
 	 * @param user
