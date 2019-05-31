@@ -132,7 +132,28 @@ public class UserController {
 	 */
 	@RequestMapping("/verifyAdministrator")
 	@ResponseBody
-	public Boolean verifyAdministrator(HttpServletRequest request,User user) {
+	public Boolean verifyAdministrator(HttpServletRequest request,User user,String cheshi) {
+		System.out.println(cheshi.toString());
+		if(cheshi!=null) {
+			System.out.println("进入测试！！");
+			String[] split = cheshi.split(",");
+			for(String s:split) {
+				System.out.println(s);
+				System.out.println(s);
+				System.out.println(s);
+				user=new User();
+				user.setUser_account(s);
+				User selectUserByAccount = userService.selectUserByAccount(user);
+				if(selectUserByAccount!=null && selectUserByAccount.getRoles().get(0).getRole_id()==1) {
+					System.out.println("没有该权限!!!");
+					System.out.println("没有该权限!!!");
+					System.out.println("没有该权限!!!");
+					System.out.println("没有该权限!!!");
+					return false;
+				}
+			}
+			return true;
+		}
 		User selectUserByAccount = userService.selectUserByAccount(user);
 		if(selectUserByAccount!=null && selectUserByAccount.getRoles().get(0).getRole_id()!=1) {
 			return true;

@@ -563,39 +563,51 @@ obj={
                        $.messager.confirm('确定删除','你确定要删除你选择的记录吗？',function (flg) {
                                if(flg){
                                        var ids=[];
+                                       var user_accounts=[];
                                        for(i=0;i<rows.length;i++){
                                                ids.push(rows[i].user_id);
-
+                                               user_accounts.push(rows[i].user_account);
                                        }
+                                       
                                        var num=ids.length;
                                        alert(ids.join(','));
-                                      $.ajax({
-                                              type:'post',
-                                              url:"deleteUsers",
-                                              data:{
-                                            	  user_ids:ids.join(',')
-                                              },
-                                              success:function (data) {
-                                                      if(data){
-                                                              $("#table").datagrid('loaded');
-                                                              $("#table").datagrid('reload');
-                                                              $("#table").datagrid('unselectAll');
-                                                              $.messager.show({
-                                                                      title:'提示',
-                                                                      msg:num+'个用户被删除'
-                                                              })
-
-                                                      }
-                                                      else{
-                                                              $.messager.show({
-                                                                      title:'警示信息',
-                                                                      msg:"信息删除失败"
-                                                              })
-
-                                                      }
-
-                                              }
-                                      })
+                                       $.post("verifyAdministrator",{
+               	                		/*user_account:row.user_account,*/
+               	                		cheshi:user_accounts.join(',')
+	               	                	},function(vali){
+	               	                		if(vali){
+	               	                			return;
+			                                      $.ajax({
+			                                              type:'post',
+			                                              url:"deleteUsers",
+			                                              data:{
+			                                            	  user_ids:ids.join(',')
+			                                              },
+			                                              success:function (data) {
+			                                                      if(data){
+			                                                              $("#table").datagrid('loaded');
+			                                                              $("#table").datagrid('reload');
+			                                                              $("#table").datagrid('unselectAll');
+			                                                              $.messager.show({
+			                                                                      title:'提示',
+			                                                                      msg:num+'个用户被删除'
+			                                                              })
+			
+			                                                      }
+			                                                      else{
+			                                                              $.messager.show({
+			                                                                      title:'警示信息',
+			                                                                      msg:"信息删除失败"
+			                                                              })
+			
+			                                                      }
+			
+			                                              }
+			                                      })
+	               	                		}else{
+	            	                    		$.messager.alert('提示','没有该权限!');    
+	            	                    	}
+	            	                	},"json")
                                }
 
                        })
