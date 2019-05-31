@@ -49,27 +49,30 @@ public class RoleServiceimpl implements RoleService {
 		Integer insertRole = roleMapper.insertRole(role);
 		if(insertRole>0) {
 			List<RoleModule> list=new ArrayList<>();
-			if(module_ids.length()>1) {
-				String[] split = module_ids.split(",");
-				for(String s:split) {
-					if(s!=null && !"".equals(s)) {
-						RoleModule module=new RoleModule();
-						module.setRole_id(role.getRole_id());
-						module.setModule_id(Integer.parseInt(s));
-						list.add(module);
-						System.out.println("添加！"+module);
+			if(module_ids!=null) {
+				if(module_ids.length()>1) {
+					String[] split = module_ids.split(",");
+					for(String s:split) {
+						if(s!=null && !"".equals(s)) {
+							RoleModule module=new RoleModule();
+							module.setRole_id(role.getRole_id());
+							module.setModule_id(Integer.parseInt(s));
+							list.add(module);
+							System.out.println("添加！"+module);
+						}
+					}
+				}
+				if(list!=null) {
+					try {
+						return roleModuleService.insertRoleModule(list);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				}
 			}
-			if(list==null) {return 0;}
-			try {
-				return roleModuleService.insertRoleModule(list);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
-		return 0;
+		return insertRole;
 	}
 	@Override
 	public Role selectRoleByRoleName(String role_name) {
@@ -79,11 +82,11 @@ public class RoleServiceimpl implements RoleService {
 	@Override
 	public Integer updateRole(Role role,String module_ids) {
 		// TODO Auto-generated method stub
-		roleMapper.updateRole(role);
+		Integer updateRole = roleMapper.updateRole(role);
 		roleModuleService.deleteRoleModuleByRoleId(role.getRole_id());
 		roleModule.setRole_id(role.getRole_id()); //重复
 		List<RoleModule> list=new ArrayList<>();
-		if(module_ids.length()>1) {
+		if(module_ids!=null && module_ids.length()>1) {
 			String[] split = module_ids.split(",");
 			for(String s:split) {
 				if(s!=null && !"".equals(s)) {
@@ -93,15 +96,15 @@ public class RoleServiceimpl implements RoleService {
 					list.add(module);
 				}
 			}
+			try {
+				return roleModuleService.insertRoleModule(list);
+			} catch (Exception e) {
+					// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		if(list==null) {return 0;}
-		try {
-			return roleModuleService.insertRoleModule(list);
-		} catch (Exception e) {
-				// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
+		
+		return updateRole;
 	}
 	@Override
 	public Integer deteleRole(Integer role_id) {

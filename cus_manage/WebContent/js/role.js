@@ -99,7 +99,7 @@ $("#addsave").show();
 obj={
         // 查询
         find:function () {
-                $("#table").datagrid('load',{
+                $("#table").datagrid('reload',{
                 	role_name:$("#part").val()
                 })
                 $("#part").val("");

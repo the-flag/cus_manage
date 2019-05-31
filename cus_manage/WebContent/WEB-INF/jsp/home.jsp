@@ -11,33 +11,6 @@
 	<script src="js/jquery-easyui-1.5.3/jquery.min.js"></script>
 	<script src="js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
 	<script src="js/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
-	<script type="text/javascript">
-	/* $(function(){
-		alert("提示");
-		alert(${m.roles[0].role_id});
-		var role_id=${m.roles[0].role_id};
-		if(role_id==3){ //是咨询师
-			//数据一
-			$("#dataCouont1").text();
-			$("#dataSpan1").text();
-			$("#dataTitle1").text("待办未处理");
-			//数据二
-			$("#dataCouont2").text();
-			$("#dataSpan2").text();
-			$("#dataTitle2").text("客户数量");
-			//数据三
-			$("#dataCouont3").text();
-			$("#dataSpan3").text();
-			$("#dataTitle3").text("新客户");
-			//数据四
-			$("#dataCouont4").text();
-			$("#dataSpan4").text();
-			$("#dataTitle4").text("当月打卡");
-		}
-	}) */
-
-			
-</script>
 </head>
 <body>
 <div class="allBox">
@@ -167,7 +140,6 @@ $(function(){
 $(function(){
 	$.post("selectUserByUserLoginTime",{
 	},function(data){
-		alert(data.selected["签到"]);
 	    var myChart = echarts.init($("#chart02")[0]);
 	    
 	    option = {
@@ -245,6 +217,63 @@ $(function(){
 		/* 条形图 */
 			$.post("selectCustomerByJiaotimeAndCount",{
 			},function(data){
+				console.log(data[0].value);
+				console.log(data[0].name);
+				var name=[];  
+				var values=[];
+				var nianfen=data[data.length-1].name.substring(0,2); //年份
+				console.log("截取:"+nianfen);
+				var yuefen=data[data.length-1].name.substring(3); //月份
+				var advance=0;	//如果中间缺少月份时，加1 ，这样存储到数据时不会被覆盖
+				var cycle=6; //循环次数
+				for(var i=0;i<cycle;i++){
+					console.log("循环了:"+i);
+					if(i>=data.length){//确定查询出来的数据循环完了
+						if(yuefen=="01"){//当查询出来的最后一个月份为一月时   年份需要减一
+							var nian=parseInt(nianfen);
+							nian-=1;
+							nianfen=nian;
+							var pinjie=nian+"-12";
+							console.log("转换:"+pinjie);
+							name[i+advance]=pinjie;
+							values[i+advance]=0;
+							yuefen=12;
+							continue;
+						}
+						//查询出来的最后月份不是一月   直接月份减一 添加
+						var yue=parseInt(yuefen);
+						yue-=1;
+						yuefen=yue;
+						var pinjie=nianfen+"-"+yue;
+						name[i+advance]=pinjie;
+						values[i+advance]=0;
+						continue;
+					}
+					name[i+advance]=data[i].name;
+					values[i+advance]=data[i].value;
+					
+					if(i<data.length-1){
+						var up=parseInt(data[i].name.substring(3)); //获取月份
+						var xp=parseInt(data[i+1].name.substring(3)); //获取下一月份
+						console.log("上个一月:"+up);
+						console.log("上个一月:"+xp);
+						var xjian=up-xp;
+						console.log("相减:"+xjian);
+						
+						if(up-xp>=2){//判断相邻的两个月份之间是否不相连   --或者说中间缺少月份 比如 19-05,19-03 之间缺少19-04
+							var yue=parseInt(data[i].name.substring(3));
+							yue-=1;
+							var pinjie=nianfen+"-0"+yue;
+							console.log("提示:"+pinjie);
+							name[i+1]=pinjie;
+							values[i+1]=0;
+							advance+=1;
+							cycle-=1;
+							continue;
+						}
+					}
+					
+				}
 				 var myChart = echarts.init($("#chart03")[0]);
 				//app.title = '堆叠柱状图';
 
@@ -267,7 +296,7 @@ $(function(){
 				                xAxis : [
 				                        {
 				                                type : 'category',
-				                                data : data.categories
+				                                data:name
 				                        }
 				                ],
 				                yAxis : [
@@ -279,7 +308,7 @@ $(function(){
 				                        {
 				                                name:'近六月个成交量',
 				                                type:'bar',
-				                                data:data.data
+				                                data:values
 				                        }
 				                ]
 				        };

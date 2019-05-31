@@ -61,7 +61,7 @@ public class RoleController {
 	public Boolean validationRoleName(String role_name,Integer role_id) {
 		Role selectRoleByRoleName = roleService.selectRoleByRoleName(role_name);
 		if(selectRoleByRoleName!=null) {
-			if(selectRoleByRoleName.getRole_id()==role_id) {
+			if(role_id!=null && selectRoleByRoleName.getRole_id()==role_id) {
 				return true;
 			}
 			return false;
@@ -72,41 +72,35 @@ public class RoleController {
 	@ResponseBody
 	public Integer insertRole(Role role,String module_ids) {
 		String substring=null;
-		if(module_ids.length()>1) {
-			System.out.println("长度大于1");
-			System.out.println("长度大于1");
-			System.out.println("长度大于1");
-			System.out.println("长度大于1");
-			System.out.println("长度大于1");
+		if(module_ids!=null && module_ids.length()>2) {
 			System.out.println("长度大于1");
 			substring = module_ids.substring(1, module_ids.length()-1);
 		}
-		if(substring==null) {return 0;}
+		Integer i=0;
 			try {
-				return roleService.insertRole(role, substring);
+				 i=roleService.insertRole(role, substring);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		
-		return 0;
+		return i;
 	}
 	
 	@RequestMapping(value="/updateRoleAndRoleModule",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer updateRoleAndRoleModule(Role role,String module_ids) {
 		String substring=null;
-		if(module_ids.length()>1) {
+		if(module_ids!=null && module_ids.length()>2) {
 			substring = module_ids.substring(1, module_ids.length()-1);
 		}
-		if(substring==null) {return 0;}
+		Integer i=0;
 			try {
-				return roleService.updateRole(role,module_ids);
+				i=roleService.updateRole(role,module_ids);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		return 0;
+		return i;
 	}
 	
 	

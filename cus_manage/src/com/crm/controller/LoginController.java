@@ -128,15 +128,16 @@ public class LoginController {
 	}
 	/**
 	 * 登陆用户验证并在前台提示错误信息
-	 * @param user
 	 * @param request
 	 * @param response
-	 * @param remember
+	 * @param user		//账号、密码
+	 * @param remember 是否勾选七天免登陆
+	 * @param yanzhengma 
+	 * @param onway 登陆方式
 	 * @return
 	 */
 	@RequestMapping(value="/loginValidation",method=RequestMethod.POST)
-	public String loginValidation(HttpServletRequest request,HttpServletResponse response,User user,Integer remember,String yanzhengma) {
-		String parameter = request.getParameter("user_account"); //获取前台传的账号
+	public String loginValidation(HttpServletRequest request,HttpServletResponse response,User user,Integer remember,String yanzhengma,String onway) {
 		
 		String code = (String) request.getSession().getAttribute("randomcode_key"); //获取图片验证码
 		if(yanzhengma==null || yanzhengma=="" || !code.equalsIgnoreCase(yanzhengma)) {
@@ -144,7 +145,19 @@ public class LoginController {
 			return "login";
 		}
 		
-		User login = userService.selectUserByAccount(user); //根据账号查询用户
+		if(onway!=null && onway.equals("a")) {
+			//根据账号查询用户
+		}else if(onway!=null && onway.equals("e")) {
+			//根据邮箱查询用户
+			user.setUser_email(user.getUser_account());
+			user.setUser_account(null);
+		}else if(onway!=null && onway.equals("p")) {
+			 //根据手机号查询用户
+			user.setUser_phone(user.getUser_account());
+			user.setUser_account(null);
+		}
+		
+		User login=userService.selectUserByAccountOrEmailOrPhone(user);
 		if(login==null) {
 			request.setAttribute("key", "账号或密码错误 账号");
 			return "login";
@@ -198,7 +211,9 @@ public class LoginController {
 			return "redirect:getMain"; 		
 			 
 		}else {
-			userService.updateUserWrongNumberByAccount(login);
+			if(login.getRoles().get(0)==null || (login.getRoles().get(0)!=null && login.getRoles().get(0).getRole_id()!=1) ) {
+				userService.updateUserWrongNumberByAccount(login);
+			}
 			request.setAttribute("key", "账号或密码错误22222");
 			if(login.getUser_wrong_number()==4) {
 				login.setUser_is_lock(0);;

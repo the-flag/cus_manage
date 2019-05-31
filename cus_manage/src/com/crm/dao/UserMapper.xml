@@ -149,12 +149,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 WHERE ur.user_id=#{user_id};
 	</select>
 	
-	<!-- 测试 -->
+	<!-- 登录时 根据账号查询用户信息-->
 	<select id="selectUserByAccount" parameterType="user" resultMap="userMap">
 		SELECT u.user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone,
 					r.role_id,r.role_name
 		FROM `user` u LEFT JOIN user_role ur ON u.user_id=ur.user_id LEFT JOIN role r ON ur.role_id=r.role_id WHERE user_account=#{user_account} 
 	</select>
+	
+	
+	<!-- 登录时 根据账号、邮箱、手机中的一种方式查询用户信息-->
+	<select id="selectUserByAccountOrEmailOrPhone" parameterType="user" resultMap="userMap">
+		SELECT u.user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone,
+					r.role_id,r.role_name
+		FROM `user` u LEFT JOIN user_role ur ON u.user_id=ur.user_id LEFT JOIN role r ON ur.role_id=r.role_id
+		<where>
+			<if test="user_account !=null and user_account !='' ">
+				user_account=#{user_account} 
+			</if>
+			<if test="user_email !=null and user_email !='' ">
+				user_email=#{user_email} 
+			</if>
+			<if test="user_phone !=null and user_phone !='' ">
+				user_phone=#{user_phone} 
+			</if>
+		</where>
+	</select>
+	
+	
+	
 	
 	<select id="selectUserByPhone" parameterType="string" resultType="user">
 		SELECT user_id,user_account 
@@ -166,6 +188,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					r.role_id,r.role_name
 		FROM `user` u LEFT JOIN user_role ur ON u.user_id=ur.user_id LEFT JOIN role r ON ur.role_id=r.role_id  WHERE u.user_uuid=#{user_uuid}  
 
+	</select>
+	
+	<!-- 邮箱重复性 -->
+	<select id="selectUserByUserEmail" parameterType="string" resultType="int">
+		SELECT NOT EXISTS(SELECT * FROM `user` WHERE user_email=#{user_email})
 	</select>
 	
 	<update id="updateUser" parameterType="user">
@@ -261,8 +288,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<insert id="insertUser" parameterType="user">
-		INSERT INTO `user`(user_account,user_password,user_email,user_phone)
-		select #{user_account},#{user_password},#{user_email},#{user_phone} from dual 
+		INSERT INTO `user`(user_account,user_name,user_password,user_email,user_phone)
+		select #{user_account},#{user_name},#{user_password},#{user_email},#{user_phone} from dual 
 		where not exists (select 1 from user a where a.user_account=#{user_account})
 		<selectKey resultType="int" keyProperty="user_id" order="AFTER">  
 		    select @@IDENTITY as user_id;  

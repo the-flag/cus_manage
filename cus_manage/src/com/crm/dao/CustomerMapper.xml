@@ -4,12 +4,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.crm.dao.CustomerMapper">
 	
-	   
-   <select id="selectCustomerByJiaotimeAndCount" parameterType="int" resultType="barchartOne">
-   	SELECT DATE_FORMAT(c.customer_jiaotime,'%y-%m') as 'yuefen' ,COUNT(1) as 'count' 
+	<!-- 第一代   查询数据前台封装-->   
+  <!--  <select id="selectCustomerByJiaotimeAndCount" parameterType="int" resultType="java.util.HashMap">
+   	SELECT DATE_FORMAT(c.customer_jiaotime,'%y-%m') as name ,COUNT(1) as value
    	FROM customer c INNER JOIN `user` u ON c.user_id = u.user_id INNER JOIN user_role ur ON u.user_id = ur.user_id 
    	WHERE ur.role_id=#{role_id} GROUP BY DATE_FORMAT(c.customer_jiaotime,'%y-%m') ORDER BY DATE_FORMAT(c.customer_jiaotime,'%y-%m') DESC LIMIT 0,6
+   </select> -->
+   <!-- 第二代    数据查询的数据就是指定格式-->
+   <select id="selectCustomerByJiaotimeAndCount" parameterType="int" resultType="java.util.HashMap">
+	SELECT v.month name,IFNULL(c.b,0) value from past_12_month_view v LEFT JOIN
+	(select DATE_FORMAT(c.customer_jiaotime,'%y-%m') as a ,COUNT(1) as b
+	from customer c INNER JOIN `user` u ON c.user_id = u.user_id INNER JOIN user_role ur ON u.user_id = ur.user_id 
+	WHERE ur.role_id=3 AND 
+	DATE_FORMAT(c.customer_jiaotime,'%y-%m')>
+	DATE_FORMAT(date_sub(curdate(), interval 6 month),'%y-%m')
+	GROUP BY a) c
+	ON v.month= c.a  GROUP BY v.month,c.b ORDER BY v.`month` DESC
    </select>
+   
    
    <select id="selectCustomerByRoleId" parameterType="int" resultType="int">
    	SELECT COUNT(c.customer_id ) 

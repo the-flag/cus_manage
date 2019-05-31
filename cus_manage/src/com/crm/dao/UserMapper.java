@@ -21,6 +21,15 @@ public interface UserMapper {
 	List<User> selectUserByUserStatus();
 	
 	/**
+	 * 判断邮箱的重复性
+	 * 
+	 * @param user_email
+	 * @return 返回值类型Integer 0=false=存在相同的 
+	 * 							 1=true=不存在
+	 */
+	Integer selectUserByUserEmail(String user_email);
+	
+	/**
 	 * 根据角色id查询用户的数量
 	 * @param role_id
 	 * @return
@@ -76,6 +85,14 @@ public interface UserMapper {
 	 * @return
 	 */
 	User selectUserByAccount(User user);
+	
+	/**
+	 * 根据用户的账户、邮箱、手机，三种方式中的一种查询对应的用户信息 ==登陆
+	 * @param user
+	 * @return
+	 */
+	
+	User selectUserByAccountOrEmailOrPhone(User user);
 	
 	/**
 	 * 根据用户的手机号查询对应的用户信息 ==通过手机验证码重置密码

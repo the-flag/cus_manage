@@ -13,7 +13,6 @@
 	<script src="js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
 	<script src="js/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
-
 		
 		$(function(){
 			
@@ -32,7 +31,7 @@
 			    queryParams:{
 			    	user_id:${m.user_id }
 			    },onSelect: function(node){
-					alert(node.text);  // 在用户点击的时候提示
+					/* alert(node.text); */  // 在用户点击的时候提示
 					treeNodeClick(node);
 				}
 			});  
