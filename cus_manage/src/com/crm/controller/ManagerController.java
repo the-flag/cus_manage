@@ -62,15 +62,13 @@ public class ManagerController {
 		User UserStatus = managerService.selectUserStatus(2);
 		if(UserStatus.getUser_status()==1){
 		List<User> selectUser = userService.selectUser();
-			if(selectUser!=null) {
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
+			if(selectUser.size()>1) {
+				System.out.println("输出!!!!"+selectUser);
+				System.out.println("输出!!!!"+selectUser);
+				System.out.println("输出!!!!"+selectUser);
+				System.out.println("输出!!!!"+selectUser);
+				System.out.println("输出!!!!"+selectUser);
+				System.out.println("输出!!!!"+selectUser);
 				System.out.println(selectUser.get(0));
 			 paixu(selectUser);
 			 customer.setUser_id(selectUser.get(0).getUser_id());
@@ -167,12 +165,12 @@ public class ManagerController {
 			public int compare(User o1, User o2) {
 				if(o1!=null && o2!=null) {
 					if(o1.getCustomer_num()>o2.getCustomer_num()){
-		                return 1;//当前对象的值 > 比较对象的值 ， 位置排在后
+		                return 1;//当前对象的值 > 比较对象的值 ， 大的排在后
 		            }else if(o1.getCustomer_num()<o2.getCustomer_num()){
-		                return -1;//当前对象的值 < 比较对象的值 ， 位置排在前
+		                return -1;//当前对象的值 < 比较对象的值 ， 小的排在前
 		            }else if(o1.getCustomer_num()==o2.getCustomer_num()) {
 		            	if(o1.getUser_weight()>o2.getUser_weight()) {
-		            		return -1;//当前对象的值 < 比较对象的值 ， 位置排在前
+		            		return -1;//当前对象的值 >比较对象的值 ， 大的在前
 		            	}
 		            }
 				}

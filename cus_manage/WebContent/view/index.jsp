@@ -174,7 +174,35 @@
     /**
      * 发送信息给后台
      */
-    function sendMessage(){
+     $(function(){
+    	 $(document).keydown(function(event){
+    		　　　if(event.keyCode == 13){
+    		　　　　　alert('你按下了Enter'); 
+            if(ws == null){
+                layer.msg("连接未开启!", { offset: 0, shift: 6 });
+                return;
+            }
+            var message = $("#message").val();
+            var to = $("#sendto").text() == "全体成员"? "": $("#sendto").text();
+            alert("发送:"+to);
+            if(message == null || message == ""){
+                layer.msg("请不要惜字如金!", { offset: 0, shift: 6 });
+                return;
+            }
+            $("#tuling").text() == "已上线"? tuling(message):console.log("图灵机器人未开启");  //检测是否加入图灵机器人
+            ws.send(JSON.stringify({
+                message : {
+                    content : message,
+                    from : $("#fasongze").val(),
+                    to : to,      //接收人,如果没有则置空,如果有多个接收人则用,分隔
+                    time : getDateFull()
+                },
+                type : "message"
+            }));
+    		　　　}
+    		 　});
+     });
+    /* function sendMessage(){
         if(ws == null){
             layer.msg("连接未开启!", { offset: 0, shift: 6 });
             return;
@@ -197,7 +225,7 @@
             type : "message"
         }));
     }
-
+ */
     /**
      * 解析后台传来的消息
      * "massage" : {
