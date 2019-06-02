@@ -245,12 +245,13 @@ public class UserController {
 	 */
 	@RequestMapping(value="/updatePasswordByUserPhone",method=RequestMethod.POST)
 	@ResponseBody
-	public Integer updatePasswordByUserPhone(String user_phone,String validata,HttpServletRequest request) {
-		String attribute =(String) request.getSession().getAttribute("phonevalidata");
+	public Integer updatePasswordByUserPhone(String user_phone,Integer validata,HttpServletRequest request) {
+		Integer attribute =(Integer) request.getSession().getAttribute("phonevalidata");
 		System.out.println("验证码:"+validata);
 		System.out.println("验证码:"+attribute);
+		
 		if(attribute!=null) {
-			if(attribute.equals(validata.trim())) {
+			if(attribute-validata==0) {
 				return userService.updatePasswordByUserPhone(user_phone);
 			}
 		}
