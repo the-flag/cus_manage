@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    </select>
    
    
-   <!-- 第二代    数据查询的数据就是指定格式-->
+   <!-- 第二代  咨询师  数据查询的数据就是指定格式-->
    <select id="selectCustomerByJiaotimeAndCountPersonal" parameterType="int" resultType="java.util.HashMap">
 	SELECT v.month name,IFNULL(c.b,0) value from past_12_month_view v LEFT JOIN
 	(select DATE_FORMAT(c.customer_jiaotime,'%y-%m') as a ,COUNT(1) as b
@@ -33,6 +33,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	DATE_FORMAT(date_sub(curdate(), interval 6 month),'%y-%m')
 	GROUP BY a) c
 	ON v.month= c.a  GROUP BY v.month,c.b ORDER BY v.`month` DESC;
+   </select>
+   
+    <!-- 第二代 网络咨询师  数据查询的数据就是指定格式-->
+   <select id="selectCustomerByJiaotimeAndCountUserw_idPersonal" parameterType="int" resultType="java.util.HashMap">
+		SELECT v.month name,IFNULL(c.b,0) value from past_12_month_view v LEFT JOIN
+		(select DATE_FORMAT(c.customer_jiaotime,'%y-%m') as a ,COUNT(1) as b
+		from customer c INNER JOIN `user` u ON c.userw_id = u.user_id
+		WHERE u.user_id=#{user_id} AND 
+		DATE_FORMAT(c.customer_jiaotime,'%y-%m')>
+		DATE_FORMAT(date_sub(curdate(), interval 6 month),'%y-%m')
+		GROUP BY a) c
+		ON v.month= c.a  GROUP BY v.month,c.b ORDER BY v.`month` DESC;
    </select>
    
    <select id="selectCustomerByRoleId" parameterType="int" resultType="int">
@@ -60,4 +72,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	WHERE u.user_id=#{user_id} AND c.customer_jiaotime IS NULL	
    </select>
    
+   
+   <select id="selectCustomerCountByUserIdDealNetworkconsulting" parameterType="int" resultType="java.util.HashMap">
+   	select "已成交" as name,COUNT(1) as value
+	from customer c INNER JOIN `user` u ON c.userw_id = u.user_id
+	WHERE u.user_id=#{user_id} AND 
+	DATE_FORMAT(c.customer_jiaotime,'%y-%m-%d')>
+	DATE_FORMAT(date_sub(curdate(), interval 1 month),'%y-%m-%d')	
+   </select>
+   
+   
+    <select id="selectCustomerCountByUserIdTrackingNetworkconsulting" parameterType="int" resultType="java.util.HashMap">
+   	select "正在跟踪" as name,COUNT(1) as value
+	from customer c INNER JOIN `user` u ON c.userw_id = u.user_id
+	WHERE u.user_id=#{user_id} AND c.customer_jiaotime IS NULL	
+   </select>
+   
+   
+    
 </mapper>

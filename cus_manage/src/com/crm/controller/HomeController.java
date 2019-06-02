@@ -155,6 +155,7 @@ public class HomeController {
 	
 	
 	/**
+	 * 咨询师
 	 * 个人近六个月的客户成交量
 	 * @param user_id
 	 * @return
@@ -167,6 +168,20 @@ public class HomeController {
 	}
 	
 	/**
+	 * 网络咨询师
+	 * 个人近六个月的客户成交量
+	 * @param user_id
+	 * @return
+	 */
+	@RequestMapping(value="/selectCustomerByJiaotimeAndUserwidPersonal",method=RequestMethod.POST)
+	@ResponseBody
+	public List<Map<String,Object>> selectCustomerByJiaotimeAndCountUserw_idPersonal(Integer user_id){
+		List<Map<String,Object>> selectCustomerByJiaotimeAndCountPersonal = customerService.selectCustomerByJiaotimeAndCountUserw_idPersonal(user_id);
+		return selectCustomerByJiaotimeAndCountPersonal;
+	}
+	
+	/**
+	 * 咨询师
 	 * 个人近一个月客户状态
 	 * @return
 	 */
@@ -175,6 +190,23 @@ public class HomeController {
 	public List<Map<String,Object>> selectCustomerCountByUserIdPersonal(Integer user_id){
 		 Map<String, Object> selectCustomerCountByUserIdDealPersonal = customerService.selectCustomerCountByUserIdDealPersonal(user_id);
 		Map<String, Object> selectCustomerCountByUserIdTrackingPersonal = customerService.selectCustomerCountByUserIdTrackingPersonal(user_id);
+		List<Map<String,Object>> list=new ArrayList<>();
+		list.add(selectCustomerCountByUserIdDealPersonal);
+		list.add(selectCustomerCountByUserIdTrackingPersonal);
+		return list;
+	}
+	
+	
+	/**
+	 * 咨询师
+	 * 个人近一个月客户状态
+	 * @return
+	 */
+	@RequestMapping(value="/selectCustomerCountByUserIdNetworkconsulting",method=RequestMethod.POST)
+	@ResponseBody
+	public List<Map<String,Object>> selectCustomerCountByUserIdNetworkconsulting(Integer user_id){
+		 Map<String, Object> selectCustomerCountByUserIdDealPersonal = customerService.selectCustomerCountByUserIdDealNetworkconsulting(user_id);
+		Map<String, Object> selectCustomerCountByUserIdTrackingPersonal = customerService.selectCustomerCountByUserIdTrackingNetworkconsulting(user_id);
 		List<Map<String,Object>> list=new ArrayList<>();
 		list.add(selectCustomerCountByUserIdDealPersonal);
 		list.add(selectCustomerCountByUserIdTrackingPersonal);
