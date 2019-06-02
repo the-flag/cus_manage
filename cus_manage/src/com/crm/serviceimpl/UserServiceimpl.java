@@ -2,6 +2,7 @@ package com.crm.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -166,6 +167,16 @@ public class UserServiceimpl implements UserService {
 	public User selectUserByAccountOrEmailOrPhone(User user) {
 		// TODO Auto-generated method stub
 		return usermapper.selectUserByAccountOrEmailOrPhone(user);
+	}
+	@Override
+	public Map<String, Object> selectUserByUserLoginTimeAndQiandaoPersonal(Integer user_id) {
+		// TODO Auto-generated method stub
+		return usermapper.selectUserByUserLoginTimeAndQiandaoPersonal(user_id);
+	}
+	@Override
+	public Map<String, Object> selectUserByUserLoginTimeAndChidaoPersonal(Integer user_id) {
+		// TODO Auto-generated method stub
+		return usermapper.selectUserByUserLoginTimeAndChidaoPersonal(user_id);
 	}
 
 }

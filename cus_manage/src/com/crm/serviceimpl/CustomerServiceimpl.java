@@ -32,5 +32,32 @@ public class CustomerServiceimpl implements CustomerService {
 
 
 
+	@Override
+	public List<Map<String, Object>> selectCustomerByJiaotimeAndCountPersonal(Integer user_id) {
+		// TODO Auto-generated method stub
+		return customerMapper.selectCustomerByJiaotimeAndCountPersonal(user_id);
+	}
+
+
+
+	@Override
+	public Map<String, Object> selectCustomerCountByUserIdDealPersonal(Integer user_id) {
+		// TODO Auto-generated method stub
+		return customerMapper.selectCustomerCountByUserIdDealPersonal(user_id);
+	}
+
+
+
+	@Override
+	public Map<String, Object> selectCustomerCountByUserIdTrackingPersonal(Integer user_id) {
+		// TODO Auto-generated method stub
+		return customerMapper.selectCustomerCountByUserIdTrackingPersonal(user_id);
+	}
+
+
+
+	
+
+
 	
 }

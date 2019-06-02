@@ -70,6 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT COUNT(u.user_id) FROM `user` u  INNER JOIN user_role ur ON u.user_id = ur.user_id WHERE ur.role_id=#{role_id}
 	</select>
 	
+	<!-- 全部员工 -->
 	<!-- 签到人数查询 -->
 	<select id="selectUserByUserLoginTimeAndQiandao"  resultType="int">
 		SELECT COUNT(u.user_id) 
@@ -80,13 +81,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectUserByUserLoginTimeAndChidao"  resultType="int">
 		SELECT COUNT(u.user_id) 
 		FROM `user` u INNER JOIN sign s ON u.user_id = s.user_id 
-		WHERE DATE_FORMAT(s.user_login_time,'%y-%m-%d') = DATE_FORMAT(NOW(),'%y-%m-%d') AND DATE_FORMAT(NOW(),"%H-%i") > "08-00"
+		WHERE DATE_FORMAT(s.user_login_time,'%y-%m-%d') = DATE_FORMAT(NOW(),'%y-%m-%d') AND DATE_FORMAT(s.user_login_time,"%H-%i") > "08-00"
 	</select>
 	<!-- 查询当天未签到 -->
 	<select id="selectUserByUserLoginTimeAndWeiqian"  resultType="int">
 		SELECT COUNT(DISTINCT(u.user_id)) 
 		FROM `user` u INNER JOIN sign s ON u.user_id = s.user_id 
 		WHERE DATE_FORMAT(s.user_login_time,'%y-%m-%d') != DATE_FORMAT(NOW(),'%y-%m-%d')
+	</select>
+	
+	<!-- 个人 -->
+	<!-- 签到人数查询 -->
+	<select id="selectUserByUserLoginTimeAndQiandaoPersonal" parameterType="int" resultType="java.util.HashMap">
+		SELECT "签到"  as name,COUNT(u.user_id) as value 
+		FROM `user` u INNER JOIN sign s ON u.user_id = s.user_id 
+		WHERE u.user_id=#{user_id} AND DATE_FORMAT(s.user_login_time,'%y-%m') = DATE_FORMAT(NOW(),'%y-%m')
+	</select>
+	<!-- 查询迟到人数 -->
+	<select id="selectUserByUserLoginTimeAndChidaoPersonal" parameterType="int" resultType="java.util.HashMap">
+		SELECT "迟到" as name , COUNT(u.user_id) as value
+		FROM `user` u INNER JOIN sign s ON u.user_id = s.user_id 
+		WHERE u.user_id=#{user_id} AND DATE_FORMAT(s.user_login_time,'%y-%m') = DATE_FORMAT(NOW(),'%y-%m') AND DATE_FORMAT(s.user_login_time,"%H-%i") > "08-00"
 	</select>
 	
 	<!-- 结束 -->
@@ -115,6 +130,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				</if>
 			</if>
 		</where>
+		ORDER BY user_id DESC
 		limit #{page},#{row}
 	</select>
 	

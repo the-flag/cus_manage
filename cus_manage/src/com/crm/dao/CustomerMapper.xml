@@ -23,11 +23,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    </select>
    
    
+   <!-- 第二代    数据查询的数据就是指定格式-->
+   <select id="selectCustomerByJiaotimeAndCountPersonal" parameterType="int" resultType="java.util.HashMap">
+	SELECT v.month name,IFNULL(c.b,0) value from past_12_month_view v LEFT JOIN
+	(select DATE_FORMAT(c.customer_jiaotime,'%y-%m') as a ,COUNT(1) as b
+	from customer c INNER JOIN `user` u ON c.user_id = u.user_id
+	WHERE u.user_id=#{user_id} AND 
+	DATE_FORMAT(c.customer_jiaotime,'%y-%m')>
+	DATE_FORMAT(date_sub(curdate(), interval 6 month),'%y-%m')
+	GROUP BY a) c
+	ON v.month= c.a  GROUP BY v.month,c.b ORDER BY v.`month` DESC;
+   </select>
+   
    <select id="selectCustomerByRoleId" parameterType="int" resultType="int">
    	SELECT COUNT(c.customer_id ) 
    	FROM customer c INNER JOIN `user` u ON c.user_id = u.user_id INNER JOIN user_role ur ON u.user_id = ur.user_id 
    	WHERE ur.role_id=#{role_id}	
    	
+   </select>
+   
+   
+   
+   
+   <select id="selectCustomerCountByUserIdDealPersonal" parameterType="int" resultType="java.util.HashMap">
+   	select "已成交" as name,COUNT(1) as value
+	from customer c INNER JOIN `user` u ON c.user_id = u.user_id
+	WHERE u.user_id=#{user_id} AND 
+	DATE_FORMAT(c.customer_jiaotime,'%y-%m-%d')>
+	DATE_FORMAT(date_sub(curdate(), interval 1 month),'%y-%m-%d')	
+   </select>
+   
+   
+    <select id="selectCustomerCountByUserIdTrackingPersonal" parameterType="int" resultType="java.util.HashMap">
+   	select "正在跟踪" as name,COUNT(1) as value
+	from customer c INNER JOIN `user` u ON c.user_id = u.user_id
+	WHERE u.user_id=#{user_id} AND c.customer_jiaotime IS NULL	
    </select>
    
 </mapper>

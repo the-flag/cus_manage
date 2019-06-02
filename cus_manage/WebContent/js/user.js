@@ -178,10 +178,10 @@ function userislockpinjie(user_id){
 
 function  userislock(val,row,index) {
          if(val==0){
-        	 e = '<a  id="add" style="color: green" data-id="98"  onclick="obj.unlock(\'' + index + '\')">解锁</a> ';
+        	 e = '<a  id="add" style="color: green" data-id="98"  onclick="obj.unlock(\''+index+'\')">解锁</a> ';
            return "<input id=\"islock"+row.user_id+"\"  class=\"easyui-switchbutton\" data-options=\"checked:false,onText:'锁定',offText:'解锁'\" >";;
          }else{
-             e = '<a  id="add" style="color: red" data-id="98"  onclick="obj.lock(\'' + index + '\')">锁定</a> ';
+             e = '<a  id="add" style="color: red" data-id="98"  onclick="obj.lock(\'' +index+'\')">锁定</a> ';
              return "<input id=\"islock"+row.user_id+"\" class=\"easyui-switchbutton\" data-options=\"checked:true,onText:'锁定',offText:'解锁'\" >";
          }
 }
@@ -284,8 +284,10 @@ obj={
 		            		role_id:data.role_id
 		            	},function(data){
 		            		if(data>0){
+		            			$("#adduser_accountspan").val();
 		            			$.messager.alert('提示','添加成功!'); 
 		            			obj.refreshRole();
+		            			
 		            		}else{
 		            			$.messager.alert('提示','添加失败!');    
 		            		}
@@ -478,9 +480,10 @@ obj={
 
         },
         //解锁
-        unlock:function(index){
-        	$.messager.confirm('确认','您确认想要解锁该用户吗？',function(r){    
+        unlock:function(index,user_account){
+        	$.messager.confirm('确认','您确认想要解锁该用户吗？',function(r){   
         	    if (r){    
+        	    	
 		            	$.post("updateUserIsLockByUserId",{
 		            		user_id:index,
 		            		user_is_lock:1
@@ -493,28 +496,39 @@ obj={
 		            		}
 		            	},"json")   
         	    }else{
-        	    	$("#islock"+user_id+"").switchbutton("reset");
+        	    	$("#islock"+index).switchbutton("reset");
         	    }
         	});  
         },
         //锁定
-        lock:function(index){
-        	$.messager.confirm('确认','您确认想要锁定该用户吗？',function(r){    
+        lock:function(index,user_account){
+        	alert(user_account);
+        	$.messager.confirm('确认','您确认想要锁定该用户吗？',function(r){  
         	    if (r){    
-		           $.post("updateUserIsLockByUserId",{
-		            		user_id:index,
-		            		user_is_lock:0
-		            	},function(data){
-		            		if(data>0){
-		            			$.messager.alert('提示','锁定成功!'); 
-		            			obj.find();
-		            		}else{
-		            			$.messager.alert('提示','锁定失败!');    
-		            		}
-		            	},"json")  
-                	}else{
-                		$("#islock"+user_id+"").switchbutton("reset");
-                	}
+        	    	$.post("verifyAdministrator",{
+                		user_account:user_account,
+                		cheshi:"1"
+                	},function(vali){
+                		if(vali){
+		        	    	$.post("updateUserIsLockByUserId",{
+				            		user_id:index,
+				            		user_is_lock:0
+				            	},function(data){
+				            		if(data>0){
+				            			$.messager.alert('提示','锁定成功!'); 
+				            			obj.find();
+				            		}else{
+				            			$.messager.alert('提示','锁定失败!');    
+				            		}
+				            	},"json")
+                		}else{
+                    		$.messager.alert('提示','没有该权限!');    
+                    }
+                	},"json")
+		            	
+        	    }else{
+                	$("#islock"+index).switchbutton("reset");
+                }
         	});  
         },
         // 提交表单

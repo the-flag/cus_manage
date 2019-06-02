@@ -242,7 +242,7 @@ canvas {
 	}
 	function ResetForm(){
 			if(validata()){
-				var user_phone_validata=$("#user_phone_validata").val().trim();
+				var user_phone_validata=$("#user_phone_validata").val();
 				$.post("updatePasswordByUserPhone",{
 					validata:user_phone_validata,
 					user_phone:user_phone

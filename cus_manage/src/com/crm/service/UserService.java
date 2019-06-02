@@ -1,6 +1,7 @@
 package com.crm.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.crm.pojo.FenYe;
 import com.crm.pojo.Module;
@@ -147,4 +148,20 @@ public interface UserService {
 	 * @return
 	 */
 	Integer selectUserByUserLoginTimeAndWeiqian();
+	
+	
+	/**
+	 * 个人
+	 * 查询签到人数
+	 * 判断签到时间是今天
+	 * @return
+	 */
+	Map<String, Object> selectUserByUserLoginTimeAndQiandaoPersonal(Integer user_id);
+	/**
+	 * 个人
+	 * 查询迟到人数
+	 * 判断当天签到时间小于8点
+	 * @return
+	 */
+	Map<String, Object> selectUserByUserLoginTimeAndChidaoPersonal(Integer user_id);
 }

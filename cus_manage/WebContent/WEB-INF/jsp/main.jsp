@@ -78,8 +78,10 @@
 							user_account:user_account
 						},function(i){
 							if(i>0){
-								$.messager.alert('提示','修改成功');
 								closeeditPass();
+								window.location.href="exitlogin";
+							}else{
+								$.messager.alert('提示','网络发生错误!');
 							}
 						},"json")
 						

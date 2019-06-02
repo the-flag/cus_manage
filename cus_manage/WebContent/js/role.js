@@ -239,6 +239,7 @@ obj={
         					if(data>0){
         						$("#roleForm").form('clear');
         						$("#tree").tree("reload");
+        						$("#roleNamespan").val();
     	                		obj.find();
     	                        $.messager.progress('close');
     	                	}
