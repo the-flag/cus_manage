@@ -149,11 +149,7 @@ public interface UserService {
 	 */
 	Integer selectUserByUserLoginTimeAndWeiqian();
 
-	/**
-	 * 查询出所有用户的基本信息
-	 */
-	List<User> selectUserInfo();
-
+	
 	
 	
 	/**
