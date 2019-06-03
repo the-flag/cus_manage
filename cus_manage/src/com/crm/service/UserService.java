@@ -122,6 +122,13 @@ public interface UserService {
 	 */
 	Integer deleteUsers(String user_ids)throws Exception;
 	
+	/**
+	 * 单条删除
+	 * @param 用户id
+	 * @return
+	 */
+	Integer deleteUserSingle(Integer user_id);
+	
 	
 	/**
 	 * 根据角色id查询用户的数量

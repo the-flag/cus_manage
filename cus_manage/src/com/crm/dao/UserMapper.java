@@ -189,4 +189,12 @@ public interface UserMapper {
 	Integer deleteUsers(List<Integer> list);
 	
 	
+	/**
+	 * 单条删除
+	 * @param 用户id
+	 * @return
+	 */
+	Integer deleteUserSingle(Integer user_id);
+	
+	
 }

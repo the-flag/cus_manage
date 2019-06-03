@@ -144,7 +144,7 @@ public class UserController {
 				user=new User();
 				user.setUser_account(s);
 				User selectUserByAccount = userService.selectUserByAccount(user);
-				if(selectUserByAccount!=null && selectUserByAccount.getRoles().get(0).getRole_id()==1) {
+				if(selectUserByAccount!=null && selectUserByAccount.getRoles().size()>1 && selectUserByAccount.getRoles().get(0).getRole_id()==1) {
 					System.out.println("没有该权限!!!");
 					System.out.println("没有该权限!!!");
 					System.out.println("没有该权限!!!");
@@ -205,6 +205,8 @@ public class UserController {
 	@RequestMapping("/deleteUsers")
 	@ResponseBody
 	public Integer deleteUsers(String user_ids) {
+		
+		
 		try {
 			return userService.deleteUsers(user_ids);
 		} catch (Exception e) {
@@ -305,6 +307,18 @@ public class UserController {
 	@ResponseBody
 	public Integer delUserRole(UserRole userRole) {
 		return userRoleService.deleteUserRoleByUserIdAndRoleId(userRole);
+	}
+	
+	/**
+	 *根据用户id和角色id 到中间表删除对应信息
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value="/deleteUserSingle",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer deleteUserSingle(Integer user_id) {
+		
+		return userService.deleteUserSingle(user_id);
 	}
 	
 }

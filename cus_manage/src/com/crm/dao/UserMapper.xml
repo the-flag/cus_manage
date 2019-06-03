@@ -326,5 +326,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{item}       
         </foreach>  
 	</delete>
+	
+	<delete id="deleteUserSingle" parameterType="int">
+		DELETE FROM `user` WHERE user_id=#{user_id}
+	</delete>
 
 </mapper>

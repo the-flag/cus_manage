@@ -164,8 +164,8 @@ import org.springframework.stereotype.Component;
 		@SuppressWarnings("unused")
 		private static String md5Hex(String str) {
 			try {
-				MessageDigest md = MessageDigest.getInstance("MD5");
-				byte[] digest = md.digest(str.getBytes());
+				MessageDigest md = MessageDigest.getInstance("MD5");//实例化和初始化
+				byte[] digest = md.digest(str.getBytes());//
 				return new String(new Hex().encode(digest));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -193,10 +193,10 @@ import org.springframework.stereotype.Component;
 		public static String getSaltMD5(String password) {
 			// 生成一个16位的随机数
 			Random random = new Random();
-			StringBuilder sBuilder = new StringBuilder(16);
+			StringBuilder sBuilder = new StringBuilder(16);//在外部创建，就一个，在循环中系统不会自动再次创建，增加内存消耗
 			sBuilder.append(random.nextInt(99999999)).append(random.nextInt(99999999));
 			int len = sBuilder.length();
-			if (len < 16) {
+			if (len < 16) {//随机数不足时,不足的部分填充为0
 				for (int i = 0; i < 16 - len; i++) {
 					sBuilder.append("0");
 				}

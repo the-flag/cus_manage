@@ -153,7 +153,7 @@ $(function () {
                                 align:'center',
                                 formatter:function (val,row,index) {
                                         e = '<a  id="add" data-id="98" class=" operA"  onclick="edit(\'' + index + '\')">编辑</a> ';
-                                        d = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + index + '\')">删除</a> ';
+                                        d = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + row.user_id + '\')">删除</a> ';
                                         czmm = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.resetPass(\'' + index + '\')">重置密码</a> ';
                                         jssz = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.juese(\'' + index + '\')">角色设置</a> ';
                                         return e+d+czmm+jssz;
@@ -457,15 +457,9 @@ obj={
         	});  
         },
         //锁定
-        lock:function(index,user_account){
-        	alert(user_account);
+        lock:function(index){
         	$.messager.confirm('确认','您确认想要锁定该用户吗？',function(r){  
         	    if (r){    
-        	    	$.post("verifyAdministrator",{
-                		user_account:user_account,
-                		cheshi:"1"
-                	},function(vali){
-                		if(vali){
 		        	    	$.post("updateUserIsLockByUserId",{
 				            		user_id:index,
 				            		user_is_lock:0
@@ -477,10 +471,6 @@ obj={
 				            			$.messager.alert('提示','锁定失败!');    
 				            		}
 				            	},"json")
-                		}else{
-                    		$.messager.alert('提示','没有该权限!');    
-                    }
-                	},"json")
 		            	
         	    }else{
                 	$("#islock"+index).switchbutton("reset");
@@ -526,68 +516,7 @@ obj={
                 })
 
         },
-        // 删除多个
-        del:function () {
-                var rows=$("#table").datagrid("getSelections");
-               if(rows.length>0){
-                       $.messager.confirm('确定删除','你确定要删除你选择的记录吗？',function (flg) {
-                               if(flg){
-                                       var ids=[];
-                                       var user_accounts=[];
-                                       for(i=0;i<rows.length;i++){
-                                               ids.push(rows[i].user_id);
-                                               user_accounts.push(rows[i].user_account);
-                                       }
-                                       
-                                       var num=ids.length;
-                                       alert(ids.join(','));
-                                       $.post("verifyAdministrator",{
-               	                		/*user_account:row.user_account,*/
-               	                		cheshi:user_accounts.join(',')
-	               	                	},function(vali){
-	               	                		if(vali){
-	               	                			return;
-			                                      $.ajax({
-			                                              type:'post',
-			                                              url:"deleteUsers",
-			                                              data:{
-			                                            	  user_ids:ids.join(',')
-			                                              },
-			                                              success:function (data) {
-			                                                      if(data){
-			                                                              $("#table").datagrid('loaded');
-			                                                              $("#table").datagrid('reload');
-			                                                              $("#table").datagrid('unselectAll');
-			                                                              $.messager.show({
-			                                                                      title:'提示',
-			                                                                      msg:num+'个用户被删除'
-			                                                              })
-			
-			                                                      }
-			                                                      else{
-			                                                              $.messager.show({
-			                                                                      title:'警示信息',
-			                                                                      msg:"信息删除失败"
-			                                                              })
-			
-			                                                      }
-			
-			                                              }
-			                                      })
-	               	                		}else{
-	            	                    		$.messager.alert('提示','没有该权限!');    
-	            	                    	}
-	            	                	},"json")
-                               }
-
-                       })
-
-               }
-               else{
-                       $.messager.alert('提示','请选择要删除的记录','info');
-               }
-
-        },
+        
         //重置密码
         resetPass:function(index){
         	$.messager.confirm('确认','您确认想要重置密码吗？',function(r){    
@@ -623,14 +552,13 @@ obj={
         },
         //删除一个
         delOne:function (id) {
-                id=$("#table").datagrid('getSelected').id;
                 $.messager.confirm('提示信息','是否删除所选择记录',function (flg) {
                         if(flg){
                                 $.ajax({
                                         type:'post',
-                                        url:'',
+                                        url:'deleteUserSingle',
                                         data:{
-                                                ID:id
+                                        	user_id:id
                                         },
                                         beforesend:function () {
                                                 $("#table").datagrid('loading');

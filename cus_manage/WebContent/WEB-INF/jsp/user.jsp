@@ -326,7 +326,7 @@
 						<a href="#"
 							class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="obj.edit()">修改</a>
 						<a href="#" class="easyui-linkbutton" plain="true"
-							iconCls="icon-remove" onclick="obj.del()">删除</a>
+							iconCls="icon-remove" onclick="del()">删除</a>
 					</div>
 					<div>
 						
@@ -490,6 +490,73 @@
 		        }
 		    });
 		}
+		
+		// 删除多个
+        function del() {
+                var rows=$("#table").datagrid("getSelections");
+               if(rows.length>0){
+                       $.messager.confirm('确定删除','你确定要删除你选择的记录吗？',function (flg) {
+                               if(flg){
+                                       var ids=[];
+                                       var user_accounts=[];
+                                       var currentuser=${m.user_id}
+                                       for(i=0;i<rows.length;i++){
+                                    	   if(rows[i].user_id==currentuser){
+                                    		   $.messager.alert('提示','不能删除当前正在操作的用户!!');
+                                    		   break;
+                                    	   }
+                                               ids.push(rows[i].user_id);
+                                               user_accounts.push(rows[i].user_account);
+                                       }
+                                       
+                                       var num=ids.length;
+                                       alert(ids.join(','));
+                                       $.post("verifyAdministrator",{
+               	                		/*user_account:row.user_account,*/
+               	                		cheshi:user_accounts.join(',')
+	               	                	},function(vali){
+	               	                		if(vali){
+			                                      $.ajax({
+			                                              type:'post',
+			                                              url:"deleteUsers",
+			                                              data:{
+			                                            	  user_ids:ids.join(',')
+			                                              },
+			                                              success:function (data) {
+			                                                      if(data){
+			                                                              $("#table").datagrid('loaded');
+			                                                              $("#table").datagrid('reload');
+			                                                              $("#table").datagrid('unselectAll');
+			                                                              $.messager.show({
+			                                                                      title:'提示',
+			                                                                      msg:num+'个用户被删除'
+			                                                              })
+			
+			                                                      }
+			                                                      else{
+			                                                              $.messager.show({
+			                                                                      title:'警示信息',
+			                                                                      msg:"信息删除失败"
+			                                                              })
+			
+			                                                      }
+			
+			                                              }
+			                                      })
+	               	                		}else{
+	            	                    		$.messager.alert('提示','没有该权限!');    
+	            	                    	}
+	            	                	},"json")
+                               }
+
+                       })
+
+               }
+               else{
+                       $.messager.alert('提示','请选择要删除的记录','info');
+               }
+
+        }
 	</script>
 </body>
 </html>

@@ -179,6 +179,19 @@ public class UserServiceimpl implements UserService {
 		// TODO Auto-generated method stub
 		return usermapper.selectUserByUserLoginTimeAndChidaoPersonal(user_id);
 	}
+	
+	@Override
+	public Integer deleteUserSingle(Integer user_id) {
+		// TODO Auto-generated method stub
+		String user_ids=user_id+",";
+		try {
+			Integer deleteUserRoles = userRoleService.deleteUserRoles(user_ids);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return usermapper.deleteUserSingle(user_id);
+	}
 
 
 }
