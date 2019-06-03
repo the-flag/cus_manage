@@ -9,6 +9,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 public class comm {//手机验证码！！
 	public static int Phone(String phone)  {
     int i= (int)((Math.random()*9+1)*100000);
+    
 	HttpClient client = new HttpClient();
 	PostMethod post = new PostMethod("http://gbk.api.smschinese.cn"); 
 	post.addRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=gbk");//在头文件中设置转码

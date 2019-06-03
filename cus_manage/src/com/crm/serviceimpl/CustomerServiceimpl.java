@@ -32,5 +32,56 @@ public class CustomerServiceimpl implements CustomerService {
 
 
 
+	@Override
+	public List<Map<String, Object>> selectCustomerByJiaotimeAndCountPersonal(Integer user_id) {
+		// TODO Auto-generated method stub
+		return customerMapper.selectCustomerByJiaotimeAndCountPersonal(user_id);
+	}
+
+
+
+	@Override
+	public Map<String, Object> selectCustomerCountByUserIdDealPersonal(Integer user_id) {
+		// TODO Auto-generated method stub
+		return customerMapper.selectCustomerCountByUserIdDealPersonal(user_id);
+	}
+
+
+
+	@Override
+	public Map<String, Object> selectCustomerCountByUserIdTrackingPersonal(Integer user_id) {
+		// TODO Auto-generated method stub
+		return customerMapper.selectCustomerCountByUserIdTrackingPersonal(user_id);
+	}
+
+
+
+	@Override
+	public List<Map<String, Object>> selectCustomerByJiaotimeAndCountUserw_idPersonal(Integer user_id) {
+		// TODO Auto-generated method stub
+		return customerMapper.selectCustomerByJiaotimeAndCountUserw_idPersonal(user_id);
+	}
+
+
+
+	@Override
+	public Map<String, Object> selectCustomerCountByUserIdDealNetworkconsulting(Integer user_id) {
+		// TODO Auto-generated method stub
+		return customerMapper.selectCustomerCountByUserIdDealNetworkconsulting(user_id);
+	}
+
+
+
+	@Override
+	public Map<String, Object> selectCustomerCountByUserIdTrackingNetworkconsulting(Integer user_id) {
+		// TODO Auto-generated method stub
+		return customerMapper.selectCustomerCountByUserIdTrackingNetworkconsulting(user_id);
+	}
+
+
+
+	
+
+
 	
 }

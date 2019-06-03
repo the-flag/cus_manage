@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>咨询经理-统计图管理</title>
+<title>Insert title here</title>
  	<link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/default/easyui.css"/>
     <link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/icon.css"/>
     <link type="text/css" rel="stylesheet" href="js/css/main.css">
@@ -98,10 +98,10 @@
  * 饼图1
  */
 $(function(){
-	$.post("selectCustomerAndUserCount",{
+	$.post("selectCustomerCountByUserIdNetworkconsulting",{
+		user_id:${m.user_id}
 	},function(data){
 	    var myChart = echarts.init($("#chart01")[0]);
-	
 	    option = {
 	
 	            tooltip : {
@@ -111,11 +111,11 @@ $(function(){
 	            legend: {
 	
 	                    left: 'left',
-	                    data: ['客户比例']
+	                    data: ['客户状态']
 	            },
 	            series : [
 	                    {
-	                            name: '客户比例',
+	                            name: '客户状态',
 	                            type: 'pie',
 	                            radius : '55%',
 	                            center: ['50%', '60%'],
@@ -138,86 +138,50 @@ $(function(){
  * 饼图2
  */
 $(function(){
-	$.post("selectUserByUserLoginTime",{
+	$.post("selectUserByUserSignPersonal",{
+		user_id:${m.user_id}
 	},function(data){
-		alert(data.selected["签到"]);
 	    var myChart = echarts.init($("#chart02")[0]);
-	    
 	    option = {
 	        tooltip : {
-	            trigger: 'item',
+	        	trigger: 'item',
 	            formatter: "{a} <br/>{b} : {c} ({d}%)"
 	        },
 	        legend: {
-	            
-	            right: 20,
-	            top: 20,
-	            bottom: 20,
-	            data: data.legendData,
-	            selected:data.selected
+	        	left: 'left',
+	            data: ['近一个月签到状态']
 	        },
 	        series : [
-	            {
-	                name: '姓名',
-	                type: 'pie',
-	                radius : '55%',
-	                center: ['40%', '50%'],
-	                data: data.seriesData,
-	                itemStyle: {
-	                    emphasis: {
-	                        shadowBlur: 10,
-	                        shadowOffsetX: 0,
-	                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-	                    }
-	                }
+	            {	name: '近一个月签到状态',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:data,
+                    itemStyle: {
+                        emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+               	 	}
 	            }
 	        ]
 	    };
-
-
-	    function genData(count) {
-	        var nameList = [
-	            '赵', '钱', '孙', '李', '周', '吴', '郑', '王', '冯', '陈', '褚', '卫', '蒋', '沈', '韩', '杨', '朱', '秦', '尤', '许', '何', '吕', '施', '张', '孔', '曹', '严', '华', '金', '魏', '陶', '姜', '戚', '谢', '邹', '喻', '柏', '水', '窦', '章', '云', '苏', '潘', '葛', '奚', '范', '彭', '郎', '鲁', '韦', '昌', '马', '苗', '凤', '花', '方', '俞', '任', '袁', '柳', '酆', '鲍', '史', '唐', '费', '廉', '岑', '薛', '雷', '贺', '倪', '汤', '滕', '殷', '罗', '毕', '郝', '邬', '安', '常', '乐', '于', '时', '傅', '皮', '卞', '齐', '康', '伍', '余', '元', '卜', '顾', '孟', '平', '黄', '和', '穆', '萧', '尹', '姚', '邵', '湛', '汪', '祁', '毛', '禹', '狄', '米', '贝', '明', '臧', '计', '伏', '成', '戴', '谈', '宋', '茅', '庞', '熊', '纪', '舒', '屈', '项', '祝', '董', '梁', '杜', '阮', '蓝', '闵', '席', '季', '麻', '强', '贾', '路', '娄', '危'
-	        ];
-	        var legendData = [];
-	        var seriesData = [];
-	        var selected = {};
-	        for (var i = 0; i < 5; i++) {
-	            name = Math.random() > 0.65
-	                ? makeWord(4, 1) + '·' + makeWord(3, 0)
-	                : makeWord(2, 1);
-	            legendData.push(name);
-	            seriesData.push({
-	                name: name,
-	                value: Math.round(Math.random() * 100000)
-	            });
-	            selected[name] = i < 6;
-	        }
-
-	        return {
-	            legendData: legendData,
-	            seriesData: seriesData,
-	            selected: selected
-	        };
-
-	        function makeWord(max, min) {
-	            var nameLen = Math.ceil(Math.random() * max + min);
-	            var name = [];
-	            for (var i = 0; i < nameLen; i++) {
-	                name.push(nameList[Math.round(Math.random() * nameList.length - 1)]);
-	            }
-	            return name.join('');
-	        }
-	    }
-
 	    myChart.setOption(option);
 	},"json")  
 });
 
 	$(function(){
 		/* 条形图 */
-			$.post("selectCustomerByJiaotimeAndCount",{
+			$.post("selectCustomerByJiaotimeAndUserwidPersonal",{
+				user_id:${m.user_id}
 			},function(data){
+				var name=[];  
+				var values=[];
+				for(var i=0;i<data.length;i++){
+					name[i]=data[i].name;
+					values[i]=data[i].value;
+				}
 				 var myChart = echarts.init($("#chart03")[0]);
 				//app.title = '堆叠柱状图';
 
@@ -229,7 +193,7 @@ $(function(){
 				                        }
 				                }, 
 				                legend: {
-				                        data:['近六月个成交量']
+				                        data:['个人近六月个成交量']
 				                }, 
 				                grid: {
 				                        left: '3%',
@@ -240,7 +204,7 @@ $(function(){
 				                xAxis : [
 				                        {
 				                                type : 'category',
-				                                data : data.categories
+				                                data:name
 				                        }
 				                ],
 				                yAxis : [
@@ -250,9 +214,9 @@ $(function(){
 				                ],
 				                series : [
 				                        {
-				                                name:'近六月个成交量',
+				                                name:'个人近六月个成交量',
 				                                type:'bar',
-				                                data:data.data
+				                                data:values
 				                        }
 				                ]
 				        };

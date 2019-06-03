@@ -1,8 +1,13 @@
 package com.crm.controller;
 
 
+import static org.junit.Assert.assertNotNull;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,4 +152,102 @@ public class HomeController {
 		map.put("legendData", legendData);
 		return map;
 	}
+	
+	
+	/**
+	 * 咨询师
+	 * 个人近六个月的客户成交量
+	 * @param user_id
+	 * @return
+	 */
+	@RequestMapping(value="/selectCustomerByJiaotimeAndCountPersonal",method=RequestMethod.POST)
+	@ResponseBody
+	public List<Map<String,Object>> selectCustomerByJiaotimeAndCountPersonal(Integer user_id){
+		List<Map<String,Object>> selectCustomerByJiaotimeAndCountPersonal = customerService.selectCustomerByJiaotimeAndCountPersonal(user_id);
+		return selectCustomerByJiaotimeAndCountPersonal;
+	}
+	
+	/**
+	 * 网络咨询师
+	 * 个人近六个月的客户成交量
+	 * @param user_id
+	 * @return
+	 */
+	@RequestMapping(value="/selectCustomerByJiaotimeAndUserwidPersonal",method=RequestMethod.POST)
+	@ResponseBody
+	public List<Map<String,Object>> selectCustomerByJiaotimeAndCountUserw_idPersonal(Integer user_id){
+		List<Map<String,Object>> selectCustomerByJiaotimeAndCountPersonal = customerService.selectCustomerByJiaotimeAndCountUserw_idPersonal(user_id);
+		return selectCustomerByJiaotimeAndCountPersonal;
+	}
+	
+	/**
+	 * 咨询师
+	 * 个人近一个月客户状态
+	 * @return
+	 */
+	@RequestMapping(value="/selectCustomerCountByUserIdPersonal",method=RequestMethod.POST)
+	@ResponseBody
+	public List<Map<String,Object>> selectCustomerCountByUserIdPersonal(Integer user_id){
+		 Map<String, Object> selectCustomerCountByUserIdDealPersonal = customerService.selectCustomerCountByUserIdDealPersonal(user_id);
+		Map<String, Object> selectCustomerCountByUserIdTrackingPersonal = customerService.selectCustomerCountByUserIdTrackingPersonal(user_id);
+		List<Map<String,Object>> list=new ArrayList<>();
+		list.add(selectCustomerCountByUserIdDealPersonal);
+		list.add(selectCustomerCountByUserIdTrackingPersonal);
+		return list;
+	}
+	
+	
+	/**
+	 * 咨询师
+	 * 个人近一个月客户状态
+	 * @return
+	 */
+	@RequestMapping(value="/selectCustomerCountByUserIdNetworkconsulting",method=RequestMethod.POST)
+	@ResponseBody
+	public List<Map<String,Object>> selectCustomerCountByUserIdNetworkconsulting(Integer user_id){
+		 Map<String, Object> selectCustomerCountByUserIdDealPersonal = customerService.selectCustomerCountByUserIdDealNetworkconsulting(user_id);
+		Map<String, Object> selectCustomerCountByUserIdTrackingPersonal = customerService.selectCustomerCountByUserIdTrackingNetworkconsulting(user_id);
+		List<Map<String,Object>> list=new ArrayList<>();
+		list.add(selectCustomerCountByUserIdDealPersonal);
+		list.add(selectCustomerCountByUserIdTrackingPersonal);
+		return list;
+	}
+	
+	/**
+	 * 个人一个月签到状态
+	 * @return
+	 */
+	@RequestMapping(value="/selectUserByUserSignPersonal",method=RequestMethod.POST)
+	@ResponseBody
+	public List<Map<String,Object>> selectUserByUserSignPersonal(Integer user_id){
+		 Map<String, Object> selectUserByUserLoginTimeAndQiandaoPersonal = userService.selectUserByUserLoginTimeAndQiandaoPersonal(user_id); //签到
+		 Map<String, Object> selectUserByUserLoginTimeAndChidaoPersonal = userService.selectUserByUserLoginTimeAndChidaoPersonal(user_id); //迟到
+		 Map<String, Object> shengyu=new HashMap<>();
+		 long getmothedLastDay = getmothedLastDay();
+		 shengyu.put("name","剩余");
+		 shengyu.put("value", getmothedLastDay);
+		 List<Map<String,Object>> list=new ArrayList<>();
+		 list.add(shengyu);
+		list.add(selectUserByUserLoginTimeAndQiandaoPersonal);
+		list.add(selectUserByUserLoginTimeAndChidaoPersonal);
+		
+		return list;
+	}
+	
+	/**
+	 * 工具方法 -- 获取这个的剩余天数
+	 * @return
+	 */
+	public static long getmothedLastDay() {
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.DAY_OF_MONTH, 1); 
+	    calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));
+	    long timeInMillis = calendar.getTimeInMillis();
+	    Date date=new Date();
+	    long time = date.getTime();
+		long between_days=(timeInMillis-time)/(1000*3600*24);  
+		return between_days;
+	} 
+	
 }

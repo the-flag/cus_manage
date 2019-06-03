@@ -1,7 +1,8 @@
-package com.crm.serviceimpl;
+﻿package com.crm.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -168,12 +169,16 @@ public class UserServiceimpl implements UserService {
 		return usermapper.selectUserByAccountOrEmailOrPhone(user);
 	}
 	@Override
-	public List<User> selectUserInfo() {
+
+	public Map<String, Object> selectUserByUserLoginTimeAndQiandaoPersonal(Integer user_id) {
 		// TODO Auto-generated method stub
-		System.out.println("断了");
-		System.out.println("你大爷"+usermapper.selectUserInfo());
-		return usermapper.selectUserInfo();
+		return usermapper.selectUserByUserLoginTimeAndQiandaoPersonal(user_id);
 	}
-	
+	@Override
+	public Map<String, Object> selectUserByUserLoginTimeAndChidaoPersonal(Integer user_id) {
+		// TODO Auto-generated method stub
+		return usermapper.selectUserByUserLoginTimeAndChidaoPersonal(user_id);
+	}
+
 
 }

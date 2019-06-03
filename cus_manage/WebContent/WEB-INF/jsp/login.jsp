@@ -154,19 +154,29 @@ canvas {
 	
 	
 	<div id=updateBox class="easyui-dialog" style="width:500px;height:400px;" data-options="iconCls:'icon-save',resizable:true,modal:true,closed: true">
-	
-		<form id="ff" method="post">   
-		    <div>   
-		        <input type="text" placeholder="手机号" class="easyui-validatebox" name="user_phone" id="user_phone"/>   
-		    </div>   
-		    <div>   
-		       <input type="text"   placeholder="验证码" maxlength="6" class="login_txtbx" name="user_phone_validata" id="user_phone_validata">
-		       <span> <a id="" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="phone_validata()">获取验证码</a> </span>
-		    </div>   
-		    <div><input  type="button" value="重置密码"  class="submit_btn" onclick="ResetForm();" /></div>
-		</form>  
+		<div style="padding:10px 60px 20px 60px">
+			<form id="ff" method="post">
+		    	<table cellpadding="5" style="height: 60px">
+		    		<tr>
+		    			<td>Name:</td>
+		    			<td><input type="text" placeholder="手机号" class="easyui-validatebox" name="user_phone" id="user_phone"/></input></td>
+		    		</tr>
+		    		<tr></tr>
+		    		<tr style="padding-top: 50px">
+		    			<td>Validata:</td>
+		    			<td>
+		    				<input type="text"   placeholder="验证码" maxlength="6" class="login_txtbx" name="user_phone_validata" id="user_phone_validata">
+			       			<span> <input id="validatatext" type="button"  onclick="phone_validata(this)" value="获取验证码"> </span>
+			       		</td>
+		    		</tr>
+		    	</table>
+		    </form>
+		     <div style="text-align:center;padding:5px">
+		    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="ResetForm()">重置密码</a>
+		    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">取消</a>
+		    </div>
+	    </div>
 	</div>
-	
 </body>
 
 <script type="text/javascript">
@@ -177,54 +187,83 @@ canvas {
 			closed: false
 		})
 	}
+	function clearForm(){
+		$("#ff").form("clear");
+		$('#updateBox').dialog({
+			closed: true
+		})
+	}
 	var user_phone;
-	function phone_validata(){
+	var countdown=60;        //初始值 -- 倒计时60秒
+	function phone_validata(val){
 		user_phone=$("#user_phone").val();
 		var r = /^[1][3,5,8,7][0-9]{9}$/;
 		if(user_phone!=null && user_phone!=""){
-		 if (!r.test(user_phone)) {
-			 $.messager.alert('警告','手机号码格式不对!'); 
+			if (!r.test(user_phone)) {
+			 $.messager.alert('提示','手机号码格式不对!'); 
 		      return false;
-		 }
+		 	}
 		}else{
-			$.messager.alert('警告','手机号码不能为空!'); 
+			$.messager.alert('提示','手机号码不能为空!'); 
 			return false;
 		}
-		$.post("selectUserByPhone",{
-			phone:user_phone
-		},function(data){
-			if(data){
-				$.post("phoneValidata",{
+				$.post("selectUserByPhone",{
 					phone:user_phone
-				},function(datacode){
-					if(datacode){
-						// 消息将显示在顶部中间
-						
-						
-						$.messager.show({
-							title:'我的消息',
-							msg:'验证码发送成功,请注意查收!',
-							timeout:2000,
-							showType:'show',
-							style:{
-								right:'',
-								top:document.body.scrollTop+document.documentElement.scrollTop,
-								bottom:''
-							}
-						});
+				},function(data){
+					if(data){
+						settime(val);
 					}else{
-						$.messager.alert('警告','发送失败,网络异常');    
+						$.messager.alert('提示','未绑定');    
+		
 					}
 				},"json")
-			}else{
-				$.messager.alert('警告','未绑定');    
-
-			}
-			
-		},"json")
+		
 	}
+	/*
+	*倒计时
+	*/
+	function settime(val) {
+		if (countdown == 60){
+			$.post("phoneValidata",{
+				phone:user_phone
+			},function(datacode){
+				if(datacode){
+					// 消息将显示在顶部中间
+					$.messager.show({
+						title:'我的消息',
+						msg:'验证码发送成功,请注意查收!',
+						timeout:2000,
+						showType:'show',
+						style:{
+							right:'',
+							top:document.body.scrollTop+document.documentElement.scrollTop,
+							bottom:''
+						}
+					});
+				}else{
+					$.messager.alert('提示','发送失败,网络异常');    
+				}
+		
+			},"json")
+		}
+        if (countdown == 0) {
+            val.removeAttribute("disabled");
+            val.value="获取验证码";
+            countdown = 60;                     
+            return false;
+        } else {
+            val.setAttribute("disabled", true);
+            val.value="重新发送(" + countdown + ")";
+            countdown--;
+        }
+        setTimeout(function() {   //设置一个定时器，每秒刷新一次
+            settime(val);
+        },1000);
+    }
+	
+	
 	function validata(){
-		var user_phone_validata=$("#user_phone_validata").val().trim();
+		var user_phone_validata=$("#user_phone_validata").val();
 	    if(user_phone_validata.length==0){    
 	        alert('对不起，验证码不能为空或者为空格!');//请将“文本框”改成你需要验证的属性名称!   
 	        return false;
@@ -242,7 +281,8 @@ canvas {
 	}
 	function ResetForm(){
 			if(validata()){
-				var user_phone_validata=$("#user_phone_validata").val().trim();
+				var user_phone_validata=$("#user_phone_validata").val();
+				var user_phone=$("#user_phone").val();
 				$.post("updatePasswordByUserPhone",{
 					validata:user_phone_validata,
 					user_phone:user_phone
@@ -251,15 +291,13 @@ canvas {
 						$('#updateBox').dialog({
 							closed: true
 						})
-						$.messager.alert('警告','密码重置成功!');
-						
+						$.messager.alert('提示','密码重置成功!');
 						// 消息将显示在顶部中间
 					}else{
-						$.messager.alert('警告','验证码错误!');    
+						$.messager.alert('提示','验证码错误!');    
 					}
 				},"json")
 			}
 	}
-	
  </script>
 </html>
