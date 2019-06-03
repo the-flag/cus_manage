@@ -56,7 +56,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<association property="roles" resultMap="roleMap"/>
 	</resultMap>
 	
-	
+	<select id="selectUserInfo" resultType="User">
+	select user_id,user_name,user_account,user_password from user
+	</select>
 	
 	
 	<select id="selectUser"  resultType="user">

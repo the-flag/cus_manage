@@ -3,22 +3,22 @@ package com.amayadream.webchat.websocket;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.crm.pojo.User;
+import com.crm.serviceimpl.UserServiceimpl;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
-
-/**
- * websocket服务
- * @author  :  Amayadream
- * @time   :  2016.01.08 09:50
- */
+@Controller
 @ServerEndpoint(value = "/chatServer", configurator = HttpSessionConfigurator.class)
 public class ChatServer {
     private static int onlineCount = 0; //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
@@ -26,24 +26,24 @@ public class ChatServer {
     private Session session;    //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private String userid;      //用户名
     private HttpSession httpSession;    //request的session
-
-    private static List list = new ArrayList<>();   //在线列表,记录用户名称
+    private static List list = new ArrayList<>();   //用户列表,记录用户名称
     private static Map routetab = new HashMap<>();  //用户名和websocket的session绑定的路由表
-
     /**
      * 连接建立成功调用的方法
      * @param session  可选的参数。session为与某个客户端的连接会话，需要通过它来给客户端发送数据
      */
     @OnOpen
     public void onOpen(Session session, EndpointConfig config){
+    	
         this.session = session;
         webSocketSet.add(this);     //加入set中
         addOnlineCount();           //在线数加1;
         this.httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
-        User user=(User) httpSession.getAttribute("m");
+       
+       User user=(User) httpSession.getAttribute("m");
         this.userid=user.getUser_account();    //获取当前用户
         list.add(userid);           //将用户名加入在线列表
-        routetab.put(userid, session);   //将用户名和session绑定到路由表
+       routetab.put(userid, session);   //将用户名和session绑定到路由表
         String message = getMessage("[" + userid + "]加入聊天室,当前在线人数为"+getOnlineCount()+"位", "notice",  list);
         broadcast(message);     //广播
     }
@@ -67,7 +67,6 @@ public class ChatServer {
      */
     @OnMessage
     public void onMessage(String _message) {
-    	System.out.println();
         JSONObject chat = JSON.parseObject(_message);
         JSONObject message = JSON.parseObject(chat.get("message").toString());
         if(message.get("to") == null || message.get("to").equals("")){      //如果to为空,则广播;如果不为空,则对指定的用户发送消息
@@ -77,7 +76,15 @@ public class ChatServer {
             singleSend(_message, (Session) routetab.get(message.get("from")));      //发送给自己,这个别忘了
             for(String user : userlist){
                 if(!user.equals(message.get("from"))){
-                    singleSend(_message, (Session) routetab.get(user));     //分别发送给每个指定用户
+                	 singleSend(_message, (Session) routetab.get(user));     //分别发送给每个指定用户
+                	/*for(ChatServer chats: webSocketSet){ //循环遍历在线列表
+                        if(chats.userid!=user) { //判断要发送的用户是否在线
+                        	
+                        	continue;
+                        }
+                       
+                    }*/
+                	
                 }
             }
         }

@@ -155,7 +155,7 @@ public class UserController {
 			return true;
 		}
 		User selectUserByAccount = userService.selectUserByAccount(user);
-		if(selectUserByAccount!=null && selectUserByAccount.getRoles().get(0).getRole_id()!=1) {
+		if(selectUserByAccount!=null && (selectUserByAccount.getRoles().size()<1 || selectUserByAccount.getRoles().get(0).getRole_id()!=1)) {
 			return true;
 		}
 		return false;

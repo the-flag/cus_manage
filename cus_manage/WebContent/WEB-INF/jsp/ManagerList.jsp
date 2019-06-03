@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -77,12 +78,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu; */
 	}
    }
    
-   //网络咨询师
-  /*  function formatteruser_nameW(value,row,index){
-	if(row.userw_id==row.user_id){
-       return row.user.user_name;
-	}
-   } */
+
    //格式化性别
    function formattersex(value,row,index){
 	   return row.customer_sex==1?'男':'女';
@@ -124,6 +120,8 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu; */
 
 	   
    }
+   
+  
   
    function testcolumn(){
 
@@ -174,7 +172,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu; */
   }
   //格式化操作列
   function formatterusercaozuo(value,row,index){
-	  return "<a href='javascript:void(0)' onclick='chakan("+index+")'>查看</a>  <a href='javascript:void(0)' onclick='删除("+index+")'>删除</a>"
+	  return "<a href='javascript:void(0)' onclick='chakan("+index+")'>查看</a>"
   }
   //查看
   function chakan(index){
@@ -200,15 +198,22 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu; */
   }
   
  
-  //跟踪
+  /* //跟踪
   function fenpeiCustomer(){
 	  $("#GZwin").window("open");
 	  
   }
   
+ //消息推送测试
+    var wsServer = null;
+    var ws = null;
+    wsServer = "ws://" + location.host+"${pageContext.request.contextPath}" + "/chatServer";
+    ws = new WebSocket(wsServer); //创建WebSocket对象
+  
   function CustomerTrack(){
 	    var s="";
 		var data=$("#managerTab").datagrid('getSelections');
+		
 	    for(var i=0;i<data.length;i++){
 	    	s=s+data[i].customer_id+",";
 	    }
@@ -217,6 +222,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu; */
 	    $.post("updateCustomerTrack",{s:s,user_id:$("#geTesgt").val()},function(data){
 	    	if(data>0){
 	    		$.messager.alert('提示','更换咨询师成功');
+	    		ws.send("经理给你分配了一个叫:"+data[0].customer_name);
 	    		$("#managerTab").datagrid("reload");
 	    		$("#GZwin").window("close");
 	    	}else{
@@ -225,7 +231,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu; */
 	    	
 	    },"json");
   }
-	    
+	     */
 	
   //修改
   function editCustomer(){
@@ -418,7 +424,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu; */
          <input type="text"  class= "easyui-datebox" id="maxTime"/>    
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="searchM()" data-options="iconCls:'icon-search'">搜索</a>
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="testcolumn()" data-options="iconCls:'icon-add'">设置显示隐藏列</a>
-         <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="fenpeiCustomer()" data-options="iconCls:'icon-redo'">设置跟踪人员</a>
+         <!-- <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="fenpeiCustomer()" data-options="iconCls:'icon-redo'">设置跟踪人员</a> -->
          <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="editCustomer()" data-options="iconCls:'icon-edit'">编辑</a>
          <a  href="javascript:void(0)"  class="easyui-switchbutton"  id="autoCustomer" data-options="onText:'Yes',offText:'No'">自动分配</a>
    </form>
@@ -669,18 +675,6 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu; */
         </form> 
      
 </div>  
- <!-- 跟踪 -->
- <div id="GZwin" class="easyui-dialog" title="Add Customer" style="width:250px;height:400px"   
-        data-options="iconCls:'icon-save',modal:true,closed:true,draggable:true">
-        <select id="geTesgt">
-        <option value="">--请选择--</option>
-        <c:forEach items="${selectUserReferTeacher}" var="surt">
-         <option value="${surt.user_id}">${surt.user_name}</option>
-        </c:forEach>
-        </select>
-        <center>
-         <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="CustomerTrack()" data-options="iconCls:'icon-save'">提交</a>    
-        </center>
- </div>
+ 
 </body>
 </html>

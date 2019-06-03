@@ -167,5 +167,13 @@ public class UserServiceimpl implements UserService {
 		// TODO Auto-generated method stub
 		return usermapper.selectUserByAccountOrEmailOrPhone(user);
 	}
+	@Override
+	public List<User> selectUserInfo() {
+		// TODO Auto-generated method stub
+		System.out.println("断了");
+		System.out.println("你大爷"+usermapper.selectUserInfo());
+		return usermapper.selectUserInfo();
+	}
+	
 
 }

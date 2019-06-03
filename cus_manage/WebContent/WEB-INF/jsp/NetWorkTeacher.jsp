@@ -14,6 +14,8 @@
  <script src="js/demo/EasyUI/locale/easyui-lang-zh_CN.js"></script>
  <script src="js/demo/ExportExcelDlg.js"></script>
 
+
+ <script type="text/javascript" src="js/area.js"></script>
 </head>
 <script type="text/javascript">
 //显示隐藏指定列
@@ -82,6 +84,7 @@ $(function(){
 
  $(function(){
 	 var time_range = function (beginTime, endTime) {
+		 alert(beginTime+"沙发斯蒂芬"+endTime);
 		  var strb = beginTime.split (":");
 		  if (strb.length != 2) {
 		    return false;
@@ -127,10 +130,15 @@ $(function(){
 				},"json");
 		  } else {
 		    alert ("当前时间是：" + n.getHours () + ":" + n.getMinutes () + "，上班迟到！！！！");
+		    $.post("insertSignBack",{user_id:${m.user_id}},function(data){
+		    	if(data>0){
+		    		$.messager.alert("提示","迟到信息添加成功!");
+		    	}
+		    },"json");
 		    return false;
 		  }
 		}
-		 time_range ("8:30", "10:30");
+		 time_range ("9:00", "18:30");
 	
 }); 
  //搜索
@@ -214,6 +222,9 @@ function addCumtomer(){
 
 function addcustomer(){
 	   alert("sfs");
+	   var pro=$("#s_province").val();
+	   var city=$("#s_city").val();
+	   var customer_address=pro+city;
 	   $.messager.confirm('确认','确认添加？',function(r){
 		   if(r){   
 			   $.post("insertCustomer",{      
@@ -222,8 +233,8 @@ function addcustomer(){
 				   customer_age:$("#customer_age").val(),
 				   customer_status:$("#customer_status").val(),
 				   customer_region:$("#customer_region").val(),
-				   customer_post:$("#customer_post").val(),
-				   customer_address:$("#customer_address").val(),
+				   customer_post:$("#customer_post").combobox('getValue'),
+				   customer_address:customer_address,
 				   customer_phone:$("#customer_phone").val(),
 				   customer_qq:$("#customer_qq").val(),
 				   customer_sex:$("#customer_sex").val(),
@@ -232,7 +243,6 @@ function addcustomer(){
 				   customer_course:$("#customer_course").val(),
 				   customer_level:$("#customer_level").val(),
 				   userw_id:${m.user_id},
-				   user_id:${m.user_id}
 			              },function(data){
 			            	  if(data>0){
 			            		  $.messager.alert('提示','添加成功');
@@ -380,13 +390,21 @@ function testage(num)
   return true;
  }
     }
-    
+
+function testphone(){
+	
+	 var phone = document.getElementById('customer_phone').value;
+	    if(!(/^1[34578]\d{9}$/.test(phone))){ 
+	        alert("手机号码有误，请重填");  
+	        return false; 
+	    } 
+}
 
 
 </script>
 <body>
   <table id="NetWorkTeacherTab" class="easyui-datagrid"    
-        data-options="fitColumns:true,singleSelect:true">   
+        data-options="fitColumns:true">   
     <thead>   
         <tr>  
             <th data-options="field:'checkbox',width:100,checkbox:true"></th>  
@@ -475,7 +493,7 @@ function testage(num)
         </form>
   </div>
   
-    <div id="Addwin" class="easyui-dialog" title="Add Customer" style="width:250px;height:400px"   
+    <div id="Addwin" class="easyui-dialog" title="Add Customer" style="width:300px;height:400px"   
         data-options="iconCls:'icon-save',modal:true,closed:true,draggable:true">   
          <form id="MangerFrom">
            <label for="name">客户编号</label> 
@@ -540,11 +558,15 @@ function testage(num)
          </select>         
                 
           <br/>
-           <label for="name">客户地址</label>     
-          <input type="text" name="name" id="customer_address" />   
+	    	<div>
+		    <label for="name">客户地址</label> 
+			<select id="s_province" name="s_province"></select>  
+		    <select id="s_city" name="s_city" ></select>  
+		    <script type="text/javascript">_init_area();</script>
+	    </div>
           <br/>
             <label for="name">客户电话</label> 
-          <input type="text" name="name"   id="customer_phone" />     
+          <input type="text" name="name"  onblur="testphone()"  id="customer_phone" />     
           <br/>
           <label for="name">客户QQ</label>     
           <input type="text" name="name" id="customer_qq" />     

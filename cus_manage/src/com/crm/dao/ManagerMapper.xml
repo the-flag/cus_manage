@@ -81,7 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    </select>
    
    
-   <select id="selectManager" parameterType="fenye" resultMap="CustomerTab">
+  <select id="selectManager" parameterType="fenye" resultMap="CustomerTab">
   SELECT c.*,u.user_name FROM customer c INNER JOIN user u on c.user_id=u.user_id
   <where>
        <if test="cname!='' and cname!=null">
@@ -106,7 +106,54 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  ORDER BY c.customer_id asc
  LIMIT #{page},#{row}
    </select>
-   
+<!--  未分配的客户信息 -->
+ <select id="selectManagerCount1" parameterType="Fenye" resultType="int">
+ SELECT count(customer_id) FROM customer
+ <where>
+       <if test="cname!='' and cname!=null">
+       and customer_name like "%"#{cname}"%"
+       </if>
+     
+       <if test="visit>0">
+       and customer_visit=#{visit}
+       </if>
+       <if test="ingate>0">
+       and customer_ingate=#{ingate}
+       </if>
+       <if test="minTime!='' and minTime!=null">
+       and customer_ingate_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and customer_ingate_time &lt;=#{maxTime}
+       </if>
+       and user_id is null
+  </where>
+</select> 
+
+<select id="selectManager1" parameterType="Fenye" resultType="customer">
+ SELECT * FROM customer
+ <where>
+       <if test="cname!='' and cname!=null">
+       and customer_name like "%"#{cname}"%"
+       </if>
+     
+       <if test="visit>0">
+       and customer_visit=#{visit}
+       </if>
+       <if test="ingate>0">
+       and customer_ingate=#{ingate}
+       </if>
+       <if test="minTime!='' and minTime!=null">
+       and customer_ingate_time &gt;=#{minTime}
+       </if>
+       <if test="maxTime!='' and maxTime!=null">
+       and customer_ingate_time &lt;=#{maxTime}
+       </if>
+       and user_id is null
+  </where>
+ ORDER BY customer_id asc
+ LIMIT  #{page},#{row}
+</select>
    <insert id="insertCustomer" parameterType="customer">
    insert into customer(customer_no,customer_name,customer_academic,customer_region,customer_post,customer_address,customer_phone,customer_source,customer_qq,customer_course,customer_age,customer_sex,customer_level,customer_status,userw_id,user_id)
                values(#{customer_no},#{customer_name},#{customer_academic},#{customer_region},#{customer_post},#{customer_address},#{customer_phone},#{customer_source},#{customer_qq},#{customer_course},#{customer_age},#{customer_sex},#{customer_level},#{customer_status},#{userw_id},#{user_id});

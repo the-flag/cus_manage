@@ -173,10 +173,15 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 					},"json");
 			  } else {
 			    alert ("当前时间是：" + n.getHours () + ":" + n.getMinutes () + "，上班迟到！！！！");
+			    $.post("insertSignBack",{user_id:${m.user_id}},function(data){
+			    	if(data>0){
+			    		$.messager.alert("提示","迟到信息添加成功!");
+			    	}
+			    },"json");
 			    return false;
 			  }
 			}
-			 time_range ("8:30", "10:30");
+			 time_range ("8:30", "18:30");
 		
 	}); 
    //这个是查看
@@ -324,6 +329,7 @@ $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 		var	 record_endtime = $('#add-record_endtime').datebox('getValue');
 		var record_a= new Date(($('#add-record_time').datebox('getValue')).replace(/-/g,"/"));
 		var record_b=new Date(($("#add-record_lasttime").datebox('getValue')).replace(/-/g,"/"));
+		alert(record_b+">"+record_a);
 		if(record_b>record_a){
 			$.post("insert", {
 		    	record_time:record_time,

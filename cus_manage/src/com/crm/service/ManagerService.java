@@ -9,8 +9,11 @@ import com.crm.pojo.Sign;
 import com.crm.pojo.User;
 
 public interface ManagerService {
-	//多条件查询
+	//多条件查询(已分配)
 	FenYe selectManager(FenYe fenye);
+	
+	//多条件查询(未分配)
+	FenYe selectManager1(FenYe fenye);
     //添加客户
 	Integer insertCustomer(Customer customer);
 	//查询全部员工的状态信息

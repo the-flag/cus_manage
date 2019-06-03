@@ -54,7 +54,7 @@ public class NetWorkTeacherController {
 				
 	}
 	
-	
+	//跟踪信息
 	@RequestMapping(value="/insertTrackInfo",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer insertTrackInfo(Access_record access_record) {
@@ -79,6 +79,15 @@ public class NetWorkTeacherController {
 		return managerService.selectUserStatus(user_id);
 				
 	}
+	
+	
+	//上班迟到信息
+		@RequestMapping(value="/insertSignBack",method=RequestMethod.POST)
+		@ResponseBody
+		public Integer insertSignBack(int user_id) {
+			return managerService.insertSignInfo(user_id);
+					
+		}
 	
 	 
 		@RequestMapping(value="/getNetWorkTeacher",method=RequestMethod.GET)

@@ -7,9 +7,14 @@ import com.crm.pojo.Module;
 import com.crm.pojo.User;
 
 public interface UserMapper {
+	/**
+	 * 查询出所有的用户的基本信息
+	 * @return
+	 */
+	List<User> selectUserInfo();
 	
 	/**
-	 * 测试
+	 * 查询角色为咨询师且当天以签到的用户
 	 * @return
 	 */
 	List<User> selectUser();

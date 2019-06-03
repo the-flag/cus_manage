@@ -45,15 +45,23 @@ public class ManagerController {
 	public FenYe selectManager(HttpSession session,HttpServletRequest request,Integer page,Integer rows,FenYe fenye) {
 			fenye.setPage((page-1)*rows);
 			fenye.setRow(rows);
-		List<User> selectUserReferTeacher = managerService.selectUserReferTeacher();
-		request.getSession().setAttribute("selectUserReferTeacher", selectUserReferTeacher);
-	/*	User s = managerService.selectUserStatus(fenye.getUser_id());
-		System.out.println("状态"+s.getUser_status());
-		session.setAttribute("ssss", s);
-		*/
+		/*List<User> selectUserReferTeacher = managerService.selectUserReferTeacher();
+		request.getSession().setAttribute("selectUserReferTeacher", selectUserReferTeacher);*/
 	
 		return managerService.selectManager(fenye);
 	}
+	
+	//未分配的客户
+	@RequestMapping(value="/selectManager1",method=RequestMethod.POST)
+	@ResponseBody
+	public FenYe selectManager1(HttpSession session,HttpServletRequest request,Integer page,Integer rows,FenYe fenye) {
+			fenye.setPage((page-1)*rows);
+			fenye.setRow(rows);
+			List<User> selectUserReferTeacher = managerService.selectUserReferTeacher();
+			request.getSession().setAttribute("selectUserReferTeacher", selectUserReferTeacher);
+
+	        return managerService.selectManager1(fenye);
+}
 	//增加客户
 	@RequestMapping(value="/insertCustomer",method=RequestMethod.POST)
 	@ResponseBody
@@ -62,7 +70,7 @@ public class ManagerController {
 		User UserStatus = managerService.selectUserStatus(2);
 		if(UserStatus.getUser_status()==1){
 		List<User> selectUser = userService.selectUser();
-			if(selectUser.size()>1) {
+			if(selectUser.size()>=1) {
 				System.out.println("输出!!!!"+selectUser);
 				System.out.println("输出!!!!"+selectUser);
 				System.out.println("输出!!!!"+selectUser);
@@ -100,7 +108,7 @@ public class ManagerController {
 	
 	}
 	
-	
+	//跟换咨询师
 	@RequestMapping(value="/updateCustomerTrack",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer updateCustomerTrack(String s,Integer user_id){
@@ -142,10 +150,16 @@ public class ManagerController {
 		return managerService.updateweight(user);
 	}
 	
-    //点击tree中的客户管理时，向ManagerList.jsp页面发送请求
-	@RequestMapping(value="/getManager",method=RequestMethod.GET)
-	public String getManager() {
+    //点击tree中的客户管理时，向ManagerList.jsp页面发送请求已分配
+	@RequestMapping(value="/getManager1",method=RequestMethod.GET)
+	public String getManager1() {
 		return "ManagerList";
+	}
+	
+	//未分配的客户
+	@RequestMapping(value="/getManager2",method=RequestMethod.GET)
+	public String getManager2() {
+		return "ManagerList1";
 	}
 
 	 
