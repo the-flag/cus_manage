@@ -1,4 +1,4 @@
-package com.crm.service;
+﻿package com.crm.service;
 
 import java.util.List;
 import java.util.Map;
@@ -148,6 +148,8 @@ public interface UserService {
 	 * @return
 	 */
 	Integer selectUserByUserLoginTimeAndWeiqian();
+
+	
 	
 	
 	/**
@@ -164,4 +166,5 @@ public interface UserService {
 	 * @return
 	 */
 	Map<String, Object> selectUserByUserLoginTimeAndChidaoPersonal(Integer user_id);
+
 }

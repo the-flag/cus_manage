@@ -100,6 +100,14 @@ public class ManagerServiceImp implements ManagerService {
 		return managerMapper.updateweight(user);
 	}
 
+	@Override
+	public FenYe selectManager1(FenYe fenye) {
+		// TODO Auto-generated method stub
+		fenye.setTotal(managerMapper.selectManagerCount1(fenye));
+		fenye.setRows(managerMapper.selectManager1(fenye));
+		return fenye;
+	}
+
 
 
 }

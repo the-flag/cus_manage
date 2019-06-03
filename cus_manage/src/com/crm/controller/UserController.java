@@ -1,4 +1,4 @@
-package com.crm.controller;
+﻿package com.crm.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,6 +66,7 @@ public class UserController {
     public void getchat(HttpServletRequest request,HttpServletResponse response){
       /*  ModelAndView view = new ModelAndView("view/index.jsp");
         return view;*/
+
     	try {
 			request.getRequestDispatcher("view/index.jsp").forward(request, response);
 		} catch (ServletException e) {
@@ -75,7 +76,7 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
+
     }
 	
 	/**
@@ -154,7 +155,9 @@ public class UserController {
 			return true;
 		}
 		User selectUserByAccount = userService.selectUserByAccount(user);
+
 		if(selectUserByAccount!=null && (selectUserByAccount.getRoles().size()<1 ||selectUserByAccount.getRoles().get(0).getRole_id()!=1)) {
+
 			return true;
 		}
 		return false;

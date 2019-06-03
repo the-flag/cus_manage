@@ -1,4 +1,4 @@
-package com.crm.serviceimpl;
+﻿package com.crm.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,6 +169,7 @@ public class UserServiceimpl implements UserService {
 		return usermapper.selectUserByAccountOrEmailOrPhone(user);
 	}
 	@Override
+
 	public Map<String, Object> selectUserByUserLoginTimeAndQiandaoPersonal(Integer user_id) {
 		// TODO Auto-generated method stub
 		return usermapper.selectUserByUserLoginTimeAndQiandaoPersonal(user_id);
@@ -178,5 +179,6 @@ public class UserServiceimpl implements UserService {
 		// TODO Auto-generated method stub
 		return usermapper.selectUserByUserLoginTimeAndChidaoPersonal(user_id);
 	}
+
 
 }

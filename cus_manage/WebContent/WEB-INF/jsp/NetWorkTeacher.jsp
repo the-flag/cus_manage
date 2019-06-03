@@ -14,6 +14,8 @@
  <script src="js/demo/EasyUI/locale/easyui-lang-zh_CN.js"></script>
  <script src="js/demo/ExportExcelDlg.js"></script>
 
+
+ <script type="text/javascript" src="js/area.js"></script>
 </head>
 <script type="text/javascript">
 //显示隐藏指定列
@@ -82,6 +84,7 @@ $(function(){
 
  $(function(){
 	 var time_range = function (beginTime, endTime) {
+		 alert(beginTime+"沙发斯蒂芬"+endTime);
 		  var strb = beginTime.split (":");
 		  if (strb.length != 2) {
 		    return false;
@@ -127,10 +130,15 @@ $(function(){
 				},"json");
 		  } else {
 		    alert ("当前时间是：" + n.getHours () + ":" + n.getMinutes () + "，上班迟到！！！！");
+		    $.post("insertSignBack",{user_id:${m.user_id}},function(data){
+		    	if(data>0){
+		    		$.messager.alert("提示","迟到信息添加成功!");
+		    	}
+		    },"json");
 		    return false;
 		  }
 		}
-		 time_range ("8:30", "10:30");
+		 time_range ("9:00", "18:30");
 	
 }); 
  //搜索
@@ -214,6 +222,9 @@ function addCumtomer(){
 
 function addcustomer(){
 	   alert("sfs");
+	   var pro=$("#s_province").val();
+	   var city=$("#s_city").val();
+	   var customer_address=pro+city;
 	   $.messager.confirm('确认','确认添加？',function(r){
 		   if(r){   
 			   $.post("insertCustomer",{      
@@ -222,8 +233,8 @@ function addcustomer(){
 				   customer_age:$("#customer_age").val(),
 				   customer_status:$("#customer_status").val(),
 				   customer_region:$("#customer_region").val(),
-				   customer_post:$("#customer_post").val(),
-				   customer_address:$("#customer_address").val(),
+				   customer_post:$("#customer_post").combobox('getValue'),
+				   customer_address:customer_address,
 				   customer_phone:$("#customer_phone").val(),
 				   customer_qq:$("#customer_qq").val(),
 				   customer_sex:$("#customer_sex").val(),
@@ -232,7 +243,6 @@ function addcustomer(){
 				   customer_course:$("#customer_course").val(),
 				   customer_level:$("#customer_level").val(),
 				   userw_id:${m.user_id},
-				   user_id:${m.user_id}
 			              },function(data){
 			            	  if(data>0){
 			            		  $.messager.alert('提示','添加成功');
@@ -262,7 +272,7 @@ function TrackSave(){
 	var data=$("#NetWorkTeacherTab").datagrid("getSelected");
 	var myDate = new Date();//回访时间（当前时间）
 	var record_lasttime = new Date(($("#record_lasttime").combobox('getValue')).replace(/-/g,"/"));//下次跟踪时间
-	var record_time=new Date((myDate.toLocaleDateString()).replace(/-/g,"/"));;
+	var record_time=new Date((myDate.toLocaleDateString()).replace(/-/g,"/"));
 	alert(record_lasttime);
 	if(record_lasttime>record_time){
 		alert("成功");
@@ -369,10 +379,32 @@ function formatterName(value,row,index){
 function formaterrCaoZuo(value,row,index){
 	return "<a href='javascript:void(0)' onclick='chakanlog("+index+")'>查看</a>";
 }
+
+//添加时验证输入的年龄
+function testage(num)
+    {
+ var reg = /^((?!0)\d{1,2}|100)$/;
+ if(!num.match(reg)){
+  return false;
+ }else{
+  return true;
+ }
+    }
+
+function testphone(){
+	
+	 var phone = document.getElementById('customer_phone').value;
+	    if(!(/^1[34578]\d{9}$/.test(phone))){ 
+	        alert("手机号码有误，请重填");  
+	        return false; 
+	    } 
+}
+
+
 </script>
 <body>
   <table id="NetWorkTeacherTab" class="easyui-datagrid"    
-        data-options="fitColumns:true,singleSelect:true">   
+        data-options="fitColumns:true">   
     <thead>   
         <tr>  
             <th data-options="field:'checkbox',width:100,checkbox:true"></th>  
@@ -461,7 +493,7 @@ function formaterrCaoZuo(value,row,index){
         </form>
   </div>
   
-    <div id="Addwin" class="easyui-dialog" title="Add Customer" style="width:250px;height:400px"   
+    <div id="Addwin" class="easyui-dialog" title="Add Customer" style="width:300px;height:400px"   
         data-options="iconCls:'icon-save',modal:true,closed:true,draggable:true">   
          <form id="MangerFrom">
            <label for="name">客户编号</label> 
@@ -471,7 +503,7 @@ function formaterrCaoZuo(value,row,index){
           <input type="text" name="name" id="customer_name" />
           <br/>
           <label for="name">客户年龄</label>
-          <input type="text" name="name" id="customer_age" />
+          <input type="text" name="name"  onkeyup="value=testage(value)?value:''" id="customer_age" />
           <br/>
            <label for="name">客户状态</label>
             <select id="customer_status">   
@@ -505,13 +537,36 @@ function formaterrCaoZuo(value,row,index){
               
           <br/>
            <label for="name">邮政编码</label> 
-          <input type="text" name="name" id="customer_post" />        
+            <select id="customer_post" class="easyui-combobox">   
+	         <option value="">--请选择--</option>
+	         <option value="未知">未知</option>   
+	         <option value="其它">其它</option>
+	         <option value="450000">郑州</option>
+	         <option value="454000">开封</option>   
+	         <option value="412000">洛阳</option>   
+	         <option value="435000">南阳</option>
+	         <option value="478000">漯河</option>
+	         <option value="498000">三门峡</option>   
+	         <option value="487000">平顶山</option>   
+	         <option value="435000">周口</option>
+	         <option value="465000">驻马店</option>
+	         <option value="487000">新乡</option> 
+	          <option value="496000">鹤壁</option>
+	         <option value="480000">濮阳</option> 
+	          <option value="456000">安阳</option>
+	         <option value="464000">信阳</option>   
+         </select>         
+                
           <br/>
-           <label for="name">客户地址</label>     
-          <input type="text" name="name" id="customer_address" />   
+	    	<div>
+		    <label for="name">客户地址</label> 
+			<select id="s_province" name="s_province"></select>  
+		    <select id="s_city" name="s_city" ></select>  
+		    <script type="text/javascript">_init_area();</script>
+	    </div>
           <br/>
             <label for="name">客户电话</label> 
-          <input type="text" name="name" id="customer_phone" />     
+          <input type="text" name="name"  onblur="testphone()"  id="customer_phone" />     
           <br/>
           <label for="name">客户QQ</label>     
           <input type="text" name="name" id="customer_qq" />     
@@ -572,15 +627,7 @@ function formaterrCaoZuo(value,row,index){
     <a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="resetForm()" data-options="iconCls:'icon-remoce'">重置</a>  
    </center>
           
-          <!-- 
-           <label for="name">是否访问</label>   
-          <input type="text" name="name" id="customer_visit" /><br/>
-           <label for="name">是否上门</label>   
-          <input type="text" name="name" id="customer_ingate" /><br/>
-           <label for="name">首次回访时间</label>   
-          <input type="text" name="name" id="customer_onevisit_time" /><br/>
-           <label for="name">上门时间</label>   
-          <input type="text" name="name" id="customer_ingate_time" /><br/> -->
+         
 </div>  
  
  

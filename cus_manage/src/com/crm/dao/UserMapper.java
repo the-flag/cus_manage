@@ -9,8 +9,9 @@ import com.crm.pojo.User;
 
 public interface UserMapper {
 	
+	
 	/**
-	 * 测试
+	 * 查询角色为咨询师且当天以签到的用户
 	 * @return
 	 */
 	List<User> selectUser();

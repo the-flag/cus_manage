@@ -1,4 +1,4 @@
- package com.crm.controller;
+﻿ package com.crm.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,22 +45,34 @@ public class ManagerController {
 	public FenYe selectManager(HttpSession session,HttpServletRequest request,Integer page,Integer rows,FenYe fenye) {
 			fenye.setPage((page-1)*rows);
 			fenye.setRow(rows);
-		List<User> selectUserReferTeacher = managerService.selectUserReferTeacher();
-		request.getSession().setAttribute("selectUserReferTeacher", selectUserReferTeacher);
-	/*	User s = managerService.selectUserStatus(fenye.getUser_id());
-		System.out.println("状态"+s.getUser_status());
-		session.setAttribute("ssss", s);
-		*/
+		/*List<User> selectUserReferTeacher = managerService.selectUserReferTeacher();
+		request.getSession().setAttribute("selectUserReferTeacher", selectUserReferTeacher);*/
 	
 		return managerService.selectManager(fenye);
 	}
 	
+
 	
 	//增加客户 分量
+
+	//未分配的客户
+	@RequestMapping(value="/selectManager1",method=RequestMethod.POST)
+	@ResponseBody
+	public FenYe selectManager1(HttpSession session,HttpServletRequest request,Integer page,Integer rows,FenYe fenye) {
+			fenye.setPage((page-1)*rows);
+			fenye.setRow(rows);
+			List<User> selectUserReferTeacher = managerService.selectUserReferTeacher();
+			request.getSession().setAttribute("selectUserReferTeacher", selectUserReferTeacher);
+
+	        return managerService.selectManager1(fenye);
+}
+	//增加客户
+
 	@RequestMapping(value="/insertCustomer",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer insertCustomer(HttpSession session, HttpServletRequest request,Customer customer){
 		
+
 		User UserStatus = managerService.selectUserStatus(2); //查咨询经理信息
 		if(UserStatus.getUser_status()==1){	//判断咨询经理是否开启了自动分量
 			List<User> selectUser = userService.selectUser();//查询所有已签到的咨询师
@@ -68,6 +80,7 @@ public class ManagerController {
 				System.out.println(selectUser.get(0));	
 			 paixu(selectUser); //排序
 			 customer.setUser_id(selectUser.get(0).getUser_id()); //把咨询师的id添加到客户对象中
+
 			}
 		}
 		 Integer insertCustomer = managerService.insertCustomer(customer); //添加
@@ -96,7 +109,7 @@ public class ManagerController {
 	
 	}
 	
-	
+	//跟换咨询师
 	@RequestMapping(value="/updateCustomerTrack",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer updateCustomerTrack(String s,Integer user_id){
@@ -138,10 +151,16 @@ public class ManagerController {
 		return managerService.updateweight(user);
 	}
 	
-    //点击tree中的客户管理时，向ManagerList.jsp页面发送请求
-	@RequestMapping(value="/getManager",method=RequestMethod.GET)
-	public String getManager() {
+    //点击tree中的客户管理时，向ManagerList.jsp页面发送请求已分配
+	@RequestMapping(value="/getManager1",method=RequestMethod.GET)
+	public String getManager1() {
 		return "ManagerList";
+	}
+	
+	//未分配的客户
+	@RequestMapping(value="/getManager2",method=RequestMethod.GET)
+	public String getManager2() {
+		return "ManagerList1";
 	}
 
 	 
@@ -154,27 +173,19 @@ public class ManagerController {
 	public String getCustomerFollow() {
 		return "CustomerFollow";
 	}
-	/**
-	 * 聊天主页
-	 * @param UserList
-	 */
-	/*
-	@RequestMapping(value="/getMessage",method=RequestMethod.GET)
-	public String getMessage() {
-		return "WebChat.jsp";
-	}*/
+	
 	public static void paixu(List<User> UserList) {
 		Collections.sort(UserList, new Comparator<User>() {
 			@Override
 			public int compare(User o1, User o2) {
 				if(o1!=null && o2!=null) {
 					if(o1.getCustomer_num()>o2.getCustomer_num()){
-		                return 1;//当前对象的值 > 比较对象的值 ， 位置排在后
+		                return 1;//当前对象的值 > 比较对象的值 ， 大的排在后
 		            }else if(o1.getCustomer_num()<o2.getCustomer_num()){
-		                return -1;//当前对象的值 < 比较对象的值 ， 位置排在前
+		                return -1;//当前对象的值 < 比较对象的值 ， 小的排在前
 		            }else if(o1.getCustomer_num()==o2.getCustomer_num()) {
 		            	if(o1.getUser_weight()>o2.getUser_weight()) {
-		            		return -1;//当前对象的值 < 比较对象的值 ， 位置排在前
+		            		return -1;//当前对象的值 >比较对象的值 ， 大的在前
 		            	}
 		            }
 				}
