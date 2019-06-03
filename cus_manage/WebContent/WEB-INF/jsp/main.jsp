@@ -1,5 +1,6 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,15 +15,46 @@
 	<script src="js/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
 		
+	
+	
+	
+	
+	
+	
+	var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
+	var isOpera = userAgent.indexOf("Opera") > -1; //判断是否Opera浏览器  
+	var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera; //判断是否IE浏览器
+	var isIE11 = userAgent.indexOf("rv:11.0") > -1; //判断是否是IE11浏览器
+	var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器
+	if(!isIE && !isEdge && !isIE11) {//兼容chrome和firefox
+		var _beforeUnload_time = 0, _gap_time = 0;
+		var is_fireFox = navigator.userAgent.indexOf("Firefox")>-1;//是否是火狐浏览器
+		window.onunload = function (){
+			_gap_time = new Date().getTime() - _beforeUnload_time;
+			if(_gap_time <= 5){
+				$.post('closePage');//浏览器关闭
+			}else{//浏览器刷新
+				$.post('closePage');
+			}
+	 	}
+		window.onbeforeunload = function (){ 
+			_beforeUnload_time = new Date().getTime();
+			if(is_fireFox){//火狐关闭执行
+				$.post('closePage');//浏览器关闭
+			} 
+		};
+	}
+
+	
 		$(function(){
 			
-			window.onbeforeunload = function (){ 
-					$.post("closePage",{
-						user_account:"root"
-					},function(){
-						
-					},"json")
-			};
+			/* window.onbeforeunload = function (){ 
+				$.post("closePage",{
+					user_account:"root"
+				},function(){
+					
+				},"json")
+			}; */
 			
 			
 			$("#homeTree").tree({    
@@ -199,9 +231,30 @@
     </div>
 </div>
 <div id="myMes">
- 	<p><label class="diaLable">登录账号：</label><input  class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true" value="${m.user_account}"></p>
-	<p><label class="diaLable">用户名：</label><input  class="easyui-validatebox TailInput"  data-options="required:true,novalidate:true" value="${m.user_name}"></p>
-    <div class="forSubmint"> <a href="#" class="easyui-linkbutton"  iconCls="icon-save" >保存</a><a href="#" class="easyui-linkbutton"  iconCls="icon-redo" >重置</a> </div>
+ 	<p><label class="diaLable">登录账号：</label><input id="peruser_account" class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true" value="${m.user_account}"></p>
+	<p><label class="diaLable">用户名：</label><input	id="peruser_name"  class="easyui-validatebox TailInput"  data-options="required:true,novalidate:true" value="${m.user_name}"><span id="peruser_namespan"></span></p>
+	<%-- <p><label class="diaLable">性别：</label>
+		<select id="user_is_lock" class="easyui-combobox" id="peruser_sex"  style="width:200px;">   
+							<c:choose>
+								<c:when test="${m.user_sex}==1">
+									<option value="1" selected="selected">男</option>   
+								    <option value="2">女</option> 
+								</c:when>
+								<c:otherwise>
+									<option value="1">男</option>   
+								    <option value="2" selected="selected">女</option> 
+								</c:otherwise>
+							</c:choose>
+							      
+		</select>
+		<span id="peruser_sexspan"></span>
+	</p>
+	<p><label class="diaLable">年龄：</label><input id="peruser_age"  class="easyui-validatebox TailInput"  data-options="required:true,novalidate:true" value="${m.user_age}"><span id="peruser_agespan"></span></p> --%>
+	<p><label class="diaLable">邮箱：</label><input id="peruser_email"  class="easyui-validatebox TailInput"  data-options="required:true,novalidate:true" value="${m.user_email}"><span id="peruser_emailspan"></span></p>
+		<input id="peruser_vali" type="hidden" value="${m.user_email}">
+		<input id="peruser_phonevali" type="hidden" value="${m.user_phone}">
+	<p><label class="diaLable">手机号：</label><input id="peruser_phone"  class="easyui-validatebox TailInput"  data-options="required:true,novalidate:true" value="${m.user_phone}"><span id="peruser_phonespan"></span></p>
+    <div class="forSubmint"> <a href="#" class="easyui-linkbutton"  iconCls="icon-save" onclick="savePersonalInformation()" >保存</a><a href="#" class="easyui-linkbutton"  iconCls="icon-redo" >重置</a> </div>
 </div>
 <div id="myUpdPass">
 	<form id="myUpdPassForm" class="easyui-form">
@@ -216,6 +269,105 @@
 
 
 <script src="js/main.js"></script>
-
+<script type="text/javascript">
+	/* //验证年龄
+	function isint1(str)
+	{
+	 var result=str.match(/^[0-9]$|^([1-9])([0-9]){0,3}$|^120$/);
+	 if(result==null) return false;
+	 return true;
+	} */
+	
+	function savePersonalInformation(){
+		var regex = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g; //邮箱
+		var reg = /^1[3|4|5|7|8]\d{9}$/; //手机验证
+		var peruser_account=$("#peruser_account").val();
+		var peruser_name=$("#peruser_name").val();
+		/* var peruser_sex=$("#peruser_sex").val();
+		alert(peruser_sex);
+		var peruser_age=$("#peruser_age").val(); */
+		var peruser_email=$("#peruser_email").val();
+		var peruser_phone=$("#peruser_phone").val();
+		if(peruser_name==null || peruser_name==''){
+			$("#peruser_namespan").text("用户名格式错误!!");
+			return false;
+		}
+		var emailvali=false;
+		$("#peruser_namespan").text("");
+		var user_email=$("#peruser_vali").val();
+			
+			if(regex.test(peruser_email)){
+				if(user_email!=peruser_email){
+					$.post("selectUserByEmail",{
+						user_email:peruser_email
+					},function(validation){
+						if(!validation){
+							$("#peruser_emailspan").text("此邮箱已存在!");
+							emailvali=false;
+							return;
+			    		}else{
+			    			$("#peruser_emailspan").text("");
+							emailvali=true;
+							return true;
+			    		}
+					},"json")
+				}else{
+					emailvali=true;
+				}
+				
+			}else{
+				$("#peruser_emailspan").text("邮箱格式错误!!");
+				emailvali=false;
+				return false;
+			}
+			var phonevali=false;
+			var user_phone=$("#peruser_phonevali").val();
+			if(reg.test(peruser_phone)){
+				if(user_phone!=peruser_phone){
+					$.post("selectUserByPhone",{
+						phone:peruser_phone
+					},function(validation){
+						if(validation){
+							alert("手机号重复!");
+							$("#peruser_phonespan").text("手机号已存在!");
+							phonevali=false;
+							return;
+			    		}else{
+							phonevali=true;
+							$("#peruser_phonespan").text("");
+			    		}
+					},"json")
+				}else{
+					phonevali=true;
+				}
+			}else{
+				$("#peruser_phonespan").text("手机号格式错误!!");
+				phonevali=false;
+				return false;
+			}
+			if(emailvali && phonevali){
+				$.post("updateUserByAccount",{
+					user_account:peruser_account,
+					user_name:peruser_name,
+					user_email:peruser_email,
+					user_phone:peruser_phone
+				},function(data){
+					if(data>0){
+						 $.messager.alert('提示','修改成功!'); 
+						 $("#myMes").dialog({
+				                closed: true
+				         })
+						 window.location.href="getMain";
+						 
+					}else{
+						 $.messager.alert('提示','网络错误!'); 
+					}
+					
+				},"json")
+			}
+			
+		
+	}
+</script>
 </body>
 </html>

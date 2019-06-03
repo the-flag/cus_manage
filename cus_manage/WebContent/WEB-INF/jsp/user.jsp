@@ -61,6 +61,7 @@
 					return true;
 				},"json")
 			}
+			$("#adduser_accountspan").text("");
 			return true;
 		}else{
 			$("#adduser_accountspan").text("格式错误!!");
@@ -106,6 +107,7 @@
 					return true;
 				},"json")
 			}	
+			$("#adduser_emailspan").text("");
 			return true;
 		}else{
 			$("#adduser_emailspan").text("邮箱格式错误!!");
@@ -124,7 +126,7 @@
 					phone:user_phone
 				},function(validation){
 					if(validation){
-						$("#adduser_accountspan").text("账号已存在!");
+						$("#adduser_phonespan").text("手机号已存在!");
 						phone_vali=null;
 						phoneJudge=false;
 						return false;
@@ -134,7 +136,8 @@
 					phoneJudge=true;
 					return true;
 				},"json")
-			}	
+			}
+			$("#adduser_phonespan").text("");
 			return true;
 		}else{
 			$("#adduser_phonespan").text("手机号格式错误!!");
@@ -154,6 +157,132 @@
 		}
 		
 	}
+		
+	
+	var updateemail_vali=null;
+	var updatephone_vali=null;
+    // 编辑
+    function edit (id) {
+            var ID;
+            $("#res").hide();
+            $("#can").show();
+            $("#updateBox").dialog({
+                    closed: false,
+            })
+           var data=$("#table").datagrid("getData");
+            var row=data.rows[id];
+            $("#updateForm").form('load',row);
+            
+            
+            /*$("#updatesum").click(function(){
+            	
+            })*/
+            
+           //重置表单
+            updateemail_vali=row.user_email;
+            updatephone_vali=row.user_phone;
+          
+            $("#updatares").click(function(){
+            	$("#updateForm").form('load',row);
+            })
+            
+
+    }
+    var updateemailJudge=false;
+    var updatephoneJudge=false;
+    
+    /* 验证邮箱 */
+	function updatecheckEmail(){
+		var emailreg = /^\w+((-\w+)|(\.\w+))*\@("@")[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+		var regex = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g;
+		var user_email=$("#updateuser_email").val().trim();
+		if(regex.test(user_email)){
+			$("#updateuser_emailspan").text("");
+			if(updateemail_vali!=user_email){
+				$.post("selectUserByEmail",{
+					user_email:user_email
+				},function(validation){
+					if(!validation){
+						$("#updateuser_emailspan").text("此邮箱已存在!");
+						updateemailJudge=false;
+						return false;
+		    		}
+					$("#updateuser_emailspan").text("");
+					updateemailJudge=true;
+					return true;
+				},"json")
+			}	
+			$("#updateuser_emailspan").text("");
+			return true;
+		}else{
+			$("#updateuser_emailspan").text("邮箱格式错误!!");
+			updateemailJudge=false;
+			return false;
+		}
+		
+	}
+	function updatecheckPhone(){
+		var reg = /^1[3|4|5|7|8]\d{9}$/; //手机验证
+		var user_phone=$("#updateuser_phone").val().trim();
+		if(reg.test(user_phone)){
+			$("#updateuser_phonespan").text("");
+			if(updatephone_vali!=user_phone){
+				$.post("selectUserByPhone",{
+					phone:user_phone
+				},function(validation){
+					if(validation){
+						$("#updateuser_phonespan").text("手机号已存在!");
+						updatephoneJudge=false;
+						return false;
+		    		}
+					$("#updateuser_phonespan").text("");
+					updatephoneJudge=true;
+					return true;
+				},"json")
+			}
+			$("#updateuser_phonespan").text("");
+			return true;
+		}else{
+			$("#updateuser_phonespan").text("手机号格式错误!!");
+			updatephoneJudge=false;
+			return false;
+		}
+	}
+	// 提交表单
+    function updatesum () {
+    	var updateuser_account=$("#updateuser_account").val();
+    	//验证修改的用户是否是管理员
+    	$.post("verifyAdministrator",{
+    		user_account:updateuser_account,
+    		cheshi:"1"
+    	},function(vali){
+    		if(vali){
+    			if(updateemailJudge && updatephoneJudge){
+    	          		$('#updateForm').form('submit', {
+    	                            url:'updateUserByAccount',
+    	                            method:"post",
+    	                    onSubmit: function(){
+    	                        var lag= $(this).form('validate');
+    	                           if(lag==true){
+    	                        	   
+    	                           }
+    	                },
+    	                success: function(data){
+    	                	if(data>0){
+    	                		$("#updateBox").dialog("close");
+    	                		obj.find();
+    	                        $.messager.progress('close');
+    	                	}
+    	                }
+    	                
+    	                });
+    			}
+    		}else{
+    			$.messager.alert('提示','没有该权限!');    
+    		}            
+    	},"json")
+    	
+    }
 </script>
 </head>
 <body>
@@ -178,6 +307,10 @@
 							<select id="user_is_lock" class="easyui-combobox" name="user_is_lock" style="width:200px;">   
 							    <option value="1">否</option>   
 							    <option value="0">是</option>   
+							</select>
+							<select id="user_is_sort" class="easyui-combobox" name="user_is_sort" style="width:200px;">   
+							    <option value="1">创建时间</option>   
+							    <option value="0">最后登录时间</option>   
 							</select> 
 							<a id="btn" href="javascript:void(0)" class="easyui-linkbutton tableFindBut" data-options="iconCls:'icon-search'" onclick="obj.find()">搜索</a>  
 						</form>
@@ -237,8 +370,8 @@
 			<div class="formDiv">
 				<label align="right" style="width: 70px;">分配角色：</label>
 				<input id="xsry" name="xsry"  style="width: 150px;"  class="easyui-combobox" >
-				<a href="#sum" class="easyui-linkbutton" iconCls="icon-ok"
-					onclick="validata()">测试</a>
+				<!-- <a href="#sum" class="easyui-linkbutton" iconCls="icon-ok"
+					onclick="validata()">测试</a> -->
 			</div>
 				  
 	
@@ -259,21 +392,23 @@
 			<div class="formDiv">
 				<label>账号:</label>
 					<input type="text" name="user_account" id="updateuser_account"
-					class="easyui-validatebox"  data-options="required:true,readonly:true"><span id="updateuser_accountspan"
+					class="easyui-validatebox"  data-options="required:true,readonly:true" ><span id="updateuser_accountspan"
 					class="formSpan">*</span>
 			</div>
 			<div class="formDiv">
 				<label>邮箱:</label>
-				<input type="text" id="updateuser_email" class="easyui-validatebox" name="user_email" data-options="required:true">
+				<input type="text" id="updateuser_email" class="easyui-validatebox" name="user_email" data-options="required:true" onBlur="updatecheckEmail()" onclick="updatecheckEmail()">
 				<span id="updateuser_emailspan" class="formSpan">*</span>
 			</div>
+			<input id="peruser_vali" type="hidden" value="${m.user_email}">
+			<input id="peruser_phonevali" type="hidden" value="${m.user_phone}">
 			<div class="formDiv">
-				<label>手机号:</label><input type="text" name="user_phone" id="updateuser_phone" 
-					class="easyui-validatebox" data-options="required:true"><span
+				<label>手机号:</label><input type="text" name="user_phone" id="updateuser_phone"      ，
+					class="easyui-validatebox" data-options="required:true" onBlur="updatecheckPhone()" onclick="updatecheckPhone()"><span id="updateuser_phonespan"
 					class="formSpan">*</span>
 			</div>
 			<div class="forSubmint">
-				<a href="#" class="easyui-linkbutton" iconCls="icon-ok" id="updatesum">提交</a>
+				<a href="#" class="easyui-linkbutton" iconCls="icon-ok" id="updatesum" onclick="updatesum()">提交</a>
 				<a href="#" class="easyui-linkbutton" id="updatares" iconCls="icon-redo">重置</a>
 				<a href="#" class="easyui-linkbutton" id="can" iconCls="icon-cancel" onclick="obj.can()">取消</a>
 			</div>

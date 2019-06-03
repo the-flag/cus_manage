@@ -152,7 +152,7 @@ $(function () {
                                 width:150,
                                 align:'center',
                                 formatter:function (val,row,index) {
-                                        e = '<a  id="add" data-id="98" class=" operA"  onclick="obj.edit(\'' + index + '\')">编辑</a> ';
+                                        e = '<a  id="add" data-id="98" class=" operA"  onclick="edit(\'' + index + '\')">编辑</a> ';
                                         d = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.delOne(\'' + index + '\')">删除</a> ';
                                         czmm = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.resetPass(\'' + index + '\')">重置密码</a> ';
                                         jssz = '<a  id="add" data-id="98" class=" operA01"  onclick="obj.juese(\'' + index + '\')">角色设置</a> ';
@@ -253,11 +253,17 @@ $("#part01").combotree({
 obj={
         // 查询
         find:function () {
+        	var user_is_sort=$("#user_is_sort").val();
+        		var user_login_time;
+        		if(user_is_sort==0){
+        			user_login_time="2019-06-13";
+        		}
                 $("#table").datagrid('load',{
                         user_name:$("#user_name").val(),
                         min_creat_time:$('#min_creat_time').datebox('getValue'),
                         max_creat_time:$('#max_creat_time').datebox('getValue'),
-                        user_is_lock:$("#user_is_lock").val()
+                        user_is_lock:$("#user_is_lock").val(),
+                        user_login_time:user_login_time
                 })
         },
         
@@ -427,58 +433,7 @@ obj={
         delUserRole:function(){
         	
         },
-        // 编辑
-        edit:function (id) {
-                var ID;
-                $("#res").hide();
-                $("#can").show();
-                $("#updateBox").dialog({
-                        closed: false,
-                })
-               var data=$("#table").datagrid("getData");
-                var row=data.rows[id];
-                $("#updateForm").form('load',row);
-                
-                //验证修改的用户是否是管理员
-                $("#updatesum").click(function(){
-                	$.post("verifyAdministrator",{
-                		user_account:row.user_account,
-                		cheshi:"1"
-                	},function(vali){
-                		if(vali){
-                				//提交保存
-            	                $('#updateForm').form('submit', {
-            	                            url:'updateUserByAccount',
-            	                            method:"post",
-            	                    onSubmit: function(){
-            	                        var lag= $(this).form('validate');
-            	                           if(lag==true){
-            	                        	   
-            	                           }
-            	                },
-            	                success: function(data){
-            	                	if(data>0){
-            	                		$("#updateBox").dialog("close");
-            	                		obj.find();
-            	                        $.messager.progress('close');
-            	                	}
-            	                }
-            	                
-            	                });
-                		}else{
-                			$.messager.alert('提示','没有该权限!');    
-                		}            
-                	},"json")
-                })
-                
-               //重置表单
-                
-                $("#updatares").click(function(){
-                	$("#updateForm").form('load',row);
-                })
-                
-
-        },
+       
         //解锁
         unlock:function(index,user_account){
         	$.messager.confirm('确认','您确认想要解锁该用户吗？',function(r){   
@@ -556,10 +511,7 @@ obj={
             	
         		
         },
-        // 提交表单
-        updatesum:function () {
-        	
-        },
+        
         // 重置表单
         res:function () {
                 $("#addForm").form('reset');

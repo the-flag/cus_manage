@@ -182,7 +182,6 @@ public class LoginController {
 			}else if(MemoryData.getSeeesionIdMap().containsKey(User_account)&&!StringUtils.equals(sessionID, MemoryData.getSeeesionIdMap().get(User_account))){
 				/*MemoryData.getSeeesionIdMap().remove(User_account);
 				MemoryData.getSeeesionIdMap().put(User_account,sessionID);*/
-				
 				request.setAttribute("key", "该"+User_account+"账号以在其他设备登陆!!");
 				return "login";
 			}
@@ -207,9 +206,8 @@ public class LoginController {
 				login.setUser_login_time(sdf2.format(new Date()));
 				userService.updateUser(login);
 			}
-			
 			System.out.println("登陆成功！！！！！！！！");
-			return "redirect:getMain"; 		
+			return "redirect:getMain";
 			 
 		}else {
 			if(login.getRoles().get(0)==null || (login.getRoles().get(0)!=null && login.getRoles().get(0).getRole_id()!=1) ) {
@@ -238,7 +236,7 @@ public class LoginController {
 	 */
 	@RequestMapping(value="/closePage",method=RequestMethod.POST)
 	
-	public void closePage(String user_account,HttpServletRequest request) {
+	public void closePage(HttpServletRequest request) {
 		System.out.println("关闭页面---清空map里面的sessionId");
 		Map<String, String> seeesionIdMap = MemoryData.getSeeesionIdMap();
 		User user =(User) request.getSession().getAttribute("m");

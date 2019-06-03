@@ -81,7 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectUserByUserLoginTimeAndChidao"  resultType="int">
 		SELECT COUNT(u.user_id) 
 		FROM `user` u INNER JOIN sign s ON u.user_id = s.user_id 
-		WHERE DATE_FORMAT(s.user_login_time,'%y-%m-%d') = DATE_FORMAT(NOW(),'%y-%m-%d') AND DATE_FORMAT(s.user_login_time,"%H-%i") > "20-00"
+		WHERE DATE_FORMAT(s.user_login_time,'%y-%m-%d') = DATE_FORMAT(NOW(),'%y-%m-%d') AND DATE_FORMAT(s.user_login_time,"%H-%i") > "08-00"
 	</select>
 	<!-- 查询当天未签到 -->
 	<select id="selectUserByUserLoginTimeAndWeiqian"  resultType="int">
@@ -130,7 +130,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				</if>
 			</if>
 		</where>
-		ORDER BY user_id DESC
+		<choose>  
+			<when test="object.user_login_time !=null and object.user_login_time !='' ">  
+				ORDER BY user_login_time DESC
+			</when>  
+			<otherwise>   
+		        	ORDER BY user_creat_time DESC
+			</otherwise>  
+		</choose>
+		
 		limit #{page},#{row}
 	</select>
 	
@@ -143,10 +151,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					and user_name like "%"#{object.user_name}"%"
 				</if>
 				<if test="object.min_creat_time !=null and object.min_creat_time !='' ">
-					and user_creat_time &gt;=#{object.min_creat_time};
+					and user_creat_time &gt;=#{object.min_creat_time}
 				</if>
 				<if test="object.max_creat_time !=null and object.max_creat_time !='' ">
-					and user_creat_time &lt;=#{object.max_creat_time};
+					and user_creat_time &lt;=#{object.max_creat_time}
 				</if>
 				<if test="object.user_is_lock !=null and object.user_is_lock >0 ">
 					and user_is_lock=#{object.user_is_lock}
@@ -175,7 +183,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 登录时 根据账号、邮箱、手机中的一种方式查询用户信息-->
 	<select id="selectUserByAccountOrEmailOrPhone" parameterType="user" resultMap="userMap">
-		SELECT u.user_id,user_account,user_password,user_name,user_sex,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone,
+		SELECT u.user_id,user_account,user_password,user_name,user_sex,user_age,user_creat_time,user_is_lock,user_wrong_number,user_email,user_phone,
 					r.role_id,r.role_name
 		FROM `user` u LEFT JOIN user_role ur ON u.user_id=ur.user_id LEFT JOIN role r ON ur.role_id=r.role_id
 		<where>

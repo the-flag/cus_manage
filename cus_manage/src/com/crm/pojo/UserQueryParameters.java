@@ -13,6 +13,8 @@ public class UserQueryParameters {
     private String max_creat_time;
 
     private Integer user_is_lock;
+    
+    private String user_login_time;
 
 	public String getUser_name() {
 		return user_name;
@@ -44,6 +46,15 @@ public class UserQueryParameters {
 
 	public void setUser_is_lock(Integer user_is_lock) {
 		this.user_is_lock = user_is_lock;
+	}
+	
+
+	public String getUser_login_time() {
+		return user_login_time;
+	}
+
+	public void setUser_login_time(String user_login_time) {
+		this.user_login_time = user_login_time;
 	}
 
 	@Override

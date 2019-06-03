@@ -54,29 +54,23 @@ public class ManagerController {
 	
 		return managerService.selectManager(fenye);
 	}
-	//增加客户
+	
+	
+	//增加客户 分量
 	@RequestMapping(value="/insertCustomer",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer insertCustomer(HttpSession session, HttpServletRequest request,Customer customer){
 		
-		User UserStatus = managerService.selectUserStatus(2);
-		if(UserStatus.getUser_status()==1){
-		List<User> selectUser = userService.selectUser();
+		User UserStatus = managerService.selectUserStatus(2); //查咨询经理信息
+		if(UserStatus.getUser_status()==1){	//判断咨询经理是否开启了自动分量
+			List<User> selectUser = userService.selectUser();//查询所有已签到的咨询师
 			if(selectUser!=null) {
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
-				System.out.println("输出!!!!");
-				System.out.println(selectUser.get(0));
-			 paixu(selectUser);
-			 customer.setUser_id(selectUser.get(0).getUser_id());
+				System.out.println(selectUser.get(0));	
+			 paixu(selectUser); //排序
+			 customer.setUser_id(selectUser.get(0).getUser_id()); //把咨询师的id添加到客户对象中
 			}
 		}
-		 Integer insertCustomer = managerService.insertCustomer(customer);
+		 Integer insertCustomer = managerService.insertCustomer(customer); //添加
 		return insertCustomer;
 	}
 	//查询签到or签退

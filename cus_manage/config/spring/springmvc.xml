@@ -41,6 +41,7 @@
             <mvc:exclude-mapping path="/phoneValidata"/> <!-- 手机验证  -->
             <mvc:exclude-mapping path="/updatePasswordByUserPhone"/> <!-- 手机验证  -->
              <mvc:exclude-mapping path="/selectUserByPhone"/> <!-- 手机验证  -->
+             <mvc:exclude-mapping path="/closePage"/> <!-- 关闭页面清空map中的sessionid  -->
             <mvc:exclude-mapping path="/js/**"/>
             <mvc:exclude-mapping path="/static/**"/>	
             <mvc:exclude-mapping path="/img/**"/>
@@ -53,6 +54,7 @@
              <mvc:exclude-mapping path="/phoneValidata"/> <!-- 手机验证  -->
               <mvc:exclude-mapping path="/updatePasswordByUserPhone"/> <!-- 手机验证  -->
               <mvc:exclude-mapping path="/selectUserByPhone"/> <!-- 手机验证  -->
+              <mvc:exclude-mapping path="/closePage"/> <!-- 关闭页面清空map中的sessionid  -->
             <mvc:exclude-mapping path="/js/**"/>
              <mvc:exclude-mapping path="/static/**"/>	
             <mvc:exclude-mapping path="/img/**"/>
