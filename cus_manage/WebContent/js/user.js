@@ -423,6 +423,7 @@ obj={
         },
         refreshRole:function(){
         	$("#UserRole").datagrid("load");
+        	$("#AllRole").datagrid("load");
         	
         },
         //为当前用户添加角色
